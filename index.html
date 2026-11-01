@@ -337,13 +337,14 @@ body.menu-open .head { background: var(--night); color: var(--on-night); box-sha
 .app-progress { display: flex; gap: 5px; padding: 0 22px; }
 .app-progress i { flex: 1; height: 2px; border-radius: 2px; background: var(--line); transition: background-color .3s var(--ease); }
 .app-progress i.on { background: var(--cognac); }
-.app-stage { display: grid; place-items: center; text-align: center; padding: 16px 22px; }
+.app-stage { display: grid; place-items: center; align-content: center; gap: 10px; text-align: center; padding: 16px 22px; }
 .app-inner { display: grid; gap: 18px; justify-items: center; }
 .app-inner p { font-size: .88rem; color: var(--muted); max-width: 16em; }
 .chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
 .chip { font-size: .72rem; padding: 6px 10px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); color: var(--muted); }
 .app-big { font: 200 clamp(5.5rem, 4rem + 4vw, 7.5rem)/1 var(--serif); font-variant-numeric: lining-nums; }
-.app-big.count { color: var(--cognac); }
+.app-big.count { color: var(--cognac); font-size: 3.6rem; }
+.app-ready { font: 400 .68rem/1.3 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
 .app-input { width: 140px; border: 0; border-bottom: 1px solid var(--ink); background: transparent; color: var(--ink); text-align: center; font: 200 2.6rem/1.2 var(--serif); border-radius: 0; padding: 0; }
 .app-input:focus { outline: none; border-bottom-color: var(--cognac); }
 .verdict { font: 300 1.9rem/1.1 var(--serif); }
@@ -762,6 +763,7 @@ html.lang-swap [data-i18n] { opacity: 0; }
               <div class="chips"><span class="chip" data-i18n="chip1">1 разряд</span><span class="chip" data-i18n="chip2">5 чисел</span><span class="chip" data-i18n="chip3">1 сек</span></div>
               <p data-i18n="demo_p">Числа появятся по одному. Сложите их в уме и введите ответ.</p>
             </div>
+            <div class="app-ready" id="d-ready" hidden data-i18n="demo_ready">Приготовьтесь</div>
             <div class="app-big" id="d-big" hidden></div>
             <form class="app-inner" id="d-ask" hidden>
               <p data-i18n="demo_ask">Сколько получилось?</p>
@@ -1150,19 +1152,30 @@ html.lang-swap [data-i18n] { opacity: 0; }
   const show = n => { [idle, big, ask, done].forEach(x => { x.hidden = x !== n; }); pop(n); };
   const later = (f, ms) => timers.push(setTimeout(f, ms));
   function makeNums() {
+    // no formulas: every step moves beads only in its own direction
+    const direct = (s, n) => {
+      const t = s + n; if (t < 0 || t > 9) return false;
+      const five = (t >= 5) - (s >= 5), ones = t % 5 - s % 5;
+      return n > 0 ? five >= 0 && ones >= 0 : five <= 0 && ones <= 0;
+    };
     const out = [1 + Math.floor(Math.random() * 9)]; let s = out[0];
-    while (out.length < 5) { const n = 1 + Math.floor(Math.random() * 9); const m = Math.random() < .4 && s - n >= 0; out.push(m ? -n : n); s += m ? -n : n; }
+    while (out.length < 5) {
+      const opts = [];
+      for (let n = -9; n <= 9; n++) if (n && n !== -out[out.length - 1] && direct(s, n)) opts.push(n);
+      const n = opts[Math.floor(Math.random() * opts.length)];
+      out.push(n); s += n;
+    }
     return out;
   }
   function setBtn(key) { btn.dataset.i18n = key; btn.textContent = T(key); }
   function run() {
     timers.forEach(clearTimeout); timers = []; mode = 'run';
     nums = makeNums(); bars.forEach(b => b.classList.remove('on'));
-    show(big); big.classList.add('count'); btn.disabled = true; btn.style.opacity = .4;
+    show(big); big.classList.add('count'); $('d-ready').hidden = false; btn.disabled = true; btn.style.opacity = .4;
     let t = 0;
     [3, 2, 1].forEach(c => { later(() => { big.textContent = c; pop(big); }, t); t += 700; });
     nums.forEach((n, i) => {
-      later(() => { big.classList.remove('count'); big.textContent = i === 0 ? n : (n < 0 ? '−' + (-n) : '+' + n); bars[i].classList.add('on'); pop(big); }, t);
+      later(() => { big.classList.remove('count'); $('d-ready').hidden = true; big.textContent = i === 0 ? n : (n < 0 ? '−' + (-n) : '+' + n); bars[i].classList.add('on'); pop(big); }, t);
       t += 1000;
       later(() => { big.textContent = ''; }, t - 160); // a blank beat so two equal numbers read as two
     });
@@ -1313,7 +1326,7 @@ html.lang-swap [data-i18n] { opacity: 0; }
     tr_open: 'Толук тренажёрду ачуу', tr_demo: 'Жанында кыска демо-версия. Толук тренажёрдо баарын балага ылайыктап тууралоого болот.',
     app_t: 'Тренажёр', app_demo: 'Демо', chip1: '1 разряд', chip2: '5 сан', chip3: '1 сек',
     demo_p: 'Сандар бирден чыгат. Аларды эсиңизден кошуп, жоопту жазыңыз.',
-    demo_start: 'Баштоо', demo_ask: 'Канча болду?', demo_check: 'Текшерүү', demo_again: 'Дагы бир жолу',
+    demo_ready: 'Даярданыңыз', demo_start: 'Баштоо', demo_ask: 'Канча болду?', demo_check: 'Текшерүү', demo_again: 'Дагы бир жолу',
     ok: 'Туура!', miss: 'Туура жооп:',
     rv_eyebrow: 'Пикирлер', rv_h2: 'Ата-энелердин <em>сөзү</em>', rv_note: 'Макетте пикирлердин үлгүлөрү. WhatsAppтан скриншоттору менен чыныгыларына алмаштырабыз.',
     q1: 'Уулум жети жашта. Үч айдан кийин мисалдарды менден тезирээк эсинен чыгара баштады, эң негизгиси, математикадан коркпой калды.', q1_w: 'Алихандын апасы, 7 жаш',

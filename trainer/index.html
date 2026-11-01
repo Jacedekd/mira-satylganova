@@ -157,9 +157,10 @@ h1 em { color: var(--cognac-soft); font-style: italic; }
 .stop:active { transform: scale(.92); }
 .stop .ico { width: 20px; height: 20px; }
 .run { min-height: 100dvh; display: grid; grid-template-rows: minmax(0, 1fr) auto; padding: 72px var(--gr) max(28px, env(safe-area-inset-bottom, 0px)) var(--gl); }
-.big-wrap { display: grid; place-items: center; min-width: 0; }
+.big-wrap { display: grid; place-items: center; align-content: center; gap: 14px; min-width: 0; }
+.ready { font: 400 .78rem/1.3 var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--on-night-muted); text-align: center; }
 .big { --chars: 1; font: 200 min(calc(88vw / (var(--chars) * .62)), 17rem, 46vh)/1 var(--serif); font-variant-numeric: lining-nums; letter-spacing: -.015em; white-space: nowrap; color: var(--on-night); }
-.big.count { color: var(--cognac-soft); }
+.big.count { color: var(--cognac-soft); font-size: min(26vw, 7rem, 24vh); }
 .progress { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; min-height: 12px; }
 .progress i { width: 18px; height: 11px; background: rgba(237, 231, 219, .16); clip-path: polygon(0 50%, 25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%); transition: background-color .3s var(--ease); }
 .progress i.on { background: var(--cognac-soft); }
@@ -331,7 +332,7 @@ h1 em { color: var(--cognac-soft); font-style: italic; }
   <button class="stop" type="button" id="stop"><svg class="ico"><use href="#i-close"/></svg></button>
 
   <div class="run" id="run">
-    <div class="big-wrap"><div class="big" id="big"></div></div>
+    <div class="big-wrap"><p class="ready" id="ready" hidden data-i18n="ready">Приготовьтесь</p><div class="big" id="big"></div></div>
     <div class="progress" id="progress" aria-hidden="true"></div>
   </div>
 
@@ -391,7 +392,7 @@ h1 em { color: var(--cognac-soft); font-style: italic; }
     alt_t: 'Разряддарды алмаштыруу', alt_h: 'Ар кандай узундуктагы сандар: 137, 52, 8',
     pair_t: 'Жуп сандар', pair_h: 'Бирдей цифралар: 33, 777',
     accel_t: 'Ылдамдатуу', accel_h: 'Сандар барган сайын тезирээк чыгат',
-    start: 'Баштоо', ask: 'Канча <em>чыкты?</em>', check: 'Текшерүү', show: 'Жоопту көрсөтүү', answer_l: 'Жооп',
+    start: 'Баштоо', ready: 'Даярданыңыз', ask: 'Канча <em>чыкты?</em>', check: 'Текшерүү', show: 'Жоопту көрсөтүү', answer_l: 'Жооп',
     again: 'Кайталоо', new: 'Жаңы мисал', to_setup: 'Жөндөөлөр', ans_l: 'Сиздин жооп', stop_l: 'Токтотуу',
     d1: 'Бир орундуу', d2: 'Эки орундуу', d3: 'Үч орундуу', d4: 'Төрт орундуу',
     l0: 'Формуласыз', l1: 'Бештин жардамы', l2: 'Ондун жардамы',
@@ -641,16 +642,17 @@ h1 em { color: var(--cognac-soft); font-style: italic; }
 
   async function play(example) {
     const my = ++token, terms = example.terms;
-    $('answer').hidden = true; $('run').hidden = false; showBig('');
+    $('answer').hidden = true; $('run').hidden = false; $('ready').hidden = true; showBig('');
     const prog = $('progress'); prog.textContent = '';
     terms.forEach(() => prog.append(document.createElement('i')));
     stage.scrollTop = 0;
     await wait(reduce ? 100 : 420); if (my !== token) return;
+    $('ready').hidden = false;
     for (const n of [3, 2, 1]) {
       showBig(String(n), 'count'); pop(big, 560);
       await wait(850); if (my !== token) return;
     }
-    showBig(''); await wait(320); if (my !== token) return;
+    $('ready').hidden = true; showBig(''); await wait(320); if (my !== token) return;
     const floor = Math.min(S.speed, Math.max(S.speed * .5, .2));
     for (let i = 0; i < terms.length; i++) {
       const dur = Math.max(floor, S.accel ? S.speed * Math.pow(.94, i) : S.speed) * 1000;
