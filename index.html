@@ -2,9 +2,9 @@
 <html lang="ru">
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Мира Сатылганова · Ментальная арифметика</title>
+<title>Мира Сатылгановна · Ментальная арифметика</title>
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%230D1311%27/%3E%3Cpath d=%27M16 3v26%27 stroke=%27%23D9A86F%27 stroke-width=%271.5%27/%3E%3Cpath d=%27M6 16l10-6 10 6-10 6z%27 fill=%27%23B4773A%27/%3E%3C/svg%3E">
-<meta name="description" content="Ментальная арифметика в селе Ленинское, Чуйская область. Педагог Мира Сатылганова: занятия для детей 5–12 лет, пробный урок, онлайн-тренажёр для учеников.">
+<meta name="description" content="Ментальная арифметика в селе Ленинское, Чуйская область. Педагог Мира Сатылгановна: занятия для детей 5–15 лет, пробный урок, онлайн-тренажёр для учеников.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,200;0,300;0,400;1,200;1,300&family=Geologica:wght@300;400;500&family=Marck+Script&display=swap">
@@ -204,7 +204,7 @@ body.menu-open .head { background: var(--night); color: var(--on-night); box-sha
 .about-copy p { color: var(--muted); max-width: 34em; }
 .signature { font: 400 clamp(2rem, 1.6rem + 1.2vw, 2.8rem)/1 var(--script); color: var(--cognac-deep); transform: rotate(-3deg); transform-origin: left; margin-top: -4px; }
 .stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); padding-top: 28px; gap: 20px; }
-.stat { display: grid; gap: 8px; }
+.stat { display: grid; gap: 8px; align-content: start; }
 .stat b { font: 200 clamp(2.4rem, 1.8rem + 1.6vw, 3.4rem)/1 var(--serif); font-variant-numeric: lining-nums; }
 .stat span { font-size: .86rem; line-height: 1.45; color: var(--muted); }
 .creds { display: flex; flex-wrap: wrap; gap: 10px; }
@@ -327,6 +327,7 @@ body.menu-open .head { background: var(--night); color: var(--on-night); box-sha
 .tfeat span { font-size: .9rem; color: var(--on-night-muted); }
 .lockline { display: flex; gap: 14px; align-items: center; padding: 16px 20px; border: 1px solid var(--line-night); border-radius: 18px; color: var(--on-night-muted); font-size: .92rem; }
 .lockline .ico { color: var(--cognac-soft); }
+.tr-open { justify-self: start; justify-content: space-between; max-width: 100%; }
 .phone { justify-self: center; width: min(340px, 100%); aspect-ratio: 9 / 18.6; border-radius: 54px; padding: 12px; background: linear-gradient(145deg, #2B302D, #0A0D0C 40%, #1D211F); box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 60px 120px -40px rgba(0,0,0,.8), inset 0 0 0 2px rgba(255,255,255,.05); }
 .screen { position: relative; height: 100%; border-radius: 43px; overflow: hidden; background: var(--paper); color: var(--ink); display: grid; grid-template-rows: auto 1fr auto; }
 .island { position: absolute; top: 12px; left: 50%; width: 92px; height: 26px; margin-left: -46px; border-radius: 20px; background: #050706; z-index: 2; }
@@ -519,14 +520,14 @@ html.lang-swap [data-i18n] { opacity: 0; }
 
 <header class="head" id="head">
   <div class="wrap">
-    <a class="logo" href="#top" aria-label="Мира Сатылганова">
+    <a class="logo" href="#top" aria-label="Мира Сатылгановна">
       <svg viewBox="0 0 34 34" aria-hidden="true">
         <defs><linearGradient id="lg-bead" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9B67F"/><stop offset=".45" stop-color="#B4773A"/><stop offset="1" stop-color="#5A2E12"/></linearGradient></defs>
         <path d="M17 1v32" stroke="currentColor" stroke-opacity=".35" stroke-width="1"/>
         <path d="M3 17l5-7h18l5 7-5 7H8z" fill="url(#lg-bead)"/>
         <path d="M10 13.5h6" stroke="#fff" stroke-opacity=".45" stroke-width="1.4" stroke-linecap="round"/>
       </svg>
-      <span class="logo-text"><span class="logo-name">Мира Сатылганова</span><span class="logo-sub" data-i18n="logo_sub">Ментальная арифметика</span></span>
+      <span class="logo-text"><span class="logo-name">Мира Сатылгановна</span><span class="logo-sub" data-i18n="logo_sub">Ментальная арифметика</span></span>
     </a>
     <nav class="nav" aria-label="Разделы">
       <a href="#about" data-i18n="nav1">Обо мне</a>
@@ -574,10 +575,10 @@ html.lang-swap [data-i18n] { opacity: 0; }
       <div class="hero-copy">
         <span class="eyebrow" data-i18n="hero_eyebrow">Ментальная арифметика · село Ленинское</span>
         <h1 data-i18n="hero_h1">Когда числа живут <em>в воображении</em></h1>
-        <p class="lead" data-i18n="hero_lead">Учу детей 5–12 лет считать на абакусе, а потом и без него. Ребёнок становится собраннее, внимательнее и увереннее, а математика превращается в любимое занятие.</p>
+        <p class="lead" data-i18n="hero_lead">Учу детей 5–15 лет считать на абакусе, а потом и без него. Ребёнок становится собраннее, внимательнее и увереннее, а математика превращается в любимое занятие.</p>
         <div class="hero-cta">
           <a class="btn" href="#signup"><span data-i18n="cta_trial">Записаться на пробный урок</span><span class="dot"><svg class="ico"><use href="#i-arrow"/></svg></span></a>
-          <a class="text-link" href="#trainer"><span data-i18n="cta_demo">Попробовать тренажёр</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+          <a class="text-link" href="trainer/"><span data-i18n="cta_demo">Попробовать тренажёр</span><svg class="ico"><use href="#i-arrow"/></svg></a>
         </div>
       </div>
       <div class="hero-stage" aria-hidden="true">
@@ -591,7 +592,7 @@ html.lang-swap [data-i18n] { opacity: 0; }
     </div>
     <div class="hero-feats">
       <div class="wrap">
-        <div class="feat"><svg class="ico"><use href="#i-child"/></svg><span data-i18n="hf1">Дети от 5 до 12 лет</span></div>
+        <div class="feat"><svg class="ico"><use href="#i-child"/></svg><span data-i18n="hf1">Дети от 5 до 15 лет</span></div>
         <div class="feat"><svg class="ico"><use href="#i-pin"/></svg><span data-i18n="hf2">Занятия офлайн, село Ленинское</span></div>
         <div class="feat"><svg class="ico"><use href="#i-gift"/></svg><span data-i18n="hf3">Первый урок бесплатно</span></div>
       </div>
@@ -602,7 +603,7 @@ html.lang-swap [data-i18n] { opacity: 0; }
   <section class="about" id="about">
     <div class="wrap">
       <figure class="portrait reveal">
-        <img src="img/teacher.jpg" alt="Мира Сатылганова" width="1200" height="1500" loading="lazy">
+        <img src="img/teacher.jpg" alt="Мира Сатылгановна" width="1200" height="1500" loading="lazy">
         <figcaption class="portrait-tag" data-i18n="ptag">Ленинское · с 2019 года</figcaption>
       </figure>
       <div class="about-copy reveal">
@@ -610,11 +611,11 @@ html.lang-swap [data-i18n] { opacity: 0; }
         <h2 data-i18n="ab_h2">Здравствуйте, я <em>Мира</em></h2>
         <p data-i18n="ab_p1">Преподаю ментальную арифметику с 2019 года. За это время через мои занятия прошли больше четырёхсот детей: от тех, кто боялся цифр, до призёров олимпиад.</p>
         <p data-i18n="ab_p2">Мне важно, чтобы ребёнок шёл на урок с удовольствием, а результат видели и он сам, и родители. Поэтому каждое занятие строю вокруг конкретного ребёнка, его темпа и характера.</p>
-        <span class="signature">Мира Сатылганова</span>
+        <span class="signature">Мира Сатылгановна</span>
         <div class="stats">
           <div class="stat"><b>7</b><span data-i18n="st1">лет преподаю ментальную арифметику</span></div>
           <div class="stat"><b>400+</b><span data-i18n="st2">учеников прошли обучение</span></div>
-          <div class="stat"><b>18</b><span data-i18n="st3">чисел подряд складывают ученики в уме</span></div>
+          <div class="stat"><b>18</b><span data-i18n="st3">чисел подряд складывают и вычитают ученики в уме</span></div>
         </div>
         <div class="creds">
           <span class="cred"><svg class="ico"><use href="#i-cert"/></svg><span data-i18n="cr1">Сертифицированный педагог</span></span>
@@ -712,7 +713,7 @@ html.lang-swap [data-i18n] { opacity: 0; }
           <div class="sum"><b data-i18n="fm2_s">1 000 сом</b><span data-i18n="fm2_u">за 60 минут</span></div>
           <ul class="incl">
             <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm2_1">Программа под темп ребёнка</span></li>
-            <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm2_2">Личный доступ к тренажёру</span></li>
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm2_2">Тренажёр для занятий дома</span></li>
             <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm2_3">Отчёт родителям каждый месяц</span></li>
           </ul>
           <a class="btn btn-ink" href="#signup"><span data-i18n="fm_btn2">Узнать расписание</span><span class="dot"><svg class="ico"><use href="#i-arrow"/></svg></span></a>
@@ -723,7 +724,7 @@ html.lang-swap [data-i18n] { opacity: 0; }
           <div class="sum"><b data-i18n="fm3_s">3 000 сом</b><span data-i18n="fm3_u">в месяц, 2 раза в неделю по 60 минут</span></div>
           <ul class="incl">
             <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm3_1">Учимся вместе и соревнуемся по-доброму</span></li>
-            <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm3_2">Личный доступ к тренажёру</span></li>
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm3_2">Тренажёр для занятий дома</span></li>
             <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm3_3">Группы по уровню и возрасту</span></li>
           </ul>
           <a class="btn btn-ink" href="#signup"><span data-i18n="fm_btn2">Узнать расписание</span><span class="dot"><svg class="ico"><use href="#i-arrow"/></svg></span></a>
@@ -742,11 +743,12 @@ html.lang-swap [data-i18n] { opacity: 0; }
         <p class="lead" data-i18n="tr_lead">Между уроками ученики тренируются дома: числа появляются на экране одно за другим, а в конце нужно назвать ответ.</p>
         <div class="tfeats">
           <div class="tfeat"><svg class="ico"><use href="#i-sliders"/></svg><b data-i18n="tf1_h">Под уровень ученика</b><span data-i18n="tf1">Разрядность, переходы, количество чисел и скорость</span></div>
-          <div class="tfeat"><svg class="ico"><use href="#i-chart"/></svg><b data-i18n="tf2_h">Прогресс виден</b><span data-i18n="tf2">Я вижу, кто занимался и сколько примеров решено верно</span></div>
-          <div class="tfeat"><svg class="ico"><use href="#i-home"/></svg><b data-i18n="tf3_h">Домашнее задание</b><span data-i18n="tf3">Задания приходят прямо в тренажёр</span></div>
-          <div class="tfeat"><svg class="ico"><use href="#i-key"/></svg><b data-i18n="tf4_h">Личный код</b><span data-i18n="tf4">Полная версия открыта только моим ученикам</span></div>
+          <div class="tfeat"><svg class="ico"><use href="#i-check"/></svg><b data-i18n="tf2_h">Проверка или ответ</b><span data-i18n="tf2">Можно ввести число или сразу посмотреть ответ на абакусе</span></div>
+          <div class="tfeat"><svg class="ico"><use href="#i-home"/></svg><b data-i18n="tf3_h">Занятия дома</b><span data-i18n="tf3">Работает на телефоне, планшете и компьютере</span></div>
+          <div class="tfeat"><svg class="ico"><use href="#i-clock"/></svg><b data-i18n="tf4_h">Ускорение</b><span data-i18n="tf4">Числа могут идти всё быстрее, когда ребёнок готов</span></div>
         </div>
-        <div class="lockline"><svg class="ico"><use href="#i-bead"/></svg><span data-i18n="tr_demo">Здесь же открытая демо-версия. Попробуйте посчитать вместе с ребёнком.</span></div>
+        <a class="btn tr-open" href="trainer/"><span data-i18n="tr_open">Открыть полный тренажёр</span><span class="dot"><svg class="ico"><use href="#i-arrow"/></svg></span></a>
+        <div class="lockline"><svg class="ico"><use href="#i-bead"/></svg><span data-i18n="tr_demo">Рядом короткая демо-версия. В полном тренажёре можно настроить всё под ребёнка.</span></div>
       </div>
       <div class="phone reveal">
         <div class="screen">
@@ -824,7 +826,7 @@ html.lang-swap [data-i18n] { opacity: 0; }
         <details><summary><span data-i18n="fq2">Когда будет виден результат?</span><span class="pm"><svg class="ico"><use href="#i-plus"/></svg></span></summary><div class="faq-a"><p data-i18n="fa2">Первые изменения родители обычно замечают через 1–2 месяца. Уверенный счёт в уме формируется за 6–12 месяцев регулярных занятий.</p></div></details>
         <details><summary><span data-i18n="fq3">Нужно ли покупать абакус?</span><span class="pm"><svg class="ico"><use href="#i-plus"/></svg></span></summary><div class="faq-a"><p data-i18n="fa3">Нет, абакус для занятий дома выдаю на первом уроке.</p></div></details>
         <details><summary><span data-i18n="fq4">Где проходят занятия?</span><span class="pm"><svg class="ico"><use href="#i-plus"/></svg></span></summary><div class="faq-a"><p data-i18n="fa4">Только офлайн: Чуйская область, Аламудунский район, село Ленинское. Онлайн-занятий пока нет.</p></div></details>
-        <details><summary><span data-i18n="fq5">Как получить доступ к тренажёру?</span><span class="pm"><svg class="ico"><use href="#i-plus"/></svg></span></summary><div class="faq-a"><p data-i18n="fa5">После записи на курс я выдам личный код. Он работает на устройствах ученика, пока идёт обучение.</p></div></details>
+        <details><summary><span data-i18n="fq5">Как открыть тренажёр?</span><span class="pm"><svg class="ico"><use href="#i-plus"/></svg></span></summary><div class="faq-a"><p data-i18n="fa5">Нажмите «Открыть полный тренажёр» в разделе о тренажёре. Регистрация не нужна.</p></div></details>
       </div>
     </div>
   </section>
@@ -851,10 +853,10 @@ html.lang-swap [data-i18n] { opacity: 0; }
             <div class="field"><input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="+996"><label for="f-phone" data-i18n="f_phone">WhatsApp</label></div>
             <div class="field">
               <select id="f-age" name="age">
-                <option value="4-5" data-i18n="age1">4–5 лет</option>
-                <option value="6-7" selected data-i18n="age2">6–7 лет</option>
-                <option value="8-10" data-i18n="age3">8–10 лет</option>
-                <option value="11-14" data-i18n="age4">11–14 лет</option>
+                <option value="5-7" selected data-i18n="age1">5–7 лет</option>
+                <option value="8-10" data-i18n="age2">8–10 лет</option>
+                <option value="11-13" data-i18n="age3">11–13 лет</option>
+                <option value="14-15" data-i18n="age4">14–15 лет</option>
               </select>
               <label for="f-age" data-i18n="f_age">Возраст ребёнка</label>
               <svg class="ico chev"><use href="#i-chev"/></svg>
@@ -876,12 +878,12 @@ html.lang-swap [data-i18n] { opacity: 0; }
     <footer class="foot">
       <div class="wrap">
         <div class="foot-top">
-          <div class="foot-brand"><span class="logo-name" style="font-size:1.6rem">Мира Сатылганова</span><p data-i18n="ft_p">Ментальная арифметика для детей 5–12 лет. Село Ленинское, Чуйская область.</p></div>
+          <div class="foot-brand"><span class="logo-name" style="font-size:1.6rem">Мира Сатылгановна</span><p data-i18n="ft_p">Ментальная арифметика для детей 5–15 лет. Село Ленинское, Чуйская область.</p></div>
           <div><h4 data-i18n="fh1">Разделы</h4><ul><li><a href="#about" data-i18n="nav1">Обо мне</a></li><li><a href="#method" data-i18n="nav3">Метод</a></li><li><a href="#path" data-i18n="nav4">Программа</a></li></ul></div>
-          <div><h4 data-i18n="fh2">Ученикам</h4><ul><li><a href="#trainer" data-i18n="login">Вход в тренажёр</a></li><li><a href="#faq" data-i18n="nav6">Вопросы</a></li></ul></div>
+          <div><h4 data-i18n="fh2">Ученикам</h4><ul><li><a href="trainer/" data-i18n="login">Открыть тренажёр</a></li><li><a href="#faq" data-i18n="nav6">Вопросы</a></li></ul></div>
           <div><h4 data-i18n="fh3">Связь</h4><ul><li><a href="https://wa.me/996552466030" target="_blank" rel="noopener">+996 552 466 030</a></li></ul></div>
         </div>
-        <div class="foot-word" aria-hidden="true">Мира <em>Сатылганова</em></div>
+        <div class="foot-word" aria-hidden="true">Мира <em>Сатылгановна</em></div>
         <div class="foot-bottom"><span>© 2026</span><span data-i18n="ft_note">Концепт сайта. Материалы временные.</span></div>
       </div>
     </footer>
@@ -1261,14 +1263,14 @@ html.lang-swap [data-i18n] { opacity: 0; }
     cta_short: 'Сыноо сабагы', cta_trial: 'Сыноо сабагына жазылуу', cta_demo: 'Тренажёрду байкап көрүү',
     hero_eyebrow: 'Менталдык арифметика · Ленинское айылы',
     hero_h1: 'Сандар <em>элестетүүдө</em> жашаганда',
-    hero_lead: '5–12 жаштагы балдарды абакус менен, кийин абакуссуз эсептөөгө үйрөтөм. Бала топтолгон, көңүлдүү жана өзүнө ишенимдүү болот, математика сүйүктүү сабакка айланат.',
+    hero_lead: '5–15 жаштагы балдарды абакус менен, кийин абакуссуз эсептөөгө үйрөтөм. Бала топтолгон, көңүлдүү жана өзүнө ишенимдүү болот, математика сүйүктүү сабакка айланат.',
     flash_b: 'Эсинен эсептөө', flash_m: 'окуучу санды көрөт, абакус сумманы көрсөтөт',
-    hf1: '5 жаштан 12 жашка чейинки балдар', hf2: 'Офлайн сабактар, Ленинское айылы', hf3: 'Биринчи сабак акысыз',
+    hf1: '5 жаштан 15 жашка чейинки балдар', hf2: 'Офлайн сабактар, Ленинское айылы', hf3: 'Биринчи сабак акысыз',
     ptag: 'Ленинское · 2019-жылдан бери',
     ab_eyebrow: 'Таанышуу', ab_h2: 'Саламатсызбы, мен <em>Мира</em>',
     ab_p1: '2019-жылдан бери менталдык арифметиканы окутам. Ушул убакытта сабактарымдан төрт жүздөн ашык бала өттү: сандардан корккондордон баштап олимпиаданын байге ээлерине чейин.',
     ab_p2: 'Бала сабакка кубануу менен келиши жана натыйжаны өзү да, ата-энеси да көрүшү мен үчүн маанилүү. Ошондуктан ар бир сабакты баланын өзүнө, анын темпине жана мүнөзүнө ылайыктап түзөм.',
-    st1: 'жыл менталдык арифметиканы окутам', st2: 'окуучу билим алды', st3: 'санды окуучулар катары менен эсинен кошушат',
+    st1: 'жыл менталдык арифметиканы окутам', st2: 'окуучу билим алды', st3: 'санды окуучулар катары менен эсинен кошуп, кемитишет',
     cr1: 'Сертификаттуу мугалим', cr2: 'Соробан ыкмасы', cr3: 'Олимпиада байгелүүлөрү',
     w_eyebrow: 'Бул балага эмне үчүн керек', w_h2: 'Тез эсептөө — <em>көрүнгөн бөлүгү</em> гана',
     w_lead: 'Менталдык арифметика бүт окуу таянган нерселерди машыктырат. Ата-энелер алгачкы айларда эле байкаган өзгөрүүлөр.',
@@ -1298,17 +1300,17 @@ html.lang-swap [data-i18n] { opacity: 0; }
     fm1_1: 'Абакус менен таанышуу', fm1_2: 'Баштапкы деңгээлди аныктайм', fm1_3: 'Программа жана жадыбал тууралуу айтып берем',
     fm_btn: 'Жазылуу', fm_btn2: 'Жадыбалды билүү',
     fm2_tag: 'Офлайн, жекеме-жеке', fm2_h: 'Жекече', fm2_s: '1 000 сом', fm2_u: '60 мүнөт үчүн',
-    fm2_1: 'Программа баланын темпине ылайык', fm2_2: 'Тренажёрго жеке кирүү', fm2_3: 'Ата-энелерге ай сайын отчёт',
+    fm2_1: 'Программа баланын темпине ылайык', fm2_2: 'Үйдө машыгуу үчүн тренажёр', fm2_3: 'Ата-энелерге ай сайын отчёт',
     fm3_tag: 'Офлайн, 5 балага чейин', fm3_h: 'Мини-топ', fm3_s: '3 000 сом', fm3_u: 'айына, жумасына 2 жолу 60 мүнөттөн',
-    fm3_1: 'Бирге үйрөнөбүз жана достук мелдешебиз', fm3_2: 'Тренажёрго жеке кирүү', fm3_3: 'Топтор деңгээл жана жаш боюнча',
+    fm3_1: 'Бирге үйрөнөбүз жана достук мелдешебиз', fm3_2: 'Үйдө машыгуу үчүн тренажёр', fm3_3: 'Топтор деңгээл жана жаш боюнча',
     fm_note: 'Үйдө машыгуу үчүн абакусту биринчи сабакта берем.',
     tr_eyebrow: 'Онлайн-тренажёр', tr_h2: 'Күнүнө он мүнөт, <em>жана көндүм бекемделет</em>',
     tr_lead: 'Сабактардын ортосунда окуучулар үйдө машыгат: сандар экранда биринин артынан бири чыгат, акырында жоопту айтуу керек.',
     tf1_h: 'Окуучунун деңгээлине жараша', tf1: 'Разряд, өтүүлөр, сандардын саны жана ылдамдык',
-    tf2_h: 'Прогресс көрүнүп турат', tf2: 'Ким машыкканын жана канча мисал туура чыгарылганын көрөм',
-    tf3_h: 'Үй тапшырмасы', tf3: 'Тапшырмалар түз эле тренажёрго келет',
-    tf4_h: 'Жеке код', tf4: 'Толук версия менин окуучуларыма гана ачык',
-    tr_demo: 'Бул жерде ачык демо-версия бар. Балаңыз менен бирге эсептеп көрүңүз.',
+    tf2_h: 'Текшерүү же жооп', tf2: 'Санды жазса болот же жоопту дароо абакустан көрсө болот',
+    tf3_h: 'Үйдө машыгуу', tf3: 'Телефондо, планшетте жана компьютерде иштейт',
+    tf4_h: 'Ылдамдатуу', tf4: 'Бала даяр болгондо сандар барган сайын тезирээк чыгат',
+    tr_open: 'Толук тренажёрду ачуу', tr_demo: 'Жанында кыска демо-версия. Толук тренажёрдо баарын балага ылайыктап тууралоого болот.',
     app_t: 'Тренажёр', app_demo: 'Демо', chip1: '1 разряд', chip2: '5 сан', chip3: '1 сек',
     demo_p: 'Сандар бирден чыгат. Аларды эсиңизден кошуп, жоопту жазыңыз.',
     demo_start: 'Баштоо', demo_ask: 'Канча болду?', demo_check: 'Текшерүү', demo_again: 'Дагы бир жолу',
@@ -1323,20 +1325,20 @@ html.lang-swap [data-i18n] { opacity: 0; }
     fq2: 'Натыйжа качан көрүнөт?', fa2: 'Алгачкы өзгөрүүлөрдү ата-энелер адатта 1–2 айда байкашат. Эсинен ишенимдүү эсептөө 6–12 ай үзгүлтүксүз сабактан кийин калыптанат.',
     fq3: 'Абакус сатып алуу керекпи?', fa3: 'Жок, үйдө машыгуу үчүн абакусту биринчи сабакта берем.',
     fq4: 'Сабактар кайда өтөт?', fa4: 'Офлайн гана: Чүй облусу, Аламүдүн району, Ленинское айылы. Онлайн сабактар азырынча жок.',
-    fq5: 'Тренажёрго кантип кирсе болот?', fa5: 'Курска жазылгандан кийин жеке код берем. Ал окуу уланып жатканда окуучунун түзмөктөрүндө иштейт.',
+    fq5: 'Тренажёрго кантип кирсе болот?', fa5: 'Тренажёр бөлүмүндөгү «Толук тренажёрду ачуу» баскычын басыңыз. Катталуунун кереги жок.',
     su_eyebrow: 'Жазылуу', su_h2: 'Биринчи сабак <em>белекке</em>',
     su_lead: 'Кырк мүнөт: таанышабыз, абакус менен эсептеп көрөбүз жана бул ыкма балаңызга ылайыктуубу, түшүнөсүз.',
     c_addr: 'Дарек', c_addr_v: 'Чүй облусу, Аламүдүн району, Ленинское айылы', c_time: 'Убакыт', c_time_v: 'Дш–Иш, 10:00–19:00',
     fc_h: 'Сыноо сабагына өтүнмө', fc_p: 'WhatsApp даяр билдирүү менен ачылат, «Жөнөтүү» баскычын басуу гана калат. Бир күндүн ичинде жооп берем.',
     f_name: 'Атыңыз', f_phone: 'WhatsApp', f_age: 'Баланын жашы',
-    age1: '4–5 жаш', age2: '6–7 жаш', age3: '8–10 жаш', age4: '11–14 жаш',
+    age1: '5–7 жаш', age2: '8–10 жаш', age3: '11–13 жаш', age4: '14–15 жаш',
     f_consent: 'Жеке маалыматтарымды иштетүүгө макулмун', f_submit: 'WhatsApp аркылуу жөнөтүү',
     err_phone: 'Сиз менен байланышуу үчүн WhatsApp номериңизди жазыңыз.', err_consent: 'Маалыматтарды иштетүүгө макулдугуңузду белгилеңиз.',
     done_h: 'Рахмат!', done_p: 'WhatsApp чатын ачып, «Жөнөтүү» баскычын басыңыз, ошондо өтүнмө мага келет. Чат ачылбаса, төмөнкү баскычты басыңыз.',
     done_btn: 'WhatsApp ачуу',
     wa_hi: 'Саламатсызбы, Мира! Баламды акысыз сыноо сабагына жазгым келет.', wa_name: 'Атым', wa_phone: 'WhatsApp', wa_age: 'Баланын жашы',
-    ft_p: '5–12 жаштагы балдар үчүн менталдык арифметика. Ленинское айылы, Чүй облусу.',
-    fh1: 'Бөлүмдөр', fh2: 'Окуучуларга', fh3: 'Байланыш', login: 'Тренажёрго кирүү', ft_note: 'Сайттын концепти. Материалдар убактылуу.'
+    ft_p: '5–15 жаштагы балдар үчүн менталдык арифметика. Ленинское айылы, Чүй облусу.',
+    fh1: 'Бөлүмдөр', fh2: 'Окуучуларга', fh3: 'Байланыш', login: 'Тренажёрду ачуу', ft_note: 'Сайттын концепти. Материалдар убактылуу.'
   };
   const RU = { ok: 'Верно!', miss: 'Правильный ответ:', demo_check: 'Проверить', demo_again: 'Ещё раз', err_phone: 'Укажите номер WhatsApp, чтобы я могла с вами связаться.', err_consent: 'Отметьте согласие на обработку данных.', wa_hi: 'Здравствуйте, Мира! Хочу записать ребёнка на бесплатный пробный урок.', wa_name: 'Меня зовут', wa_phone: 'WhatsApp', wa_age: 'Возраст ребёнка' };
   document.querySelectorAll('[data-i18n]').forEach(n => { if (!(n.dataset.i18n in RU)) RU[n.dataset.i18n] = n.innerHTML; });

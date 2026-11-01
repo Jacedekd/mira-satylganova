@@ -1,0 +1,784 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Тренажёр · Мира Сатылгановна</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%230D1311%27/%3E%3Cpath d=%27M16 3v26%27 stroke=%27%23D9A86F%27 stroke-width=%271.5%27/%3E%3Cpath d=%27M6 16l10-6 10 6-10 6z%27 fill=%27%23B4773A%27/%3E%3C/svg%3E">
+<meta name="description" content="Тренажёр ментальной арифметики: разрядность, формулы, количество чисел и скорость. Педагог Мира Сатылгановна.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,200;0,300;0,400;1,200;1,300&family=Geologica:wght@300;400;500&display=swap">
+<style>
+/* Same lacquer-dark stage as the landing: bead sliders on rods, cognac = wooden bead. */
+:root {
+  color-scheme: dark;
+  --night: #0D1311;
+  --night-2: #151D1A;
+  --night-3: #1C2622;
+  --cognac: #B4773A;
+  --cognac-soft: #D9A86F;
+  --on-night: #EDE7DB;
+  --on-night-muted: rgba(237, 231, 219, .62);
+  --line-night: rgba(237, 231, 219, .12);
+  --ok: #9CC49A;
+  --miss: #E0A08C;
+
+  --serif: "Noto Serif Display", "Didot", "Bodoni 72", Georgia, serif;
+  --sans: "Geologica", "Helvetica Neue", Arial, system-ui, sans-serif;
+
+  --gl: max(clamp(16px, 5vw, 64px), env(safe-area-inset-left, 0px));
+  --gr: max(clamp(16px, 5vw, 64px), env(safe-area-inset-right, 0px));
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --ease-expo: cubic-bezier(.16, 1, .3, 1);
+  --radius: 28px;
+  --thumb: 44px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html, body { overflow-x: clip; max-width: 100%; }
+body {
+  margin: 0; min-height: 100dvh; background: var(--night); color: var(--on-night);
+  font: 300 1rem/1.6 var(--sans); letter-spacing: .005em;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+body.running { overflow: hidden; }
+h1, h2, h3, p { margin: 0; overflow-wrap: break-word; }
+h1, h2 { font-family: var(--serif); font-weight: 200; line-height: 1.04; letter-spacing: -.012em; text-wrap: balance; }
+a { color: inherit; }
+button, input { font: inherit; color: inherit; }
+:focus-visible { outline: 1px solid var(--cognac-soft); outline-offset: 4px; border-radius: 4px; }
+.ico { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
+.wrap { max-width: 1180px; margin-inline: auto; padding-left: var(--gl); padding-right: var(--gr); }
+.grain { position: fixed; inset: 0; pointer-events: none; z-index: 90; opacity: .04; background-size: 180px 180px; }
+html.lang-anim [data-i18n] { transition: opacity .28s var(--ease); }
+html.lang-swap [data-i18n] { opacity: 0; }
+
+/* header */
+.head { position: relative; z-index: 2; }
+.head .wrap { min-height: 88px; display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.logo { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; min-width: 0; }
+.logo svg { width: 34px; height: 34px; flex: none; }
+.logo-text { display: grid; gap: 4px; min-width: 0; }
+.logo-name { font: 300 1.32rem/1.1 var(--serif); letter-spacing: .01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.logo-sub { font: 400 .6rem/1 var(--sans); letter-spacing: .3em; text-transform: uppercase; opacity: .6; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+.head-r { display: flex; align-items: center; gap: 18px; flex: none; }
+.back { display: inline-flex; align-items: center; gap: 10px; text-decoration: none; font-size: .9rem; opacity: .72; transition: opacity .3s var(--ease); white-space: nowrap; }
+.back:hover { opacity: 1; }
+.back .ico { width: 20px; height: 20px; }
+.lang { position: relative; display: inline-flex; padding: 3px; border-radius: 999px; border: 1px solid var(--line-night); }
+.lang-thumb { position: absolute; top: 3px; bottom: 3px; left: 3px; width: 42px; border-radius: 999px; background: var(--cognac); transition: transform .6s var(--ease-expo); }
+.lang:has([data-lang="ky"][aria-pressed="true"]) .lang-thumb { transform: translateX(42px); }
+.lang button { position: relative; z-index: 1; width: 42px; border: 0; background: none; cursor: pointer; font: 400 .72rem/1 var(--sans); letter-spacing: .14em; padding: 8px 0; border-radius: 999px; opacity: .6; transition: opacity .4s var(--ease), color .4s var(--ease); }
+.lang button[aria-pressed="true"] { opacity: 1; color: #1A0F06; }
+
+/* intro */
+.settings { position: relative; padding-bottom: clamp(48px, 8vw, 96px); }
+.settings::before { content: ""; position: absolute; inset: -88px 0 auto; height: 620px; pointer-events: none; background: radial-gradient(60% 70% at 85% 0%, rgba(180, 119, 58, .17), transparent 70%); }
+.settings .wrap { position: relative; }
+.intro { display: grid; gap: 16px; padding-block: clamp(20px, 4vw, 48px) clamp(28px, 4vw, 48px); max-width: 720px; }
+.eyebrow { display: inline-flex; align-items: center; gap: 12px; font: 400 .74rem/1.3 var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--cognac-soft); }
+.eyebrow .ico { width: 18px; height: 18px; }
+h1 { font-size: clamp(2.6rem, 1.6rem + 3.6vw, 4.8rem); }
+h1 em { color: var(--cognac-soft); font-style: italic; }
+.lead { color: var(--on-night-muted); font-size: clamp(1.02rem, .98rem + .25vw, 1.16rem); }
+
+/* setting cards */
+.setup { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 16px; }
+.card { min-width: 0; background: var(--night-2); border: 1px solid var(--line-night); border-radius: var(--radius); padding: clamp(20px, 2.6vw, 30px); display: grid; gap: 14px; align-content: start; }
+.card-h { display: flex; align-items: center; gap: 12px; min-width: 0; }
+.card-h .ico { color: var(--cognac-soft); }
+.card-h h2 { font: 400 .74rem/1.3 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--on-night-muted); min-width: 0; }
+.value { font: 200 clamp(1.7rem, 1.4rem + 1vw, 2.3rem)/1.1 var(--serif); font-variant-numeric: lining-nums; }
+
+/* bead slider */
+.rod { position: relative; height: 76px; touch-action: pan-y; cursor: pointer; user-select: none; -webkit-user-select: none; --p: 0; }
+.rod input { position: absolute; inset: 0 0 auto; width: 100%; height: 44px; margin: 0; opacity: 0; pointer-events: none; }
+.rod-line { position: absolute; left: 0; right: 0; top: 20px; height: 3px; border-radius: 3px; background: linear-gradient(180deg, #4A4239, #8D8376 50%, #3A332C); }
+.rod-fill { position: absolute; left: 0; top: 20px; height: 3px; border-radius: 3px; width: calc(var(--thumb) / 2 + var(--p) * (100% - var(--thumb))); background: linear-gradient(90deg, #8E5523, var(--cognac-soft)); transition: width .55s var(--ease-expo); }
+.rod-dot { position: absolute; top: 19px; width: 5px; height: 5px; margin-left: -2.5px; border-radius: 50%; left: calc(var(--thumb) / 2 + var(--at) * (100% - var(--thumb))); background: #8D8376; }
+.rod-bead { position: absolute; top: 8px; width: var(--thumb); height: 27px; left: calc(var(--p) * (100% - var(--thumb))); filter: drop-shadow(0 5px 7px rgba(0, 0, 0, .55)); transition: left .55s var(--ease-expo), transform .3s var(--ease-expo); }
+.rod-bead::before { content: ""; position: absolute; inset: 0; clip-path: polygon(0 50%, 25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%); background: radial-gradient(40% 40% at 38% 26%, rgba(255, 244, 228, .6), transparent 70%), linear-gradient(180deg, #F0C38D, #C4843F 32%, #7A4119 68%, #3B1C09); }
+.rod.drag .rod-bead { transform: scale(1.08); }
+.rod:has(input:focus-visible) .rod-bead { outline: 1px solid var(--cognac-soft); outline-offset: 3px; border-radius: 8px; }
+.rod-labels { position: absolute; left: 0; right: 0; top: 48px; height: 24px; }
+.rod-labels span { position: absolute; left: calc(var(--thumb) / 2 + var(--at) * (100% - var(--thumb))); transform: translateX(-50%); font-size: .78rem; line-height: 24px; color: var(--on-night-muted); white-space: nowrap; transition: color .35s var(--ease); }
+.rod-labels span:first-child { left: 0; transform: none; }
+.rod-labels span:last-child { left: auto; right: 0; transform: none; }
+.rod-labels span.on { color: var(--cognac-soft); }
+
+/* speed */
+.speed { display: flex; align-items: center; justify-content: space-between; gap: 16px; }
+.speed-ctl { display: flex; align-items: center; gap: 10px; flex: none; }
+.round { width: 52px; height: 52px; border-radius: 50%; border: 1px solid var(--line-night); background: var(--night-3); display: grid; place-items: center; cursor: pointer; color: var(--cognac-soft); transition: background-color .3s var(--ease), border-color .3s var(--ease), transform .3s var(--ease-expo), opacity .3s var(--ease); }
+.round:hover { border-color: var(--cognac); }
+.round:active { transform: scale(.92); }
+.round:disabled { opacity: .35; cursor: default; }
+.round .ico { width: 20px; height: 20px; }
+.hint { color: var(--on-night-muted); font-size: .84rem; line-height: 1.45; }
+
+/* switches */
+.switches { grid-column: 1 / -1; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 0; padding-block: 8px; }
+.sw { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 16px; align-items: center; padding: 14px clamp(14px, 2vw, 28px); cursor: pointer; border-left: 1px solid var(--line-night); transition: opacity .4s var(--ease); min-width: 0; }
+.sw:first-child { border-left: 0; }
+.sw input { position: absolute; opacity: 0; width: 1px; height: 1px; }
+.sw b { display: block; font-weight: 400; font-size: .98rem; line-height: 1.35; }
+.sw small { display: block; color: var(--on-night-muted); font-size: .82rem; line-height: 1.4; margin-top: 4px; }
+.sw-rod { position: relative; width: 58px; height: 30px; flex: none; }
+.sw-rod::before { content: ""; position: absolute; left: 0; right: 0; top: 13.5px; height: 3px; border-radius: 3px; background: #4A4239; transition: background-color .4s var(--ease); }
+.sw-rod i { position: absolute; left: 0; top: 3px; width: 38px; height: 24px; filter: drop-shadow(0 4px 5px rgba(0, 0, 0, .5)); transition: transform .5s var(--ease-expo); }
+.sw-rod i::before { content: ""; position: absolute; inset: 0; clip-path: polygon(0 50%, 25% 3%, 75% 3%, 100% 50%, 75% 97%, 25% 97%); background: linear-gradient(180deg, #A28A70, #6B5641 45%, #2E2318); transition: filter .4s var(--ease); }
+.sw input:checked ~ .sw-rod::before { background: var(--cognac); }
+.sw input:checked ~ .sw-rod i { transform: translateX(20px); }
+.sw input:checked ~ .sw-rod i::before { background: radial-gradient(40% 40% at 38% 26%, rgba(255, 244, 228, .6), transparent 70%), linear-gradient(180deg, #F0C38D, #C4843F 32%, #7A4119 68%, #3B1C09); }
+.sw input:focus-visible ~ .sw-rod { outline: 1px solid var(--cognac-soft); outline-offset: 4px; border-radius: 8px; }
+.sw.off { opacity: .42; cursor: default; }
+
+/* start */
+.go { grid-column: 1 / -1; display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 18px 32px; padding-top: 16px; }
+.summary { color: var(--on-night-muted); font-size: .95rem; min-width: 0; flex: 1 1 280px; }
+.btn { display: inline-flex; align-items: center; justify-content: space-between; gap: 18px; min-height: 60px; padding: 0 10px 0 30px; border-radius: 999px; border: 1px solid transparent; cursor: pointer; text-decoration: none; white-space: nowrap; font: 400 .95rem/1 var(--sans); letter-spacing: .02em; background: var(--cognac); color: #1A0F06; transition: background-color .35s var(--ease), border-color .35s var(--ease), color .35s var(--ease), transform .35s var(--ease-expo), opacity .35s var(--ease); }
+.btn:hover { background: var(--cognac-soft); }
+.btn:active { transform: scale(.98); }
+.btn .dot { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: #1A0F06; color: var(--cognac-soft); transition: transform .35s var(--ease); }
+.btn:hover .dot { transform: translateX(3px); }
+.btn .dot .ico { width: 18px; height: 18px; stroke-width: 1.5; }
+.btn-start { min-width: 240px; font-size: 1.05rem; }
+.btn-plain { padding: 0 18px; justify-content: center; white-space: normal; text-align: center; line-height: 1.2; }
+.btn-ghost { background: none; border-color: rgba(237, 231, 219, .28); color: var(--on-night); }
+.btn-ghost:hover { background: rgba(237, 231, 219, .08); border-color: rgba(237, 231, 219, .5); }
+.btn:disabled { opacity: .4; cursor: default; }
+
+/* stage */
+.stage { position: fixed; inset: 0; z-index: 50; overflow-y: auto; overscroll-behavior: contain; background: radial-gradient(70% 60% at 50% 45%, #1A2420, var(--night) 75%); opacity: 0; transform: scale(1.015); transition: opacity .5s var(--ease), transform .7s var(--ease-expo); }
+.stage.show { opacity: 1; transform: none; }
+.stop { position: fixed; z-index: 2; top: max(16px, env(safe-area-inset-top, 0px)); right: var(--gr); width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line-night); background: rgba(13, 19, 17, .6); color: var(--on-night); display: grid; place-items: center; cursor: pointer; transition: border-color .3s var(--ease), transform .3s var(--ease-expo); }
+.stop:hover { border-color: rgba(237, 231, 219, .5); }
+.stop:active { transform: scale(.92); }
+.stop .ico { width: 20px; height: 20px; }
+.run { min-height: 100dvh; display: grid; grid-template-rows: minmax(0, 1fr) auto; padding: 72px var(--gr) max(28px, env(safe-area-inset-bottom, 0px)) var(--gl); }
+.big-wrap { display: grid; place-items: center; min-width: 0; }
+.big { --chars: 1; font: 200 min(calc(88vw / (var(--chars) * .62)), 17rem, 46vh)/1 var(--serif); font-variant-numeric: lining-nums; letter-spacing: -.015em; white-space: nowrap; color: var(--on-night); }
+.big.count { color: var(--cognac-soft); }
+.progress { display: flex; flex-wrap: wrap; justify-content: center; gap: 8px; min-height: 12px; }
+.progress i { width: 18px; height: 11px; background: rgba(237, 231, 219, .16); clip-path: polygon(0 50%, 25% 0, 75% 0, 100% 50%, 75% 100%, 25% 100%); transition: background-color .3s var(--ease); }
+.progress i.on { background: var(--cognac-soft); }
+
+/* answer */
+.answer { min-height: 100dvh; width: 100%; max-width: 620px; margin-inline: auto; display: grid; gap: 18px; align-content: center; padding: 76px var(--gr) max(32px, env(safe-area-inset-bottom, 0px)) var(--gl); }
+.answer h2 { font-size: clamp(2.2rem, 1.6rem + 2.4vw, 3.4rem); }
+.answer h2 em { color: var(--cognac-soft); font-style: italic; }
+.ans-input { width: 100%; height: 92px; padding: 0 24px; border-radius: 22px; border: 1px solid rgba(237, 231, 219, .24); background: var(--night-2); color: var(--on-night); font: 200 clamp(2.4rem, 2rem + 1.6vw, 3.2rem)/1 var(--serif); font-variant-numeric: lining-nums; text-align: center; outline: 0; transition: border-color .35s var(--ease), box-shadow .35s var(--ease); }
+.ans-input:focus { border-color: var(--cognac-soft); box-shadow: 0 0 0 3px rgba(217, 168, 111, .14); }
+.ans-input.good { border-color: var(--ok); }
+.ans-input.bad { border-color: var(--miss); }
+.ans-input::placeholder { color: rgba(237, 231, 219, .24); }
+.ans-btns { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.verdict { min-height: 1.6em; font-size: 1.02rem; transition: color .3s var(--ease); }
+.verdict.good { color: var(--ok); }
+.verdict.bad { color: var(--miss); }
+.reveal-panel { overflow: hidden; }
+.reveal-in { display: grid; gap: 14px; padding: clamp(18px, 3vw, 26px); border-radius: var(--radius); background: var(--night-2); border: 1px solid var(--line-night); }
+.reveal-top { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; }
+.reveal-top small { font: 400 .72rem/1.3 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--on-night-muted); }
+.reveal-top b { font: 200 clamp(2.6rem, 2rem + 2vw, 3.6rem)/1 var(--serif); font-variant-numeric: lining-nums; color: var(--cognac-soft); }
+.chain { color: var(--on-night-muted); font-size: .95rem; line-height: 1.6; overflow-wrap: anywhere; font-variant-numeric: lining-nums; }
+#abacus { display: block; width: 100%; }
+.next { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 12px; }
+.foot-row { display: flex; flex-wrap: wrap; align-items: center; justify-content: space-between; gap: 8px 20px; }
+.score { color: var(--on-night-muted); font-size: .9rem; }
+.linkish { background: none; border: 0; padding: 8px 0; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; font-size: .9rem; opacity: .8; transition: opacity .3s var(--ease); }
+.linkish:hover { opacity: 1; }
+.linkish .ico { width: 18px; height: 18px; }
+
+@media (max-width: 860px) {
+  .setup { grid-template-columns: minmax(0, 1fr); }
+  .switches { grid-template-columns: minmax(0, 1fr); }
+  .sw { border-left: 0; border-top: 1px solid var(--line-night); padding-inline: 20px; }
+  .sw:first-child { border-top: 0; }
+  .btn-start { flex: 1 1 100%; }
+}
+@media (max-width: 480px) {
+  .head .wrap { min-height: 72px; }
+  .logo-name { font-size: .98rem; }
+  .logo-sub { display: none; }
+  .back span { display: none; }
+  .head-r { gap: 12px; }
+  .logo { gap: 8px; }
+  .logo svg { width: 28px; height: 28px; }
+  .answer { align-content: start; }
+}
+@media (max-width: 360px) {
+  .logo svg { display: none; }
+  .logo-name { font-size: .92rem; }
+  .head-r { gap: 8px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after { transition-duration: .01ms !important; animation-duration: .01ms !important; }
+}
+</style>
+</head>
+<body>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h15M13.5 6l6 6-6 6"/></symbol>
+    <symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M19.5 12h-15M10.5 6l-6 6 6 6"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol>
+    <symbol id="i-minus" viewBox="0 0 24 24"><path d="M4 12h16"/></symbol>
+    <symbol id="i-abacus" viewBox="0 0 24 24"><rect x="3" y="3.5" width="18" height="17" rx="1.5"/><path d="M3 9.5h18M8 3.5v17M12 3.5v17M16 3.5v17"/><path d="M6.5 6.5h3M10.5 11.5h3M14.5 6.5h3M6.5 11.5h3M6.5 14h3M14.5 11.5h3" stroke-width="2.2"/></symbol>
+    <symbol id="i-bead" viewBox="0 0 24 24"><path d="M3 12l4-5h10l4 5-4 5H7z"/><path d="M8 10.5h3"/></symbol>
+    <symbol id="i-digits" viewBox="0 0 24 24"><path d="M4 8l2.5-1.5V17M11 9a2.5 2.5 0 0 1 5 0c0 2.5-5 4.5-5 8h5.5"/><path d="M19.5 7v10" stroke-dasharray="1.5 2.5"/></symbol>
+    <symbol id="i-formula" viewBox="0 0 24 24"><path d="M5 19L12 5l7 14"/><path d="M8 13.5h8"/></symbol>
+    <symbol id="i-count" viewBox="0 0 24 24"><path d="M9 6h11M9 12h11M9 18h11"/><path d="M4 6h.01M4 12h.01M4 18h.01" stroke-width="2.4"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.3 2"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.5 4v4h4"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h8.5M17.5 7H20M4 17h2.5M11.5 17H20"/><circle cx="15" cy="7" r="2.3"/><circle cx="9" cy="17" r="2.3"/></symbol>
+  </defs>
+</svg>
+<div class="grain" id="grain" aria-hidden="true"></div>
+
+<header class="head">
+  <div class="wrap">
+    <a class="logo" href="../" aria-label="Мира Сатылгановна">
+      <svg viewBox="0 0 34 34" aria-hidden="true">
+        <defs><linearGradient id="lg-bead" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9B67F"/><stop offset=".45" stop-color="#B4773A"/><stop offset="1" stop-color="#5A2E12"/></linearGradient></defs>
+        <path d="M17 1v32" stroke="currentColor" stroke-opacity=".35" stroke-width="1"/>
+        <path d="M3 17l5-7h18l5 7-5 7H8z" fill="url(#lg-bead)"/>
+        <path d="M10 13.5h6" stroke="#fff" stroke-opacity=".45" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text"><span class="logo-name">Мира Сатылгановна</span><span class="logo-sub" data-i18n="logo_sub">Ментальная арифметика</span></span>
+    </a>
+    <div class="head-r">
+      <a class="back" href="../"><svg class="ico"><use href="#i-arrow-l"/></svg><span data-i18n="back">На главную</span></a>
+      <div class="lang" role="group" aria-label="Язык">
+        <span class="lang-thumb" aria-hidden="true"></span>
+        <button type="button" data-lang="ru" aria-pressed="true">RU</button>
+        <button type="button" data-lang="ky" aria-pressed="false">KG</button>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="settings" id="settings">
+  <div class="wrap">
+    <div class="intro">
+      <span class="eyebrow"><svg class="ico"><use href="#i-bead"/></svg><span data-i18n="eyebrow">Тренажёр · счёт в уме</span></span>
+      <h1 data-i18n="h1">Настройте <em>тренировку</em></h1>
+      <p class="lead" data-i18n="lead">Числа появятся по одному. Считайте в уме, а в конце проверьте себя или посмотрите ответ.</p>
+    </div>
+
+    <form class="setup" id="setup">
+      <section class="card">
+        <div class="card-h"><svg class="ico"><use href="#i-digits"/></svg><h2 data-i18n="digits_t">Разрядность</h2></div>
+        <div class="value" id="digits-v"></div>
+        <div class="rod" data-rod="digits">
+          <input type="range" min="0" max="3" step="1" aria-labelledby="digits-v">
+          <span class="rod-line"></span><span class="rod-fill"></span><span class="rod-bead"></span>
+          <div class="rod-labels"><span>1–9</span><span>10–99</span><span>100–999</span><span>1 000+</span></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-h"><svg class="ico"><use href="#i-formula"/></svg><h2 data-i18n="level_t">Формулы</h2></div>
+        <div class="value" id="level-v"></div>
+        <div class="rod" data-rod="level">
+          <input type="range" min="0" max="2" step="1" aria-labelledby="level-v">
+          <span class="rod-line"></span><span class="rod-fill"></span><span class="rod-bead"></span>
+          <div class="rod-labels"><span data-i18n="lv0_s">Без формул</span><span data-i18n="lv1_s">На 5</span><span data-i18n="lv2_s">На 10</span></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-h"><svg class="ico"><use href="#i-count"/></svg><h2 data-i18n="count_t">Количество чисел</h2></div>
+        <div class="value" id="count-v"></div>
+        <div class="rod" data-rod="count">
+          <input type="range" min="2" max="18" step="1" aria-labelledby="count-v">
+          <span class="rod-line"></span><span class="rod-fill"></span><span class="rod-bead"></span>
+          <div class="rod-labels"></div>
+        </div>
+      </section>
+
+      <section class="card">
+        <div class="card-h"><svg class="ico"><use href="#i-clock"/></svg><h2 data-i18n="speed_t">Скорость</h2></div>
+        <div class="speed">
+          <div>
+            <div class="value" id="speed-v" aria-live="polite"></div>
+            <p class="hint" data-i18n="speed_h">на одно число</p>
+          </div>
+          <div class="speed-ctl">
+            <button class="round" type="button" id="speed-minus" aria-label="−"><svg class="ico"><use href="#i-minus"/></svg></button>
+            <button class="round" type="button" id="speed-plus" aria-label="+"><svg class="ico"><use href="#i-plus"/></svg></button>
+          </div>
+        </div>
+      </section>
+
+      <section class="card switches">
+        <label class="sw" id="sw-alternate"><span><b data-i18n="alt_t">Чередование разрядности</b><small data-i18n="alt_h">Числа разной длины: 137, 52, 8</small></span><input type="checkbox" role="switch" id="alternate"><span class="sw-rod"><i></i></span></label>
+        <label class="sw" id="sw-pair"><span><b data-i18n="pair_t">Парные числа</b><small data-i18n="pair_h">Одинаковые цифры: 33, 777</small></span><input type="checkbox" role="switch" id="pair"><span class="sw-rod"><i></i></span></label>
+        <label class="sw" id="sw-accel"><span><b data-i18n="accel_t">Ускорение</b><small data-i18n="accel_h">Числа идут всё быстрее</small></span><input type="checkbox" role="switch" id="accel"><span class="sw-rod"><i></i></span></label>
+      </section>
+
+      <div class="go">
+        <p class="summary" id="summary" aria-live="polite"></p>
+        <button class="btn btn-start" type="submit"><span data-i18n="start">Старт</span><span class="dot"><svg class="ico"><use href="#i-arrow"/></svg></span></button>
+      </div>
+    </form>
+  </div>
+</main>
+
+<section class="stage" id="stage" hidden aria-label="Тренировка">
+  <button class="stop" type="button" id="stop"><svg class="ico"><use href="#i-close"/></svg></button>
+
+  <div class="run" id="run">
+    <div class="big-wrap"><div class="big" id="big"></div></div>
+    <div class="progress" id="progress" aria-hidden="true"></div>
+  </div>
+
+  <form class="answer" id="answer" hidden novalidate>
+    <h2 data-i18n="ask">Сколько <em>получилось?</em></h2>
+    <input class="ans-input" id="ans" type="text" inputmode="numeric" autocomplete="off" placeholder="0" aria-label="Ваш ответ">
+    <div class="verdict" id="verdict" role="status"></div>
+    <div class="ans-btns">
+      <button class="btn btn-plain" type="submit" id="check" data-i18n="check">Проверить</button>
+      <button class="btn btn-plain btn-ghost" type="button" id="show" data-i18n="show">Показать ответ</button>
+    </div>
+    <div class="reveal-panel" id="reveal" hidden>
+      <div class="reveal-in">
+        <div class="reveal-top"><small data-i18n="answer_l">Ответ</small><b id="reveal-num"></b></div>
+        <p class="chain" id="chain"></p>
+        <canvas id="abacus" aria-hidden="true"></canvas>
+      </div>
+    </div>
+    <div class="next">
+      <button class="btn btn-plain btn-ghost" type="button" id="again"><span data-i18n="again">Повторить</span></button>
+      <button class="btn btn-plain btn-ghost" type="button" id="new"><span data-i18n="new">Новый пример</span></button>
+    </div>
+    <div class="foot-row">
+      <span class="score" id="score"></span>
+      <button class="linkish" type="button" id="to-setup"><svg class="ico"><use href="#i-sliders"/></svg><span data-i18n="to_setup">Настройки</span></button>
+    </div>
+  </form>
+</section>
+
+<script src="engine.js"></script>
+<script>
+(function () {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (document.fonts && document.fonts.load) {
+    ['200 1rem "Noto Serif Display"', '300 1rem "Noto Serif Display"', '300 1rem "Geologica"', '400 1rem "Geologica"']
+      .forEach(f => document.fonts.load(f, 'өүңӨҮҢ').catch(() => {}));
+  }
+
+  /* film grain, generated once */
+  (function () {
+    const c = document.createElement('canvas'); c.width = c.height = 180;
+    const x = c.getContext('2d'), d = x.createImageData(180, 180);
+    for (let i = 0; i < d.data.length; i += 4) { const v = 90 + Math.random() * 90; d.data[i] = d.data[i + 1] = d.data[i + 2] = v; d.data[i + 3] = 255; }
+    x.putImageData(d, 0, 0);
+    $('grain').style.backgroundImage = `url(${c.toDataURL()})`;
+  })();
+
+  /* i18n: Russian is read from the page, Kyrgyz lives here */
+  const KY = {
+    logo_sub: 'Менталдык арифметика', back: 'Башкы бет', eyebrow: 'Тренажёр · эсинен эсептөө',
+    h1: 'Машыгууну <em>тууралаңыз</em>', lead: 'Сандар биринин артынан бири чыгат. Эсиңизден эсептеп, акырында өзүңүздү текшериңиз же жоопту көрүңүз.',
+    digits_t: 'Разряд', level_t: 'Формулалар', count_t: 'Сандардын саны', speed_t: 'Ылдамдык', speed_h: 'бир санга',
+    lv0_s: 'Формуласыз', lv1_s: '5ке', lv2_s: '10го',
+    alt_t: 'Разряддарды алмаштыруу', alt_h: 'Ар кандай узундуктагы сандар: 137, 52, 8',
+    pair_t: 'Жуп сандар', pair_h: 'Бирдей цифралар: 33, 777',
+    accel_t: 'Ылдамдатуу', accel_h: 'Сандар барган сайын тезирээк чыгат',
+    start: 'Баштоо', ask: 'Канча <em>чыкты?</em>', check: 'Текшерүү', show: 'Жоопту көрсөтүү', answer_l: 'Жооп',
+    again: 'Кайталоо', new: 'Жаңы мисал', to_setup: 'Жөндөөлөр', ans_l: 'Сиздин жооп', stop_l: 'Токтотуу',
+    d1: 'Бир орундуу', d2: 'Эки орундуу', d3: 'Үч орундуу', d4: 'Төрт орундуу',
+    l0: 'Формуласыз', l1: 'Бештин жардамы', l2: 'Ондун жардамы',
+    sec: 'сек', num: 'сан', good: 'Туура!', bad: 'Азырынча туура эмес. Дагы аракет кылыңыз же жоопту көрүңүз.', empty: 'Адегенде санды жазыңыз.',
+    score: 'Туура: {a} / {b}'
+  };
+  const RU = {
+    d1: 'Однозначные', d2: 'Двузначные', d3: 'Трёхзначные', d4: 'Четырёхзначные',
+    l0: 'Без формул', l1: 'Помощь пятёрки', l2: 'Помощь десятка',
+    sec: 'сек', good: 'Верно!', bad: 'Пока неверно. Попробуйте ещё раз или посмотрите ответ.', empty: 'Сначала введите число.',
+    score: 'Верно: {a} из {b}', stop_l: 'Остановить', ans_l: 'Ваш ответ'
+  };
+  document.querySelectorAll('[data-i18n]').forEach(n => { if (!(n.dataset.i18n in RU)) RU[n.dataset.i18n] = n.innerHTML; });
+  let lang = 'ru';
+  const T = k => (lang === 'ky' ? KY[k] : undefined) ?? RU[k] ?? '';
+  function numbersWord(n) {
+    if (lang === 'ky') return n + ' ' + KY.num;
+    const a = n % 10, b = n % 100;
+    return n + ' ' + (b >= 11 && b <= 14 ? 'чисел' : a === 1 ? 'число' : a >= 2 && a <= 4 ? 'числа' : 'чисел');
+  }
+  const fmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+  const sgn = (n, i) => i === 0 ? fmt(n) : (n < 0 ? '− ' + fmt(-n) : '+ ' + fmt(n));
+  const secText = s => String(s).replace('.', lang === 'ky' ? '.' : ',') + ' ' + T('sec');
+
+  /* settings */
+  const SPEEDS = [0.2, 0.3, 0.4, 0.5, 0.6, 0.7, 0.8, 0.9, 1, 1.5, 2, 2.5, 3, 4, 5, 6, 7, 8, 9, 10];
+  const S = { digits: 1, level: 0, count: 5, speed: 1, alternate: false, pair: false, accel: false };
+  try {
+    const saved = JSON.parse(localStorage.getItem('mira-trainer') || '{}');
+    if ([1, 2, 3, 4].includes(saved.digits)) S.digits = saved.digits;
+    if ([0, 1, 2].includes(saved.level)) S.level = saved.level;
+    if (saved.count >= 2 && saved.count <= 18) S.count = Math.round(saved.count);
+    if (SPEEDS.includes(saved.speed)) S.speed = saved.speed;
+    ['alternate', 'pair', 'accel'].forEach(k => { S[k] = saved[k] === true; });
+  } catch (e) {}
+  const persist = () => { try { localStorage.setItem('mira-trainer', JSON.stringify(S)); } catch (e) {} };
+
+  /* bead sliders */
+  const rods = {};
+  function makeRod(key, toInput, fromInput) {
+    const rod = document.querySelector(`[data-rod="${key}"]`), input = rod.querySelector('input');
+    const min = +input.min, max = +input.max, labels = rod.querySelector('.rod-labels');
+    if (key === 'count') for (let v = 2; v <= 18; v += 2) { const s = document.createElement('span'); s.textContent = v; s.dataset.v = v; labels.append(s); }
+    const lab = [...labels.children];
+    lab.forEach((s, i) => { const at = s.dataset.v ? (s.dataset.v - min) / (max - min) : i / (lab.length - 1); s.style.setProperty('--at', at); if (!s.dataset.v) s.dataset.v = min + i; });
+    for (let v = min; v <= max; v++) { const d = document.createElement('span'); d.className = 'rod-dot'; d.style.setProperty('--at', (v - min) / (max - min)); rod.insertBefore(d, rod.querySelector('.rod-fill')); }
+    function paint() {
+      const v = +input.value;
+      rod.style.setProperty('--p', (v - min) / (max - min));
+      lab.forEach(s => s.classList.toggle('on', +s.dataset.v === v));
+    }
+    function setValue(v, user) {
+      if (+input.value === v && !user) { paint(); return; }
+      input.value = v; paint();
+      if (user) { S[key] = fromInput(v); persist(); render(); }
+    }
+    input.addEventListener('input', () => setValue(+input.value, true));
+    const fromEvent = e => {
+      const b = rod.getBoundingClientRect(), th = 44;
+      const p = Math.min(1, Math.max(0, (e.clientX - b.left - th / 2) / (b.width - th)));
+      return min + Math.round(p * (max - min));
+    };
+    rod.addEventListener('pointerdown', e => {
+      rod.setPointerCapture(e.pointerId); rod.classList.add('drag');
+      input.focus({ preventScroll: true });
+      const v = fromEvent(e); if (v !== +input.value) setValue(v, true);
+    });
+    rod.addEventListener('pointermove', e => {
+      if (!rod.classList.contains('drag')) return;
+      const v = fromEvent(e); if (v !== +input.value) setValue(v, true);
+    });
+    const end = () => rod.classList.remove('drag');
+    rod.addEventListener('pointerup', end); rod.addEventListener('pointercancel', end);
+    input.value = toInput(S[key]); paint();
+    rods[key] = { paint };
+  }
+  makeRod('digits', v => v - 1, v => v + 1);
+  makeRod('level', v => v, v => v);
+  makeRod('count', v => v, v => v);
+
+  ['alternate', 'pair', 'accel'].forEach(k => {
+    $(k).checked = S[k];
+    $(k).addEventListener('change', () => { S[k] = $(k).checked; persist(); render(); });
+  });
+  $('speed-minus').addEventListener('click', () => stepSpeed(-1));
+  $('speed-plus').addEventListener('click', () => stepSpeed(1));
+  function stepSpeed(dir) {
+    const i = SPEEDS.indexOf(S.speed) + dir;
+    if (i < 0 || i >= SPEEDS.length) return;
+    S.speed = SPEEDS[i]; persist(); render();
+  }
+
+  function render() {
+    $('digits-v').textContent = T('d' + S.digits);
+    $('level-v').textContent = T('l' + S.level);
+    $('count-v').textContent = numbersWord(S.count);
+    $('speed-v').textContent = secText(S.speed);
+    $('speed-minus').disabled = S.speed === SPEEDS[0];
+    $('speed-plus').disabled = S.speed === SPEEDS[SPEEDS.length - 1];
+    const single = S.digits === 1;
+    ['alternate', 'pair'].forEach(k => {
+      $(k).disabled = single;
+      $('sw-' + k).classList.toggle('off', single);
+    });
+    const extras = [];
+    if (!single && S.alternate) extras.push(T('alt_t'));
+    if (!single && S.pair) extras.push(T('pair_t'));
+    if (S.accel) extras.push(T('accel_t'));
+    $('summary').textContent = [T('d' + S.digits), T('l' + S.level), numbersWord(S.count), secText(S.speed), ...extras].join(' · ');
+    $('stop').setAttribute('aria-label', T('stop_l'));
+    $('ans').setAttribute('aria-label', T('ans_l'));
+  }
+
+  /* abacus for the revealed answer */
+  function Soroban(canvas, rodsCount) {
+    const ctx = canvas.getContext('2d');
+    const st = Array.from({ length: rodsCount }, () => ({ five: false, ones: 0, up: 0.12, low: [3.42, 4.42, 5.42, 6.42] }));
+    let G = null, raf = 0, alive = true;
+    const targetUp = s => s.five ? 1.02 : 0.12;
+    const targetLow = (s, i) => i < s.ones ? 2.42 + i : 3.42 + i;
+    function layout() {
+      const W = canvas.clientWidth; if (!W || !alive) return;
+      const f = Math.max(10, W * 0.034), colW = (W - 2 * f) / rodsCount;
+      const bw = Math.min(colW * 0.86, 62), bh = bw * 0.46, ih = bh * 7.62, H = Math.round(ih + 2 * f);
+      canvas.style.height = H + 'px';
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      G = { W, H, f, colW, bw, bh, x0: f, y0: f, iw: W - 2 * f, ih };
+      draw();
+    }
+    function rr(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+    function bead(cx, top, active) {
+      const { bw, bh } = G, x = cx - bw / 2, k = bw * 0.3, e = bw * 0.035;
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,.55)'; ctx.shadowBlur = bh * 0.5; ctx.shadowOffsetY = bh * 0.18;
+      ctx.beginPath();
+      ctx.moveTo(x, top + bh / 2);
+      ctx.lineTo(x + k - e, top + bh * 0.08);
+      ctx.quadraticCurveTo(x + k, top + bh * 0.02, x + k + e * 2, top + bh * 0.02);
+      ctx.lineTo(x + bw - k - e * 2, top + bh * 0.02);
+      ctx.quadraticCurveTo(x + bw - k, top + bh * 0.02, x + bw - k + e, top + bh * 0.08);
+      ctx.lineTo(x + bw, top + bh / 2);
+      ctx.lineTo(x + bw - k + e, top + bh * 0.92);
+      ctx.quadraticCurveTo(x + bw - k, top + bh * 0.98, x + bw - k - e * 2, top + bh * 0.98);
+      ctx.lineTo(x + k + e * 2, top + bh * 0.98);
+      ctx.quadraticCurveTo(x + k, top + bh * 0.98, x + k - e, top + bh * 0.92);
+      ctx.closePath();
+      const gr = ctx.createLinearGradient(0, top, 0, top + bh);
+      if (active) { gr.addColorStop(0, '#F0C38D'); gr.addColorStop(.32, '#C4843F'); gr.addColorStop(.68, '#7A4119'); gr.addColorStop(1, '#3B1C09'); }
+      else { gr.addColorStop(0, '#B98A5E'); gr.addColorStop(.32, '#8A5A31'); gr.addColorStop(.68, '#4E2A12'); gr.addColorStop(1, '#271307'); }
+      ctx.fillStyle = gr; ctx.fill();
+      ctx.restore();
+      ctx.save(); ctx.clip();
+      const hl = ctx.createRadialGradient(cx - bw * 0.12, top + bh * 0.28, 0, cx - bw * 0.12, top + bh * 0.28, bw * 0.38);
+      hl.addColorStop(0, active ? 'rgba(255,244,228,.55)' : 'rgba(255,244,228,.28)'); hl.addColorStop(1, 'rgba(255,244,228,0)');
+      ctx.fillStyle = hl; ctx.fillRect(x, top, bw, bh);
+      ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x + 2, top + bh / 2); ctx.lineTo(x + bw - 2, top + bh / 2); ctx.stroke();
+      ctx.restore();
+    }
+    function draw() {
+      if (!G) return;
+      const { W, H, f, colW, bh, x0, y0, iw, ih } = G;
+      ctx.clearRect(0, 0, W, H);
+      ctx.save();
+      rr(0, 0, W, H, f * 0.7);
+      const fr = ctx.createLinearGradient(0, 0, 0, H);
+      fr.addColorStop(0, '#4A2D18'); fr.addColorStop(.5, '#2E1B0E'); fr.addColorStop(1, '#1B0F07');
+      ctx.fillStyle = fr; ctx.fill();
+      ctx.restore();
+      ctx.save(); rr(0, 0, W, H, f * 0.7); ctx.clip();
+      ctx.globalAlpha = .08; ctx.strokeStyle = '#E9B67F'; ctx.lineWidth = 1;
+      for (let i = 0; i < 9; i++) { const yy = (i + .5) * H / 9; ctx.beginPath(); ctx.moveTo(0, yy); ctx.bezierCurveTo(W * .3, yy - 3, W * .6, yy + 4, W, yy - 1); ctx.stroke(); }
+      ctx.restore();
+      rr(x0, y0, iw, ih, 4);
+      const bed = ctx.createLinearGradient(0, y0, 0, y0 + ih);
+      bed.addColorStop(0, '#0B0806'); bed.addColorStop(1, '#16100B');
+      ctx.fillStyle = bed; ctx.fill();
+      ctx.strokeStyle = 'rgba(255,220,180,.10)'; ctx.lineWidth = 1; ctx.stroke();
+      for (let r = 0; r < rodsCount; r++) {
+        const cx = x0 + colW * (r + .5);
+        const rg = ctx.createLinearGradient(cx - 2, 0, cx + 2, 0);
+        rg.addColorStop(0, '#5E554B'); rg.addColorStop(.5, '#CFC3B2'); rg.addColorStop(1, '#4A4239');
+        ctx.fillStyle = rg; ctx.fillRect(cx - 1.5, y0, 3, ih);
+      }
+      const by = y0 + bh * 2.1, bt = bh * 0.26;
+      const bg = ctx.createLinearGradient(0, by, 0, by + bt);
+      bg.addColorStop(0, '#6A4224'); bg.addColorStop(1, '#2A180B');
+      ctx.fillStyle = bg; ctx.fillRect(x0, by, iw, bt);
+      for (let r = rodsCount - 1; r >= 0; r -= 3) {
+        ctx.fillStyle = '#EDE0C8'; ctx.beginPath(); ctx.arc(x0 + colW * (r + .5), by + bt / 2, Math.max(1.6, bt * .22), 0, Math.PI * 2); ctx.fill();
+      }
+      st.forEach((s, r) => {
+        const cx = x0 + colW * (r + .5);
+        bead(cx, y0 + s.up * bh, s.five);
+        for (let i = 3; i >= 0; i--) bead(cx, y0 + s.low[i] * bh, i < s.ones);
+      });
+    }
+    function tick() {
+      let moving = false;
+      st.forEach(s => {
+        const tu = targetUp(s);
+        s.up += (tu - s.up) * 0.14; if (Math.abs(tu - s.up) > 0.002) moving = true; else s.up = tu;
+        s.low = s.low.map((v, i) => { const t = targetLow(s, i); const n = v + (t - v) * 0.14; if (Math.abs(t - n) > 0.002) { moving = true; return n; } return t; });
+      });
+      draw();
+      raf = moving && alive ? requestAnimationFrame(tick) : 0;
+    }
+    function set(n) {
+      const d = String(Math.max(0, n)).padStart(rodsCount, '0').slice(-rodsCount);
+      st.forEach((s, i) => { const v = +d[i]; s.five = v >= 5; s.ones = v % 5; });
+      if (reduce) { st.forEach(s => { s.up = targetUp(s); s.low = s.low.map((_, i) => targetLow(s, i)); }); draw(); return; }
+      if (!raf) raf = requestAnimationFrame(tick);
+    }
+    const ro = 'ResizeObserver' in window ? new ResizeObserver(layout) : null;
+    if (ro) ro.observe(canvas);
+    layout();
+    return { set, destroy() { alive = false; if (ro) ro.disconnect(); if (raf) cancelAnimationFrame(raf); } };
+  }
+
+  /* run */
+  let ex = null, token = 0, counted = false, revealed = false, solved = false, abacus = null;
+  const stats = { right: 0, total: 0 };
+  const wait = ms => new Promise(r => setTimeout(r, ms));
+  const big = $('big'), stage = $('stage');
+
+  function showBig(text, cls) {
+    big.className = 'big' + (cls ? ' ' + cls : '');
+    big.textContent = text;
+    big.style.setProperty('--chars', Math.max(2, text.length));
+  }
+  function pop(el, ms) {
+    if (!reduce && el.animate) el.animate([{ opacity: 0, transform: 'translateY(14px) scale(.96)' }, { opacity: 1, transform: 'none' }], { duration: ms, easing: 'cubic-bezier(.16,1,.3,1)' });
+  }
+  function openStage() {
+    stage.hidden = false; document.body.classList.add('running');
+    stage.scrollTop = 0;
+    void stage.offsetWidth;
+    stage.classList.add('show');
+  }
+  function closeStage() {
+    token++;
+    stage.classList.remove('show');
+    document.body.classList.remove('running');
+    setTimeout(() => { if (!stage.classList.contains('show')) stage.hidden = true; }, 520);
+  }
+
+  async function play(example) {
+    const my = ++token, terms = example.terms;
+    $('answer').hidden = true; $('run').hidden = false; showBig('');
+    const prog = $('progress'); prog.textContent = '';
+    terms.forEach(() => prog.append(document.createElement('i')));
+    stage.scrollTop = 0;
+    await wait(reduce ? 100 : 420); if (my !== token) return;
+    for (const n of [3, 2, 1]) {
+      showBig(String(n), 'count'); pop(big, 560);
+      await wait(850); if (my !== token) return;
+    }
+    showBig(''); await wait(320); if (my !== token) return;
+    const floor = Math.min(S.speed, Math.max(S.speed * .5, .2));
+    for (let i = 0; i < terms.length; i++) {
+      const dur = Math.max(floor, S.accel ? S.speed * Math.pow(.94, i) : S.speed) * 1000;
+      const gap = Math.min(160, dur * .2);
+      showBig(sgn(terms[i], i));
+      if (dur >= 500) pop(big, Math.min(320, dur * .4));
+      prog.children[i].classList.add('on');
+      await wait(dur - gap); if (my !== token) return;
+      showBig('');
+      await wait(gap); if (my !== token) return;
+    }
+    showAnswer();
+  }
+
+  function showAnswer() {
+    $('run').hidden = true;
+    const a = $('answer'); a.hidden = false;
+    $('ans').value = ''; $('ans').readOnly = false; $('ans').className = 'ans-input';
+    setVerdict('', '');
+    $('check').disabled = false; $('show').disabled = false;
+    revealed = false; solved = false;
+    primeNext(false);
+    closeReveal();
+    renderScore();
+    stage.scrollTop = 0;
+    pop(a, 620);
+    if (matchMedia('(hover: hover)').matches) $('ans').focus({ preventScroll: true });
+  }
+  function setVerdict(text, cls) {
+    const v = $('verdict');
+    v.textContent = text; v.className = 'verdict' + (cls ? ' ' + cls : '');
+    if (text && !reduce) v.animate([{ opacity: 0, transform: 'translateY(-4px)' }, { opacity: 1, transform: 'none' }], { duration: 360, easing: 'ease-out' });
+  }
+  function renderScore() {
+    $('score').textContent = stats.total ? T('score').replace('{a}', stats.right).replace('{b}', stats.total) : '';
+  }
+  function count(right) {
+    if (counted) return;
+    counted = true; stats.total++; if (right) stats.right++;
+    renderScore();
+  }
+  // once the example is settled, the next one becomes the main action
+  function primeNext(on = true) { $('new').classList.toggle('btn-ghost', !on); }
+  function closeReveal() {
+    $('reveal').hidden = true;
+    if (abacus) { abacus.destroy(); abacus = null; }
+  }
+  function doReveal() {
+    if (revealed) return;
+    revealed = true; count(solved);
+    if (!solved) setVerdict('', '');
+    primeNext();
+    $('reveal-num').textContent = fmt(ex.answer);
+    $('chain').textContent = ex.terms.map(sgn).join(' ') + ' = ' + fmt(ex.answer);
+    const panel = $('reveal'); panel.hidden = false;
+    abacus = Soroban($('abacus'), Math.max(String(ex.answer).length + 1, 4));
+    if (!reduce) {
+      const h = panel.offsetHeight;
+      panel.animate([{ height: 0, opacity: 0 }, { height: h + 'px', opacity: 1 }], { duration: 620, easing: 'cubic-bezier(.16,1,.3,1)' });
+    }
+    setTimeout(() => abacus && abacus.set(ex.answer), reduce ? 0 : 260);
+    $('show').disabled = true; $('check').disabled = true; $('ans').readOnly = true;
+    setTimeout(() => panel.scrollIntoView({ block: 'nearest', behavior: reduce ? 'auto' : 'smooth' }), 80);
+  }
+
+  function startNew() {
+    ex = TrainerEngine.generate({ digits: S.digits, level: S.level, count: S.count, alternate: S.alternate, pair: S.pair });
+    counted = false;
+    play(ex);
+  }
+
+  $('setup').addEventListener('submit', e => { e.preventDefault(); openStage(); startNew(); });
+  $('new').addEventListener('click', startNew);
+  $('again').addEventListener('click', () => play(ex));
+  $('to-setup').addEventListener('click', closeStage);
+  $('stop').addEventListener('click', closeStage);
+  $('show').addEventListener('click', doReveal);
+  $('ans').addEventListener('input', () => {
+    const el = $('ans'), clean = el.value.replace(/\D/g, '');
+    if (el.value !== clean) el.value = clean;
+    el.classList.remove('bad');
+  });
+  $('answer').addEventListener('submit', e => {
+    e.preventDefault();
+    if (revealed || solved) return;
+    const el = $('ans');
+    if (!el.value) { setVerdict(T('empty'), 'bad'); el.focus(); return; }
+    if (+el.value === ex.answer) {
+      solved = true; count(true);
+      el.classList.remove('bad'); el.classList.add('good'); el.readOnly = true;
+      setVerdict(T('good'), 'good');
+      $('check').disabled = true;
+      primeNext();
+    } else {
+      count(false);
+      el.classList.add('bad');
+      setVerdict(T('bad'), 'bad');
+      if (matchMedia('(hover: hover)').matches) { el.focus(); el.select(); }
+    }
+  });
+  addEventListener('keydown', e => { if (e.key === 'Escape' && !stage.hidden) closeStage(); });
+  // a flash run can't survive a hidden tab: timers stall and numbers get skipped
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden && !stage.hidden && !$('run').hidden) closeStage();
+  });
+
+  /* language */
+  function setLang(l) {
+    lang = l === 'ky' ? 'ky' : 'ru';
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(n => { n.innerHTML = T(n.dataset.i18n); });
+    document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    render();
+    try { localStorage.setItem('mira-lang', lang); } catch (e) {}
+  }
+  function switchLang(l) {
+    if (reduce) { setLang(l); return; }
+    const root = document.documentElement;
+    root.classList.add('lang-anim', 'lang-swap');
+    setTimeout(() => {
+      setLang(l);
+      requestAnimationFrame(() => { root.classList.remove('lang-swap'); setTimeout(() => root.classList.remove('lang-anim'), 320); });
+    }, 280);
+  }
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => switchLang(b.dataset.lang)));
+  let savedLang = null; try { savedLang = localStorage.getItem('mira-lang'); } catch (e) {}
+  if (savedLang === 'ky') setLang('ky'); else render();
+})();
+</script>
+</body>
+</html>
