@@ -1,0 +1,1383 @@
+<!doctype html>
+<html lang="ru">
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Мира Сатылганова · Ментальная арифметика</title>
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 32 32%27%3E%3Crect width=%2732%27 height=%2732%27 rx=%277%27 fill=%27%230D1311%27/%3E%3Cpath d=%27M16 3v26%27 stroke=%27%23D9A86F%27 stroke-width=%271.5%27/%3E%3Cpath d=%27M6 16l10-6 10 6-10 6z%27 fill=%27%23B4773A%27/%3E%3C/svg%3E">
+<meta name="description" content="Ментальная арифметика в Бишкеке. Педагог Мира Сатылганова: занятия для детей 5–12 лет, пробный урок, онлайн-тренажёр для учеников.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Noto+Serif+Display:ital,wght@0,200;0,300;0,400;1,200;1,300&family=Geologica:wght@300;400;500&family=Marck+Script&display=swap">
+<style>
+/* Layout: lacquer-dark stage for the abacus, rice-paper reading sections; cognac = the colour of a wooden bead. One deliberate look. */
+:root {
+  color-scheme: light;
+  --night: #0D1311;
+  --night-2: #151D1A;
+  --night-3: #1C2622;
+  --paper: #F2EFE8;
+  --paper-2: #E8E3D8;
+  --card: #FAF8F3;
+  --ink: #131715;
+  --muted: #676C66;
+  --line: rgba(19, 23, 21, .12);
+  --cognac: #B4773A;
+  --cognac-deep: #8E5523;
+  --cognac-soft: #D9A86F;
+  --on-night: #EDE7DB;
+  --on-night-muted: rgba(237, 231, 219, .62);
+  --line-night: rgba(237, 231, 219, .12);
+  --danger: #A23C2A;
+
+  --serif: "Noto Serif Display", "Didot", "Bodoni 72", Georgia, serif;
+  --sans: "Geologica", "Helvetica Neue", Arial, system-ui, sans-serif;
+  --script: "Marck Script", "Snell Roundhand", cursive;
+
+  --fs-hero: clamp(2.6rem, 1.4rem + 5.2vw, 6.4rem);
+  --fs-h2: clamp(2.3rem, 1.5rem + 3vw, 4.4rem);
+  --fs-h3: clamp(1.35rem, 1.15rem + .7vw, 1.75rem);
+  --fs-lead: clamp(1.05rem, .98rem + .3vw, 1.22rem);
+
+  --max: 1320px;
+  --gl: max(clamp(16px, 5vw, 64px), env(safe-area-inset-left, 0px));
+  --gr: max(clamp(16px, 5vw, 64px), env(safe-area-inset-right, 0px));
+  --sec: clamp(96px, 12vw, 176px);
+  --ease: cubic-bezier(.22, .61, .36, 1);
+  --ease-expo: cubic-bezier(.16, 1, .3, 1);
+  --ease-io: cubic-bezier(.65, 0, .35, 1);
+  --radius: 28px;
+}
+*, *::before, *::after { box-sizing: border-box; }
+[hidden] { display: none !important; }
+html { scroll-padding-top: 90px; }
+/* layout guards: nothing may widen the page; grid/flex children can always shrink */
+html, body { overflow-x: clip; max-width: 100%; }
+.wrap > *, [class*="grid"] > *, .hero-copy > *, .about-copy > *, .signup-copy > *, .trainer-copy > *, .rev-side > *, .faq-side > *, .sec-head > *, .sec-head .t > * { min-width: 0; }
+h1, h2, h3, p, blockquote, span, b, a { overflow-wrap: break-word; }
+body {
+  margin: 0; background: var(--paper); color: var(--ink);
+  font: 300 1rem/1.7 var(--sans); letter-spacing: .005em;
+  -webkit-font-smoothing: antialiased; text-rendering: optimizeLegibility;
+}
+body::before { content: ""; position: fixed; inset: 0 0 auto; height: env(safe-area-inset-top, 0px); z-index: 80; background: var(--night); }
+.grain { position: fixed; inset: 0; pointer-events: none; z-index: 90; opacity: .035; mix-blend-mode: multiply; background-size: 180px 180px; }
+h1, h2, h3, h4, p, figure, blockquote, ol, ul, dl, dd { margin: 0; }
+h1, h2, h3 { font-family: var(--serif); font-weight: 200; line-height: 1.04; letter-spacing: -.012em; text-wrap: balance; }
+h3 { font-weight: 300; }
+em { font-style: italic; }
+a { color: inherit; }
+img { display: block; max-width: 100%; height: auto; }
+:focus-visible { outline: 1px solid var(--cognac); outline-offset: 4px; border-radius: 4px; }
+.ico { width: 24px; height: 24px; flex: none; fill: none; stroke: currentColor; stroke-width: 1.3; stroke-linecap: round; stroke-linejoin: round; }
+
+.wrap { max-width: var(--max); margin-inline: auto; padding-left: var(--gl); padding-right: var(--gr); }
+.dark { background: var(--night); color: var(--on-night); }
+.eyebrow { display: inline-flex; align-items: center; gap: 12px; font: 400 .74rem/1.2 var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--cognac-deep); }
+.dark .eyebrow { color: var(--cognac-soft); }
+.eyebrow::before { content: ""; width: 16px; height: 9px; background: currentColor; clip-path: polygon(0 50%, 24% 0, 76% 0, 100% 50%, 76% 100%, 24% 100%); }
+.lead { font-size: var(--fs-lead); line-height: 1.7; color: var(--muted); max-width: 34em; }
+.dark .lead { color: var(--on-night-muted); }
+
+.btn {
+  display: inline-flex; align-items: center; gap: 18px; min-height: 60px; padding: 0 10px 0 30px;
+  border-radius: 999px; border: 1px solid transparent; cursor: pointer; text-decoration: none; white-space: nowrap;
+  font: 400 .95rem/1 var(--sans); letter-spacing: .02em;
+  background: var(--cognac); color: #1A0F06;
+  transition: background-color .35s var(--ease), color .35s var(--ease), border-color .35s var(--ease), transform .35s var(--ease-expo);
+}
+.btn:active { transform: scale(.98); }
+.btn .dot { width: 42px; height: 42px; border-radius: 50%; display: grid; place-items: center; background: #1A0F06; color: var(--cognac-soft); transition: transform .35s var(--ease); }
+.btn .dot .ico { width: 18px; height: 18px; stroke-width: 1.5; }
+.btn:hover { background: var(--cognac-soft); }
+.btn:hover .dot { transform: translateX(3px); }
+.btn-ink { background: var(--ink); color: var(--paper); }
+.btn-ink .dot { background: var(--cognac); color: #1A0F06; }
+.btn-ink:hover { background: #000; }
+.btn-ghost { background: transparent; border-color: var(--line-night); color: var(--on-night); padding: 0 28px; }
+.btn-ghost:hover { background: transparent; border-color: var(--on-night); }
+.text-link { display: inline-flex; align-items: center; gap: 12px; text-decoration: none; font: 400 .95rem/1 var(--sans); padding-block: 10px; }
+.text-link .ico { width: 20px; height: 20px; transition: transform .35s var(--ease); }
+.text-link:hover .ico { transform: translateX(4px); }
+.text-link span { border-bottom: 1px solid currentColor; padding-bottom: 4px; border-color: color-mix(in srgb, currentColor 30%, transparent); }
+
+/* reveal: elements are visible at rest; JS only adds a soft lift */
+.js .reveal { transform: translateY(26px); transition: transform 1.1s var(--ease); }
+.js .reveal.in { transform: none; }
+@media (prefers-reduced-motion: reduce) { .js .reveal { transform: none; transition: none; } }
+
+/* ═════════ top note + header ═════════ */
+.note { background: var(--night); color: var(--on-night-muted); font: 300 .74rem/1.4 var(--sans); letter-spacing: .06em; text-align: center; border-bottom: 1px solid var(--line-night); }
+.note .wrap { padding-block: 9px; }
+.note b { color: var(--cognac-soft); font-weight: 400; }
+.head {
+  position: sticky; top: env(safe-area-inset-top, 0px); z-index: 60;
+  background: var(--night); color: var(--on-night);
+  transition: background-color .45s var(--ease), color .45s var(--ease), box-shadow .45s var(--ease);
+}
+.head.solid { background: rgba(242, 239, 232, .9); color: var(--ink); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); box-shadow: 0 1px 0 var(--line); }
+.head .wrap { height: 88px; display: grid; grid-template-columns: auto minmax(0, 1fr) auto; gap: 36px; align-items: center; }
+.logo { display: inline-flex; align-items: center; gap: 14px; text-decoration: none; white-space: nowrap; min-width: 0; }
+.logo-text { min-width: 0; }
+.logo svg { width: 34px; height: 34px; flex: none; }
+.logo-text { display: grid; gap: 4px; }
+.logo-name { font: 300 1.32rem/1.1 var(--serif); letter-spacing: .01em; overflow: hidden; text-overflow: ellipsis; display: block; }
+.logo-sub { font: 400 .6rem/1 var(--sans); letter-spacing: .3em; text-transform: uppercase; opacity: .6; }
+.nav { display: flex; justify-content: center; gap: clamp(18px, 2.2vw, 38px); }
+.nav a { text-decoration: none; font: 300 .9rem/1 var(--sans); white-space: nowrap; opacity: .72; padding-block: 10px; position: relative; transition: opacity .3s var(--ease); }
+.nav a::after { content: ""; position: absolute; left: 50%; bottom: 0; width: 7px; height: 4px; margin-left: -3.5px; background: var(--cognac); clip-path: polygon(0 50%, 24% 0, 76% 0, 100% 50%, 76% 100%, 24% 100%); transform: scale(0); transition: transform .3s var(--ease); }
+.nav a:hover { opacity: 1; }
+.nav a:hover::after { transform: scale(1); }
+.head-r { display: flex; align-items: center; gap: 20px; }
+.lang { position: relative; display: inline-flex; border: 1px solid currentColor; border-color: color-mix(in srgb, currentColor 22%, transparent); border-radius: 999px; padding: 3px; }
+.lang-thumb { position: absolute; top: 3px; bottom: 3px; left: 3px; width: 42px; border-radius: 999px; background: var(--cognac); transition: transform .6s var(--ease-expo); }
+.lang:has([data-lang="ky"][aria-pressed="true"]) .lang-thumb { transform: translateX(42px); }
+.lang button { position: relative; z-index: 1; width: 42px; border: 0; background: none; color: inherit; cursor: pointer; font: 400 .72rem/1 var(--sans); letter-spacing: .14em; padding: 8px 0; border-radius: 999px; opacity: .6; transition: opacity .4s var(--ease), color .4s var(--ease); }
+.lang button[aria-pressed="true"] { opacity: 1; color: #1A0F06; }
+.head .btn { min-height: 46px; padding: 0 22px; font-size: .86rem; }
+.burger { display: none; width: 46px; height: 46px; border-radius: 50%; border: 1px solid currentColor; border-color: color-mix(in srgb, currentColor 22%, transparent); background: none; color: inherit; cursor: pointer; place-items: center; transition: border-color .4s var(--ease), transform .35s var(--ease-expo); }
+.burger:active { transform: scale(.94); }
+.bars { position: relative; display: block; width: 18px; height: 10px; }
+.bars i { position: absolute; left: 0; right: 0; height: 1.5px; border-radius: 2px; background: currentColor; transition: top .5s var(--ease-io), transform .5s var(--ease-io); }
+.bars i:first-child { top: 0; }
+.bars i:last-child { top: 8.5px; }
+.menu-open .bars i:first-child { top: 4.25px; transform: rotate(45deg); }
+.menu-open .bars i:last-child { top: 4.25px; transform: rotate(-45deg); }
+body.menu-open .head { background: var(--night); color: var(--on-night); box-shadow: none; -webkit-backdrop-filter: none; backdrop-filter: none; }
+@media (max-width: 1240px) { .nav { display: none; } .head .wrap { grid-template-columns: minmax(0, 1fr) auto; } .burger { display: grid; } }
+@media (max-width: 640px) { .head .wrap { height: 68px; gap: 12px; } .head .btn { display: none; } .logo-sub { display: none; } .logo-name { font-size: 1.2rem; } .logo svg { width: 28px; height: 28px; } .head-r { gap: 10px; } }
+@media (max-width: 480px) { .head .lang { display: none; } }
+
+.drawer {
+  position: fixed; inset: 0; z-index: 55; background: var(--night); color: var(--on-night);
+  padding: calc(var(--head-bottom, 72px) + 12px) var(--gr) calc(env(safe-area-inset-bottom, 0px) + 28px) var(--gl);
+  display: grid; grid-template-rows: 1fr auto; gap: 20px; overflow-y: auto; overscroll-behavior: contain;
+  clip-path: inset(0 0 100% 0); visibility: hidden;
+  transition: clip-path .75s var(--ease-io), visibility 0s linear .75s;
+}
+.drawer.open { clip-path: inset(0 0 0 0); visibility: visible; transition: clip-path .85s var(--ease-expo), visibility 0s; }
+.drawer nav { display: grid; align-content: center; gap: 4px; }
+.drawer nav a { font: 200 clamp(2.2rem, 9vw, 3.4rem)/1.2 var(--serif); text-decoration: none; display: block; }
+.drawer nav a, .drawer-foot { opacity: 0; transform: translateY(26px); transition: opacity .35s var(--ease), transform .5s var(--ease); }
+.drawer.open nav a, .drawer.open .drawer-foot { opacity: 1; transform: none; transition: opacity .6s var(--ease) calc(.18s + var(--i, 0) * .055s), transform .9s var(--ease-expo) calc(.18s + var(--i, 0) * .055s); }
+.drawer-foot { --i: 7; display: grid; gap: 16px; }
+.drawer-foot .lang { justify-self: start; }
+.drawer .btn { justify-content: space-between; }
+
+/* ═════════ hero ═════════ */
+.hero { position: relative; overflow: hidden; }
+.hero::before { content: ""; position: absolute; inset: 0; background: radial-gradient(60% 70% at 78% 46%, rgba(180, 119, 58, .16), transparent 70%), radial-gradient(40% 50% at 10% 100%, rgba(237, 231, 219, .05), transparent 70%); pointer-events: none; }
+.hero > .wrap { position: relative; display: grid; grid-template-columns: minmax(0, 1.05fr) minmax(0, .95fr); gap: clamp(32px, 5vw, 88px); align-items: center; padding-block: clamp(48px, 6vw, 96px) clamp(40px, 5vw, 72px); }
+.hero-copy { display: grid; gap: 34px; }
+.hero h1 { font-size: var(--fs-hero); line-height: .98; }
+.hero h1 em { color: var(--cognac-soft); font-weight: 200; }
+.hero-cta { display: flex; flex-wrap: wrap; gap: 14px 28px; align-items: center; }
+.hero-stage { position: relative; display: grid; gap: 22px; justify-items: center; }
+.flash { display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between; width: 100%; gap: 8px 16px; }
+.flash-term { font: 200 clamp(3rem, 2rem + 3.4vw, 5.2rem)/1 var(--serif); font-variant-numeric: lining-nums tabular-nums; color: var(--on-night); min-height: 1em; letter-spacing: -.02em; transition: color .4s var(--ease); }
+.flash-term.total { color: var(--cognac-soft); }
+.flash-meta { text-align: right; font: 300 .82rem/1.5 var(--sans); color: var(--on-night-muted); }
+.flash-meta b { display: block; font: 400 .7rem/1 var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--cognac-soft); margin-bottom: 6px; }
+.soroban { width: 100%; display: block; touch-action: manipulation; }
+.soroban.interactive { cursor: pointer; }
+.hero-seq { width: 100%; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 4px 16px; font: 300 .86rem/1.4 var(--sans); color: var(--on-night-muted); font-variant-numeric: tabular-nums; }
+.hero-seq span:last-child { text-align: right; }
+.hero-feats { position: relative; border-top: 1px solid var(--line-night); }
+.hero-feats .wrap { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 24px; padding-block: 28px; }
+.feat { display: flex; gap: 16px; align-items: center; color: var(--on-night-muted); font-size: .95rem; }
+.feat .ico { color: var(--cognac-soft); width: 26px; height: 26px; }
+@media (max-width: 1000px) {
+  .hero > .wrap { grid-template-columns: minmax(0, 1fr); }
+  .hero-stage { max-width: 620px; margin-inline: auto; width: 100%; }
+}
+@media (max-width: 640px) {
+  .hero-feats .wrap { grid-template-columns: minmax(0, 1fr); gap: 14px; }
+  .hero-cta .btn { width: 100%; justify-content: space-between; }
+  .btn { white-space: normal; text-align: left; line-height: 1.3; padding-block: 8px; padding-left: 24px; }
+}
+
+/* ═════════ about ═════════ */
+.about { padding-block: var(--sec); }
+.about .wrap { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(48px, 7vw, 128px); align-items: center; }
+.portrait { position: relative; padding: 0 0 28px 28px; }
+.portrait::before { content: ""; position: absolute; left: 0; bottom: 0; width: calc(100% - 28px); height: calc(100% - 28px); border: 1px solid var(--cognac); border-radius: 240px 240px 6px 6px; }
+.portrait img { position: relative; width: 100%; aspect-ratio: 4 / 5; object-fit: cover; object-position: 50% 28%; border-radius: 240px 240px 6px 6px; filter: saturate(.8) contrast(1.03); }
+.portrait-tag { position: absolute; right: -12px; top: 18%; writing-mode: vertical-rl; transform: rotate(180deg); font: 400 .68rem/1 var(--sans); letter-spacing: .32em; text-transform: uppercase; color: var(--muted); }
+.about-copy { display: grid; gap: 28px; }
+.about-copy h2 { font-size: var(--fs-h2); }
+.about-copy p { color: var(--muted); max-width: 34em; }
+.signature { font: 400 clamp(2rem, 1.6rem + 1.2vw, 2.8rem)/1 var(--script); color: var(--cognac-deep); transform: rotate(-3deg); transform-origin: left; margin-top: -4px; }
+.stats { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); border-top: 1px solid var(--line); padding-top: 28px; gap: 20px; }
+.stat { display: grid; gap: 8px; }
+.stat b { font: 200 clamp(2.4rem, 1.8rem + 1.6vw, 3.4rem)/1 var(--serif); font-variant-numeric: lining-nums; }
+.stat span { font-size: .86rem; line-height: 1.45; color: var(--muted); }
+.creds { display: flex; flex-wrap: wrap; gap: 10px; }
+.cred { display: inline-flex; align-items: center; gap: 10px; padding: 10px 16px 10px 12px; border: 1px solid var(--line); border-radius: 999px; font-size: .86rem; color: var(--ink); background: var(--card); }
+.cred .ico { width: 20px; height: 20px; color: var(--cognac-deep); }
+@media (max-width: 900px) {
+  .about .wrap { grid-template-columns: minmax(0, 1fr); }
+  .portrait { max-width: 420px; width: 100%; margin-inline: auto; }
+}
+@media (max-width: 480px) { .stats { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .stat:nth-child(3) { grid-column: 1 / -1; } .portrait-tag { display: none; } .portrait { padding: 0 0 16px 16px; } .portrait::before { width: calc(100% - 16px); height: calc(100% - 16px); } }
+
+/* ═════════ why ═════════ */
+.why { background: var(--paper-2); padding-block: var(--sec); }
+.sec-head { display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: 32px 64px; align-items: end; margin-bottom: clamp(56px, 7vw, 96px); }
+.sec-head .t { display: grid; gap: 24px; }
+.sec-head h2 { font-size: var(--fs-h2); }
+.why-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; }
+.why-card { background: var(--card); border-radius: var(--radius); padding: clamp(28px, 3vw, 40px); display: grid; gap: 18px; align-content: start; transition: transform .5s var(--ease), box-shadow .5s var(--ease); }
+.why-card:hover { transform: translateY(-4px); box-shadow: 0 30px 60px -40px rgba(19, 23, 21, .35); }
+.badge { width: 60px; height: 60px; border-radius: 50%; display: grid; place-items: center; color: var(--cognac-deep); background: radial-gradient(circle at 30% 25%, #fff, #EFE6D8 70%); box-shadow: inset 0 0 0 1px rgba(180, 119, 58, .28); }
+.badge .ico { width: 28px; height: 28px; }
+.why-card h3 { font-size: var(--fs-h3); }
+.why-card p { color: var(--muted); font-size: .95rem; }
+@media (max-width: 960px) { .sec-head { grid-template-columns: minmax(0, 1fr); } .why-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 600px) {
+  .why-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
+  .why-card { grid-template-columns: 52px minmax(0, 1fr); column-gap: 16px; row-gap: 4px; padding: 22px 20px; border-radius: 22px; }
+  .why-card .badge { width: 52px; height: 52px; grid-row: span 2; }
+  .why-card .badge .ico { width: 24px; height: 24px; }
+  .why-card h3 { align-self: end; }
+}
+
+/* ═════════ method ═════════ */
+.method { padding-block: var(--sec); }
+.method-grid { display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(40px, 6vw, 112px); align-items: center; }
+.steps { list-style: none; padding: 0; display: grid; gap: 0; margin-top: 12px; }
+.steps li { display: grid; grid-template-columns: 56px minmax(0, 1fr); gap: 22px; padding-block: 26px; border-top: 1px solid var(--line); }
+.steps li:last-child { border-bottom: 1px solid var(--line); }
+.step-ico { width: 56px; height: 56px; border-radius: 50%; border: 1px solid rgba(180, 119, 58, .4); display: grid; place-items: center; color: var(--cognac-deep); position: relative; }
+.step-ico .ico { width: 26px; height: 26px; }
+.step-ico small { position: absolute; top: -4px; right: -6px; font: 300 .9rem/1 var(--serif); color: var(--muted); }
+.steps h3 { font-size: var(--fs-h3); margin-bottom: 8px; }
+.steps p { color: var(--muted); }
+.try { position: relative; border-radius: 36px; background: var(--night); color: var(--on-night); padding: clamp(24px, 3.4vw, 48px); display: grid; gap: 24px; overflow: hidden; }
+.try::before { content: ""; position: absolute; inset: 0; background: radial-gradient(70% 60% at 50% 0%, rgba(180, 119, 58, .18), transparent 70%); pointer-events: none; }
+.try-top { position: relative; display: flex; justify-content: space-between; align-items: flex-end; gap: 20px; flex-wrap: wrap; }
+.try-top p { color: var(--on-night-muted); font-size: .92rem; max-width: 22em; }
+.try-num { font: 200 clamp(3.2rem, 2.4rem + 3vw, 5rem)/1 var(--serif); font-variant-numeric: lining-nums tabular-nums; color: var(--cognac-soft); }
+.try-legend { position: relative; display: flex; flex-wrap: wrap; gap: 10px 26px; font-size: .84rem; color: var(--on-night-muted); }
+.try-legend span { display: inline-flex; align-items: center; gap: 10px; }
+.try-legend i { width: 18px; height: 10px; background: linear-gradient(#E7B27A, #8E5523); clip-path: polygon(0 50%, 24% 0, 76% 0, 100% 50%, 76% 100%, 24% 100%); }
+.try .soroban { position: relative; }
+.reset { position: relative; justify-self: start; display: inline-flex; gap: 10px; align-items: center; border: 1px solid var(--line-night); border-radius: 999px; background: none; color: var(--on-night-muted); font: 300 .84rem/1 var(--sans); padding: 10px 16px; cursor: pointer; }
+.reset:hover { color: var(--on-night); border-color: var(--on-night-muted); }
+.reset .ico { width: 16px; height: 16px; }
+@media (max-width: 960px) { .method-grid { grid-template-columns: minmax(0, 1fr); } }
+
+/* ═════════ path (levels on a rod) ═════════ */
+.path { background: var(--night); color: var(--on-night); padding-block: var(--sec); position: relative; overflow: hidden; }
+.path .sec-head p { color: var(--on-night-muted); }
+.rod { position: relative; list-style: none; padding: 0; display: grid; grid-template-columns: repeat(5, minmax(0, 1fr)); gap: 20px; }
+.rod::before { content: ""; position: absolute; left: 0; right: 0; top: 21px; height: 2px; background: linear-gradient(90deg, rgba(237,231,219,.05), rgba(237,231,219,.3) 20%, rgba(237,231,219,.3) 80%, rgba(237,231,219,.05)); }
+.lvl { position: relative; display: grid; gap: 14px; padding-top: 70px; cursor: default; }
+.lvl .bead {
+  position: absolute; top: 0; left: 0; width: 76px; height: 44px;
+  clip-path: polygon(0 50%, 22% 0, 78% 0, 100% 50%, 78% 100%, 22% 100%);
+  background: linear-gradient(180deg, #E9B67F 0%, #B4773A 38%, #6E3A17 78%, #3A1C0A 100%);
+  transition: transform .5s var(--ease), filter .5s var(--ease);
+}
+.lvl .bead::after { content: ""; position: absolute; left: 22%; top: 18%; width: 34%; height: 22%; border-radius: 50%; background: rgba(255, 240, 220, .42); filter: blur(2px); }
+.lvl:hover .bead { transform: translateX(14px); filter: brightness(1.12); }
+.lvl .lv { font: 400 .7rem/1 var(--sans); letter-spacing: .24em; text-transform: uppercase; color: var(--cognac-soft); }
+.lvl h3 { font-size: var(--fs-h3); }
+.lvl p { color: var(--on-night-muted); font-size: .92rem; }
+.lvl .dur { display: inline-flex; gap: 8px; align-items: center; font-size: .82rem; color: var(--on-night-muted); }
+.lvl .dur .ico { width: 16px; height: 16px; color: var(--cognac-soft); }
+@media (max-width: 1000px) {
+  .rod { grid-template-columns: minmax(0, 1fr); gap: 0; }
+  .rod::before { left: 37px; right: auto; top: 0; bottom: 0; width: 2px; height: auto; background: linear-gradient(180deg, rgba(237,231,219,.05), rgba(237,231,219,.3) 10%, rgba(237,231,219,.3) 90%, rgba(237,231,219,.05)); }
+  .lvl { padding: 6px 0 40px 104px; }
+  .lvl .bead { top: 0; }
+  .lvl:hover .bead { transform: translateY(6px); }
+}
+
+/* ═════════ formats ═════════ */
+.formats { padding-block: var(--sec); }
+.fmt-grid { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 16px; align-items: stretch; }
+.fmt { position: relative; border-radius: var(--radius); background: var(--card); padding: clamp(28px, 3vw, 40px); display: grid; grid-template-rows: auto auto auto 1fr auto; gap: 18px; border: 1px solid var(--line); }
+.fmt-head { display: flex; justify-content: space-between; align-items: center; }
+.fmt-head .badge { width: 56px; height: 56px; }
+.fmt-tag { font: 400 .68rem/1 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--muted); }
+.fmt h3 { font-size: clamp(1.7rem, 1.4rem + .8vw, 2.2rem); }
+.sum { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.sum b { font: 200 clamp(2.2rem, 1.8rem + 1.2vw, 3rem)/1 var(--serif); font-variant-numeric: lining-nums; }
+.sum span { font-size: .86rem; color: var(--muted); }
+.incl { list-style: none; padding: 16px 0 0; border-top: 1px solid var(--line); display: grid; gap: 12px; align-content: start; }
+.incl li { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px; font-size: .93rem; color: var(--muted); }
+.incl .ico { width: 18px; height: 18px; color: var(--cognac-deep); margin-top: 3px; }
+.fmt .btn { justify-content: space-between; }
+.fmt.feature { background: var(--night); color: var(--on-night); border-color: var(--night); }
+.fmt.feature .fmt-tag, .fmt.feature .sum span, .fmt.feature .incl li { color: var(--on-night-muted); }
+.fmt.feature .incl { border-color: var(--line-night); }
+.fmt.feature .incl .ico { color: var(--cognac-soft); }
+.fmt.feature .badge { background: radial-gradient(circle at 30% 25%, #2A3530, #151D1A 70%); color: var(--cognac-soft); box-shadow: inset 0 0 0 1px rgba(217, 168, 111, .3); }
+.fmt.feature .sum b { color: var(--cognac-soft); }
+.fmt-note { margin-top: 28px; display: flex; gap: 12px; align-items: center; font-size: .9rem; color: var(--muted); }
+.fmt-note .ico { color: var(--cognac-deep); width: 20px; height: 20px; }
+@media (max-width: 1000px) { .fmt-grid { grid-template-columns: minmax(0, 1fr); max-width: 560px; } }
+
+/* ═════════ trainer ═════════ */
+.trainer { padding-block: var(--sec); position: relative; overflow: hidden; }
+.trainer::before { content: ""; position: absolute; inset: 0; background: radial-gradient(50% 60% at 72% 50%, rgba(180, 119, 58, .16), transparent 70%); pointer-events: none; }
+.trainer .wrap { position: relative; display: grid; grid-template-columns: minmax(0, 6fr) minmax(0, 5fr); gap: clamp(40px, 6vw, 112px); align-items: center; }
+.trainer-copy { display: grid; gap: 28px; }
+.trainer-copy h2 { font-size: var(--fs-h2); }
+.tfeats { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 28px 32px; margin-top: 8px; }
+.tfeat { display: grid; gap: 12px; }
+.tfeat .ico { width: 28px; height: 28px; color: var(--cognac-soft); }
+.tfeat b { font: 300 1.2rem/1.25 var(--serif); }
+.tfeat span { font-size: .9rem; color: var(--on-night-muted); }
+.lockline { display: flex; gap: 14px; align-items: center; padding: 16px 20px; border: 1px solid var(--line-night); border-radius: 18px; color: var(--on-night-muted); font-size: .92rem; }
+.lockline .ico { color: var(--cognac-soft); }
+.phone { justify-self: center; width: min(340px, 100%); aspect-ratio: 9 / 18.6; border-radius: 54px; padding: 12px; background: linear-gradient(145deg, #2B302D, #0A0D0C 40%, #1D211F); box-shadow: 0 0 0 1px rgba(255,255,255,.08), 0 60px 120px -40px rgba(0,0,0,.8), inset 0 0 0 2px rgba(255,255,255,.05); }
+.screen { position: relative; height: 100%; border-radius: 43px; overflow: hidden; background: var(--paper); color: var(--ink); display: grid; grid-template-rows: auto 1fr auto; }
+.island { position: absolute; top: 12px; left: 50%; width: 92px; height: 26px; margin-left: -46px; border-radius: 20px; background: #050706; z-index: 2; }
+.app-bar { padding: 52px 22px 10px; display: flex; justify-content: space-between; align-items: center; }
+.app-bar b { font: 300 1.05rem/1 var(--serif); }
+.app-bar span { font: 400 .62rem/1 var(--sans); letter-spacing: .18em; text-transform: uppercase; color: var(--muted); }
+.app-progress { display: flex; gap: 5px; padding: 0 22px; }
+.app-progress i { flex: 1; height: 2px; border-radius: 2px; background: var(--line); transition: background-color .3s var(--ease); }
+.app-progress i.on { background: var(--cognac); }
+.app-stage { display: grid; place-items: center; text-align: center; padding: 16px 22px; }
+.app-inner { display: grid; gap: 18px; justify-items: center; }
+.app-inner p { font-size: .88rem; color: var(--muted); max-width: 16em; }
+.chips { display: flex; flex-wrap: wrap; gap: 6px; justify-content: center; }
+.chip { font-size: .72rem; padding: 6px 10px; border-radius: 999px; background: var(--card); border: 1px solid var(--line); color: var(--muted); }
+.app-big { font: 200 clamp(5.5rem, 4rem + 4vw, 7.5rem)/1 var(--serif); font-variant-numeric: lining-nums; }
+.app-big.count { color: var(--cognac); }
+.app-input { width: 140px; border: 0; border-bottom: 1px solid var(--ink); background: transparent; color: var(--ink); text-align: center; font: 200 2.6rem/1.2 var(--serif); border-radius: 0; padding: 0; }
+.app-input:focus { outline: none; border-bottom-color: var(--cognac); }
+.verdict { font: 300 1.9rem/1.1 var(--serif); }
+.verdict.good { color: #2F6B4A; }
+.verdict.miss { color: var(--danger); }
+.app-seq { font-size: .84rem; color: var(--muted); font-variant-numeric: tabular-nums; }
+.app-foot { padding: 0 18px 24px; }
+.app-btn { width: 100%; min-height: 54px; border-radius: 999px; border: 0; background: var(--ink); color: var(--paper); font: 400 .95rem/1 var(--sans); cursor: pointer; transition: background-color .3s var(--ease); }
+.app-btn:hover { background: #000; }
+@media (max-width: 1000px) { .trainer .wrap { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 520px) {
+  .tfeats { grid-template-columns: minmax(0, 1fr); gap: 20px; }
+  .tfeat { grid-template-columns: 40px minmax(0, 1fr); column-gap: 14px; row-gap: 4px; }
+  .tfeat .ico { grid-row: span 2; }
+}
+
+/* ═════════ reviews ═════════ */
+.reviews { padding-block: var(--sec); background: var(--paper-2); }
+.rev-grid { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 8fr); gap: clamp(40px, 6vw, 112px); }
+.rev-side { display: grid; gap: 24px; align-content: start; }
+.rev-side h2 { font-size: var(--fs-h2); }
+.rev-card { position: relative; background: var(--card); border-radius: 36px; padding: clamp(32px, 5vw, 72px); }
+.qmark { position: absolute; top: clamp(8px, 2vw, 22px); right: clamp(24px, 4vw, 56px); font: 200 clamp(7rem, 5rem + 6vw, 12rem)/1 var(--serif); color: rgba(180, 119, 58, .22); pointer-events: none; }
+.slides { display: grid; position: relative; }
+.slides { touch-action: pan-y; }
+.slide { grid-area: 1 / 1; display: grid; gap: 36px; align-content: start; transform: translateX(var(--x, 0px)); transition: opacity .45s var(--ease), transform .8s var(--ease-expo), visibility 0s linear .8s; }
+.slide[aria-hidden="true"] { opacity: 0; visibility: hidden; }
+.slide[aria-hidden="false"] { visibility: visible; transition: opacity .7s var(--ease) .1s, transform .95s var(--ease-expo) .06s, visibility 0s; }
+.slide blockquote { font: 200 clamp(1.6rem, 1.15rem + 1.7vw, 2.6rem)/1.3 var(--serif); max-width: 22em; text-wrap: pretty; }
+.who { display: flex; align-items: center; gap: 16px; }
+.avatar { width: 52px; height: 52px; border-radius: 50%; display: grid; place-items: center; background: var(--night); color: var(--cognac-soft); font: 300 1.25rem/1 var(--serif); flex: none; }
+.who b { display: block; font-weight: 400; }
+.who span { font-size: .88rem; color: var(--muted); }
+.stars { display: flex; gap: 3px; color: var(--cognac); margin-left: auto; }
+.stars .ico { width: 16px; height: 16px; fill: currentColor; stroke: none; }
+.rev-ctl { display: flex; align-items: center; gap: 16px; margin-top: 40px; }
+.rev-ctl button { width: 54px; height: 54px; border-radius: 50%; border: 1px solid var(--line); background: var(--card); cursor: pointer; display: grid; place-items: center; color: var(--ink); transition: border-color .3s var(--ease), background-color .3s var(--ease), transform .35s var(--ease-expo); }
+.rev-ctl button:active { transform: scale(.92); }
+.rev-ctl button:hover { border-color: var(--ink); }
+.rev-ctl .ico { width: 20px; height: 20px; }
+.dots { display: flex; gap: 8px; margin-left: 8px; }
+.dots i { width: 22px; height: 12px; cursor: pointer; background: var(--line); clip-path: polygon(0 50%, 24% 0, 76% 0, 100% 50%, 76% 100%, 24% 100%); transition: background-color .5s var(--ease), transform .6s var(--ease-expo); }
+.dots i.on { transform: scaleX(1.35); }
+.dots i.on { background: var(--cognac); }
+.sample-note { font-size: .8rem; color: var(--muted); }
+@media (max-width: 960px) { .rev-grid { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 600px) { .qmark { font-size: 5rem; top: -4px; right: 18px; } .rev-card { padding-top: 48px; } }
+@media (max-width: 480px) { .stars { display: none; } }
+
+/* ═════════ faq ═════════ */
+.faq { padding-block: var(--sec); }
+.faq .wrap { display: grid; grid-template-columns: minmax(0, 4fr) minmax(0, 7fr); gap: clamp(40px, 6vw, 112px); }
+.faq-side { display: grid; gap: 24px; align-content: start; }
+.faq-side h2 { font-size: clamp(2.1rem, 1.5rem + 2vw, 3.3rem); }
+.ask { display: flex; gap: 16px; align-items: center; padding: 20px; border-radius: 22px; background: var(--card); border: 1px solid var(--line); }
+.ask .badge { width: 52px; height: 52px; }
+.ask b { display: block; font-weight: 400; }
+.ask span { font-size: .88rem; color: var(--muted); }
+.faq-list { display: grid; gap: 10px; }
+.faq-list details { border-radius: 22px; background: var(--card); border: 1px solid var(--line); transition: background-color .3s var(--ease); }
+.faq-list summary { list-style: none; cursor: pointer; display: grid; grid-template-columns: minmax(0, 1fr) 36px; gap: 20px; align-items: center; padding: 22px 24px 22px 28px; font: 300 clamp(1.15rem, 1.05rem + .4vw, 1.4rem)/1.3 var(--serif); }
+.faq-list summary::-webkit-details-marker { display: none; }
+.faq-list summary span.pm { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--line); display: grid; place-items: center; transition: transform .35s var(--ease), background-color .35s var(--ease); }
+.faq-list summary .ico { width: 16px; height: 16px; }
+.faq-list summary span.pm { transition: transform .55s var(--ease-expo), background-color .4s var(--ease), border-color .4s var(--ease), color .4s var(--ease); }
+.faq-list details[open]:not(.closing) summary span.pm { transform: rotate(45deg); background: var(--cognac); border-color: var(--cognac); color: #1A0F06; }
+.faq-a { overflow: hidden; }
+.faq-list details p { padding: 0 28px 26px; color: var(--muted); max-width: 40em; }
+@media (max-width: 960px) { .faq .wrap { grid-template-columns: minmax(0, 1fr); } }
+
+/* ═════════ signup ═════════ */
+.signup { padding-block: var(--sec); position: relative; overflow: hidden; }
+.signup::before { content: ""; position: absolute; inset: 0; background: radial-gradient(50% 70% at 20% 30%, rgba(180, 119, 58, .14), transparent 70%); pointer-events: none; }
+.signup > .wrap { position: relative; display: grid; grid-template-columns: minmax(0, 5fr) minmax(0, 6fr); gap: clamp(40px, 6vw, 112px); align-items: start; }
+.signup-copy { display: grid; gap: 28px; }
+.signup-copy h2 { font-size: var(--fs-h2); }
+.signup-copy h2 em { color: var(--cognac-soft); }
+.contacts { display: grid; gap: 4px; margin-top: 12px; border-top: 1px solid var(--line-night); }
+.contact { display: grid; grid-template-columns: 48px minmax(0, 1fr); gap: 16px; align-items: center; padding-block: 16px; border-bottom: 1px solid var(--line-night); }
+.contact .c-ico { width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--line-night); display: grid; place-items: center; color: var(--cognac-soft); }
+.contact small { display: block; font: 400 .68rem/1.2 var(--sans); letter-spacing: .2em; text-transform: uppercase; color: var(--on-night-muted); }
+.contact b { font-weight: 300; font-size: 1.05rem; user-select: all; }
+.form-card { background: var(--paper); color: var(--ink); border-radius: 36px; padding: clamp(28px, 4vw, 56px); display: grid; gap: 24px; box-shadow: 0 60px 120px -60px rgba(0, 0, 0, .7); }
+.form-card h3 { font-size: clamp(1.7rem, 1.4rem + 1vw, 2.3rem); }
+.form-card > p { color: var(--muted); font-size: .95rem; }
+.form { display: grid; gap: 18px; }
+.field { position: relative; display: grid; }
+.field input, .field select {
+  width: 100%; min-height: 64px; border-radius: 18px; border: 1px solid var(--line); background: var(--card); color: var(--ink);
+  font: 300 1.02rem/1.2 var(--sans); padding: 26px 18px 10px; transition: border-color .3s var(--ease), box-shadow .3s var(--ease);
+}
+.field select { appearance: none; -webkit-appearance: none; cursor: pointer; }
+.field label { position: absolute; left: 19px; top: 11px; font: 400 .68rem/1 var(--sans); letter-spacing: .16em; text-transform: uppercase; color: var(--muted); pointer-events: none; }
+.field .chev { position: absolute; right: 18px; top: 50%; width: 18px; height: 18px; margin-top: -9px; color: var(--muted); pointer-events: none; }
+.field input:focus, .field select:focus { outline: none; border-color: var(--cognac); box-shadow: 0 0 0 4px rgba(180, 119, 58, .14); }
+.row2 { display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 12px; }
+.seg { position: relative; display: grid; grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 8px; padding: 6px; border-radius: 20px; background: var(--paper-2); }
+.seg-thumb { position: absolute; top: 6px; bottom: 6px; left: 6px; width: calc((100% - 20px) / 2); border-radius: 15px; background: var(--card); box-shadow: 0 6px 18px -10px rgba(19, 23, 21, .35); transition: transform .6s var(--ease-expo); }
+.seg:has(#f-on:checked) .seg-thumb { transform: translateX(calc(100% + 8px)); }
+.seg label { position: relative; z-index: 1; display: flex; gap: 10px; align-items: center; justify-content: center; min-height: 52px; border-radius: 15px; cursor: pointer; font-size: .92rem; color: var(--muted); transition: color .45s var(--ease); }
+.seg label .ico { width: 18px; height: 18px; }
+.seg input { position: absolute; opacity: 0; pointer-events: none; }
+.seg label:has(input:checked) { color: var(--ink); }
+.seg label:has(input:focus-visible) { outline: 1px solid var(--cognac); outline-offset: 2px; }
+.consent { display: grid; grid-template-columns: 22px minmax(0, 1fr); gap: 12px; font-size: .84rem; color: var(--muted); cursor: pointer; align-items: start; }
+.consent input { width: 18px; height: 18px; margin: 2px 0 0; accent-color: var(--cognac); }
+.err { color: var(--danger); font-size: .88rem; min-height: 1.3em; }
+.form, .done { transition: opacity .45s var(--ease), transform .6s var(--ease-expo); }
+.form.leaving { opacity: 0; transform: translateY(-12px); }
+.done.entering { opacity: 0; transform: translateY(16px); }
+html.lang-anim [data-i18n] { transition: opacity .28s var(--ease) !important; }
+html.lang-swap [data-i18n] { opacity: 0; }
+.form .btn { justify-content: space-between; width: 100%; }
+.done { display: grid; gap: 16px; justify-items: start; padding-block: 20px; }
+.done .badge { width: 64px; height: 64px; }
+.done h3 { font-size: clamp(2rem, 1.6rem + 1.2vw, 2.8rem); }
+.done p { color: var(--muted); }
+.done small { font-size: .8rem; color: var(--muted); padding: 12px 14px; border-radius: 14px; background: var(--paper-2); }
+@media (max-width: 1000px) { .signup > .wrap { grid-template-columns: minmax(0, 1fr); } }
+@media (max-width: 480px) { .row2 { grid-template-columns: minmax(0, 1fr); } }
+
+/* ═════════ footer ═════════ */
+.foot { border-top: 1px solid var(--line-night); }
+.foot .wrap { padding-block: clamp(56px, 7vw, 96px) 36px; display: grid; gap: clamp(48px, 6vw, 80px); }
+.foot-top { display: grid; grid-template-columns: minmax(0, 5fr) repeat(3, minmax(0, 2fr)); gap: 40px; }
+.foot-brand { display: grid; gap: 18px; align-content: start; }
+.foot-brand p { color: var(--on-night-muted); font-size: .92rem; max-width: 24em; }
+.foot h4 { font: 400 .7rem/1.2 var(--sans); letter-spacing: .22em; text-transform: uppercase; color: var(--cognac-soft); margin-bottom: 18px; }
+.foot ul { list-style: none; padding: 0; display: grid; gap: 10px; color: var(--on-night-muted); font-size: .92rem; }
+.foot a { text-decoration: none; transition: color .3s var(--ease); }
+.foot a:hover { color: var(--on-night); }
+.foot-word { font: 200 clamp(2.6rem, .5rem + 7.2vw, 9.2rem)/.95 var(--serif); letter-spacing: -.015em; color: var(--on-night); white-space: nowrap; overflow: hidden; }
+.foot-word em { color: var(--cognac-soft); }
+.foot-bottom { display: flex; flex-wrap: wrap; gap: 12px 32px; justify-content: space-between; color: var(--on-night-muted); font-size: .8rem; border-top: 1px solid var(--line-night); padding-top: 24px; }
+@media (max-width: 960px) { .foot-top { grid-template-columns: repeat(3, minmax(0, 1fr)); } .foot-brand { grid-column: 1 / -1; } }
+@media (max-width: 560px) { .foot-top { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); } .foot-word { white-space: normal; } }
+</style>
+
+<!-- icon sprite: one hand-drawn set, 24px grid, 1.3 stroke -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="i-bead" viewBox="0 0 24 24"><path d="M3 12l4-5h10l4 5-4 5H7z"/><path d="M8 10.5h3"/></symbol>
+    <symbol id="i-focus" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="5"/><path d="M10 12l.9-1.3h2.2L14 12l-.9 1.3h-2.2z"/><path d="M12 1.5v2.5M12 20v2.5M1.5 12H4M20 12h2.5"/></symbol>
+    <symbol id="i-memory" viewBox="0 0 24 24"><rect x="3.5" y="8" width="13" height="12" rx="2"/><path d="M7 8V6a2 2 0 0 1 2-2h9.5a2 2 0 0 1 2 2v9.5a2 2 0 0 1-2 2h-2"/><path d="M7 13h6M7 16h4"/></symbol>
+    <symbol id="i-speed" viewBox="0 0 24 24"><path d="M9 12l2.4-3.5h6.2L20 12l-2.4 3.5h-6.2z"/><path d="M2.5 9.5h4.5M1.5 12h5M2.5 14.5h4.5"/></symbol>
+    <symbol id="i-rise" viewBox="0 0 24 24"><path d="M3.5 20h4v-4h4v-4h4V8h5"/><path d="M17.5 2.5l.7 1.6 1.8.2-1.3 1.2.4 1.7-1.6-.9-1.6.9.4-1.7-1.3-1.2 1.8-.2z"/></symbol>
+    <symbol id="i-eye" viewBox="0 0 24 24"><path d="M2 12s3.6-6.5 10-6.5S22 12 22 12s-3.6 6.5-10 6.5S2 12 2 12z"/><path d="M9.2 12l1.1-1.7h3.4l1.1 1.7-1.1 1.7h-3.4z"/></symbol>
+    <symbol id="i-hourglass" viewBox="0 0 24 24"><path d="M6.5 3h11M6.5 21h11"/><path d="M8 3v2.5a4 4 0 0 0 1.8 3.3L12 10.3l2.2-1.5A4 4 0 0 0 16 5.5V3"/><path d="M8 21v-2.5a4 4 0 0 1 1.8-3.3L12 13.7l2.2 1.5a4 4 0 0 1 1.8 3.3V21"/><path d="M10.5 19h3"/></symbol>
+    <symbol id="i-abacus" viewBox="0 0 24 24"><rect x="3" y="3.5" width="18" height="17" rx="1.5"/><path d="M3 9.5h18M8 3.5v17M12 3.5v17M16 3.5v17"/><path d="M6.5 6.5h3M10.5 11.5h3M14.5 6.5h3M6.5 11.5h3M6.5 14h3M14.5 11.5h3" stroke-width="2.2"/></symbol>
+    <symbol id="i-imagine" viewBox="0 0 24 24"><path d="M3 12.5c2.6 2.8 5.6 4.2 9 4.2s6.4-1.4 9-4.2"/><path d="M6 15.5l-1.4 2M12 16.7v2.6M18 15.5l1.4 2"/><path d="M12 3.5v4M10 5.5h4"/><path d="M7 7.5l1 1M17 7.5l-1 1"/></symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9.2"/><path d="M13.2 5.8L8.8 13h3.6l-1.6 5.2 4.4-7.2h-3.6z"/></symbol>
+    <symbol id="i-gift" viewBox="0 0 24 24"><rect x="3.5" y="8.5" width="17" height="4" rx="1"/><path d="M5 12.5V20a1 1 0 0 0 1 1h12a1 1 0 0 0 1-1v-7.5M12 8.5V21"/><path d="M12 8.5c-1.2-3.4-5.4-4.4-5.4-1.9 0 1.9 3.3 1.9 5.4 1.9zM12 8.5c1.2-3.4 5.4-4.4 5.4-1.9 0 1.9-3.3 1.9-5.4 1.9z"/></symbol>
+    <symbol id="i-person" viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.8"/><path d="M4.5 20.5c1-4.2 4-6.5 7.5-6.5s6.5 2.3 7.5 6.5"/></symbol>
+    <symbol id="i-group" viewBox="0 0 24 24"><circle cx="9" cy="8.5" r="3.2"/><circle cx="17" cy="9.5" r="2.5"/><path d="M2.8 19.5c.8-3.6 3.2-5.5 6.2-5.5s5.4 1.9 6.2 5.5"/><path d="M15.6 14.3c2.6-.3 4.8 1.2 5.6 4.2"/></symbol>
+    <symbol id="i-check" viewBox="0 0 24 24"><path d="M4.5 12.5l4.8 4.8L19.5 7"/></symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24"><path d="M4.5 12h15M13.5 6l6 6-6 6"/></symbol>
+    <symbol id="i-arrow-l" viewBox="0 0 24 24"><path d="M19.5 12h-15M10.5 6l-6 6 6 6"/></symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24"><path d="M12 4v16M4 12h16"/></symbol>
+    <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 8h16M4 16h16"/></symbol>
+    <symbol id="i-close" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6L6 18"/></symbol>
+    <symbol id="i-chat" viewBox="0 0 24 24"><path d="M4.5 20l1.3-3.8A8.3 8.3 0 1 1 9 19.2z"/><path d="M9.3 9c.3 2.3 3.1 5 5.4 5.3l1-1.2 1.7.9-.4 1.6c-4.1.4-8.6-4.1-8.2-8.2l1.6-.4.9 1.7z"/></symbol>
+    <symbol id="i-insta" viewBox="0 0 24 24"><rect x="3.5" y="3.5" width="17" height="17" rx="5"/><circle cx="12" cy="12" r="3.8"/><circle cx="17.2" cy="6.8" r=".6"/></symbol>
+    <symbol id="i-pin" viewBox="0 0 24 24"><path d="M12 21.5s-6.8-6.2-6.8-11.3a6.8 6.8 0 0 1 13.6 0c0 5.1-6.8 11.3-6.8 11.3z"/><circle cx="12" cy="10" r="2.4"/></symbol>
+    <symbol id="i-clock" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M12 7v5.2l3.3 2"/></symbol>
+    <symbol id="i-sliders" viewBox="0 0 24 24"><path d="M4 7h8.5M17.5 7H20M4 17h2.5M11.5 17H20"/><circle cx="15" cy="7" r="2.3"/><circle cx="9" cy="17" r="2.3"/></symbol>
+    <symbol id="i-chart" viewBox="0 0 24 24"><path d="M4 3.5v17h16.5"/><path d="M8 16v-3.5M12 16V9M16 16v-5.5"/><path d="M7.5 9l4-3.5 4 2.5 4-4"/></symbol>
+    <symbol id="i-key" viewBox="0 0 24 24"><circle cx="8" cy="15.5" r="4"/><path d="M10.9 12.6L19.5 4M16.3 7.2l2.2 2.2M13.9 9.6l1.7 1.7"/></symbol>
+    <symbol id="i-home" viewBox="0 0 24 24"><path d="M3.5 11L12 4l8.5 7"/><path d="M5.8 9.3V20h12.4V9.3"/><path d="M10 20v-5.2h4V20"/></symbol>
+    <symbol id="i-child" viewBox="0 0 24 24"><circle cx="12" cy="12" r="8.8"/><path d="M8.8 14c.8 1.1 1.9 1.7 3.2 1.7s2.4-.6 3.2-1.7"/><path d="M9.3 10.2h.01M14.7 10.2h.01" stroke-width="2"/><path d="M10.5 3.4c.3 1.4 1.8 1.6 2.5.6"/></symbol>
+    <symbol id="i-globe" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3c2.7 3 2.7 15 0 18M12 3c-2.7 3-2.7 15 0 18"/></symbol>
+    <symbol id="i-star" viewBox="0 0 24 24"><path d="M12 3.2l2.6 5.4 5.9.8-4.3 4.1 1 5.8L12 16.5l-5.2 2.8 1-5.8-4.3-4.1 5.9-.8z"/></symbol>
+    <symbol id="i-cert" viewBox="0 0 24 24"><rect x="3.5" y="4" width="17" height="12.5" rx="1.5"/><path d="M7 8h10M7 11h6"/><circle cx="16" cy="16.5" r="2.6"/><path d="M14.5 18.6l-.8 2.9 2.3-1 2.3 1-.8-2.9"/></symbol>
+    <symbol id="i-medal" viewBox="0 0 24 24"><circle cx="12" cy="14.5" r="5.5"/><path d="M9 9.8L6.5 3h4l1.5 4M15 9.8L17.5 3h-4L12 7"/><path d="M12 12.2l.8 1.6 1.7.2-1.2 1.2.3 1.7-1.6-.8-1.6.8.3-1.7-1.2-1.2 1.7-.2z"/></symbol>
+    <symbol id="i-reset" viewBox="0 0 24 24"><path d="M4.5 12a7.5 7.5 0 1 0 2.2-5.3"/><path d="M4.5 4v4h4"/></symbol>
+    <symbol id="i-chev" viewBox="0 0 24 24"><path d="M6 9l6 6 6-6"/></symbol>
+    <symbol id="i-question" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.4a2.5 2.5 0 0 1 4.8.9c0 1.7-2.4 2.1-2.4 3.7"/><path d="M12 17h.01" stroke-width="2"/></symbol>
+  </defs>
+</svg>
+
+<div class="grain" id="grain" aria-hidden="true"></div>
+
+<div class="note" role="note"><div class="wrap"><b data-i18n="note_b">Концепт v3.2.</b> <span data-i18n="note">Фото, сертификаты, отзывы, цифры и контакты временные.</span></div></div>
+
+<header class="head" id="head">
+  <div class="wrap">
+    <a class="logo" href="#top" aria-label="Мира Сатылганова">
+      <svg viewBox="0 0 34 34" aria-hidden="true">
+        <defs><linearGradient id="lg-bead" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E9B67F"/><stop offset=".45" stop-color="#B4773A"/><stop offset="1" stop-color="#5A2E12"/></linearGradient></defs>
+        <path d="M17 1v32" stroke="currentColor" stroke-opacity=".35" stroke-width="1"/>
+        <path d="M3 17l5-7h18l5 7-5 7H8z" fill="url(#lg-bead)"/>
+        <path d="M10 13.5h6" stroke="#fff" stroke-opacity=".45" stroke-width="1.4" stroke-linecap="round"/>
+      </svg>
+      <span class="logo-text"><span class="logo-name">Мира Сатылганова</span><span class="logo-sub" data-i18n="logo_sub">Ментальная арифметика</span></span>
+    </a>
+    <nav class="nav" aria-label="Разделы">
+      <a href="#about" data-i18n="nav1">Обо мне</a>
+      <a href="#why" data-i18n="nav2">Зачем</a>
+      <a href="#method" data-i18n="nav3">Метод</a>
+      <a href="#path" data-i18n="nav4">Программа</a>
+      <a href="#trainer" data-i18n="nav5">Тренажёр</a>
+      <a href="#faq" data-i18n="nav6">Вопросы</a>
+    </nav>
+    <div class="head-r">
+      <div class="lang" role="group" aria-label="Язык">
+        <span class="lang-thumb" aria-hidden="true"></span>
+        <button type="button" id="lang-ru" data-lang="ru" aria-pressed="true">RU</button>
+        <button type="button" id="lang-ky" data-lang="ky" aria-pressed="false">KG</button>
+      </div>
+      <a class="btn" href="#signup" data-i18n="cta_short">Пробный урок</a>
+      <button class="burger" type="button" id="menu-open" aria-label="Меню" aria-expanded="false" aria-controls="drawer"><span class="bars" aria-hidden="true"><i></i><i></i></span></button>
+    </div>
+  </div>
+</header>
+
+<div class="drawer" id="drawer" inert aria-hidden="true">
+  <nav aria-label="Меню">
+    <a href="#about" style="--i:0" data-i18n="nav1">Обо мне</a>
+    <a href="#why" style="--i:1" data-i18n="nav2">Зачем</a>
+    <a href="#method" style="--i:2" data-i18n="nav3">Метод</a>
+    <a href="#path" style="--i:3" data-i18n="nav4">Программа</a>
+    <a href="#trainer" style="--i:4" data-i18n="nav5">Тренажёр</a>
+    <a href="#faq" style="--i:5" data-i18n="nav6">Вопросы</a>
+  </nav>
+  <div class="drawer-foot">
+    <div class="lang" role="group" aria-label="Язык">
+      <span class="lang-thumb" aria-hidden="true"></span>
+      <button type="button" id="lang-ru-m" data-lang="ru" aria-pressed="true">RU</button>
+      <button type="button" id="lang-ky-m" data-lang="ky" aria-pressed="false">KG</button>
+    </div>
+    <a class="btn" href="#signup"><span data-i18n="cta_trial">Записаться на пробный урок</span><span class="dot"><svg class="ico"><use href="#i-arrow"/></svg></span></a>
+  </div>
+</div>
+
+<main id="top">
+  <!-- ═════════ HERO ═════════ -->
+  <section class="hero dark" id="hero">
+    <div class="wrap">
+      <div class="hero-copy">
+        <span class="eyebrow" data-i18n="hero_eyebrow">Ментальная арифметика · Бишкек</span>
+        <h1 data-i18n="hero_h1">Когда числа живут <em>в воображении</em></h1>
+        <p class="lead" data-i18n="hero_lead">Учу детей 5–12 лет считать на абакусе, а потом и без него. Ребёнок становится собраннее, внимательнее и увереннее, а математика превращается в любимое занятие.</p>
+        <div class="hero-cta">
+          <a class="btn" href="#signup"><span data-i18n="cta_trial">Записаться на пробный урок</span><span class="dot"><svg class="ico"><use href="#i-arrow"/></svg></span></a>
+          <a class="text-link" href="#trainer"><span data-i18n="cta_demo">Попробовать тренажёр</span><svg class="ico"><use href="#i-arrow"/></svg></a>
+        </div>
+      </div>
+      <div class="hero-stage" aria-hidden="true">
+        <div class="flash">
+          <span class="flash-term" id="flash-term">1 284</span>
+          <span class="flash-meta"><b data-i18n="flash_b">Счёт в уме</b><span data-i18n="flash_m">ученик видит число, абакус показывает сумму</span></span>
+        </div>
+        <canvas class="soroban" id="hero-abacus"></canvas>
+        <div class="hero-seq"><span id="hero-seq">1 284</span><span id="hero-total">= 1 284</span></div>
+      </div>
+    </div>
+    <div class="hero-feats">
+      <div class="wrap">
+        <div class="feat"><svg class="ico"><use href="#i-child"/></svg><span data-i18n="hf1">Дети от 5 до 12 лет</span></div>
+        <div class="feat"><svg class="ico"><use href="#i-globe"/></svg><span data-i18n="hf2">Офлайн в Бишкеке и онлайн</span></div>
+        <div class="feat"><svg class="ico"><use href="#i-gift"/></svg><span data-i18n="hf3">Первый урок бесплатно</span></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ ABOUT ═════════ -->
+  <section class="about" id="about">
+    <div class="wrap">
+      <figure class="portrait reveal">
+        <img src="img/teacher.jpg" alt="Мира Сатылганова" width="1200" height="1500" loading="lazy">
+        <figcaption class="portrait-tag" data-i18n="ptag">Бишкек · с 2017 года</figcaption>
+      </figure>
+      <div class="about-copy reveal">
+        <span class="eyebrow" data-i18n="ab_eyebrow">Знакомство</span>
+        <h2 data-i18n="ab_h2">Здравствуйте, я <em>Мира</em></h2>
+        <p data-i18n="ab_p1">Преподаю ментальную арифметику с 2017 года. За это время через мои занятия прошли больше двухсот детей: от тех, кто боялся цифр, до призёров олимпиад.</p>
+        <p data-i18n="ab_p2">Мне важно, чтобы ребёнок шёл на урок с удовольствием, а результат видели и он сам, и родители. Поэтому каждое занятие строю вокруг конкретного ребёнка, его темпа и характера.</p>
+        <span class="signature">Мира Сатылганова</span>
+        <div class="stats">
+          <div class="stat"><b>8</b><span data-i18n="st1">лет преподаю ментальную арифметику</span></div>
+          <div class="stat"><b>200+</b><span data-i18n="st2">учеников прошли обучение</span></div>
+          <div class="stat"><b>18</b><span data-i18n="st3">чисел подряд складывают ученики в уме</span></div>
+        </div>
+        <div class="creds">
+          <span class="cred"><svg class="ico"><use href="#i-cert"/></svg><span data-i18n="cr1">Сертифицированный педагог</span></span>
+          <span class="cred"><svg class="ico"><use href="#i-abacus"/></svg><span data-i18n="cr2">Методика соробан</span></span>
+          <span class="cred"><svg class="ico"><use href="#i-medal"/></svg><span data-i18n="cr3">Призёры олимпиад</span></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ WHY ═════════ -->
+  <section class="why" id="why">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="t"><span class="eyebrow" data-i18n="w_eyebrow">Зачем это ребёнку</span><h2 data-i18n="w_h2">Быстрый счёт&nbsp;— только <em>видимая часть</em></h2></div>
+        <p class="lead" data-i18n="w_lead">Ментальная арифметика тренирует то, на чём держится вся учёба. Вот что родители замечают уже в первые месяцы.</p>
+      </div>
+      <div class="why-grid">
+        <article class="why-card reveal"><span class="badge"><svg class="ico"><use href="#i-focus"/></svg></span><h3 data-i18n="b1_h">Внимание</h3><p data-i18n="b1">Дольше удерживает внимание на задаче и меньше отвлекается.</p></article>
+        <article class="why-card reveal"><span class="badge"><svg class="ico"><use href="#i-memory"/></svg></span><h3 data-i18n="b2_h">Память</h3><p data-i18n="b2">Легче запоминает числа, правила и тексты: образная память работает каждый день.</p></article>
+        <article class="why-card reveal"><span class="badge"><svg class="ico"><use href="#i-speed"/></svg></span><h3 data-i18n="b3_h">Скорость счёта</h3><p data-i18n="b3">Считает в уме быстрее сверстников, и школьная математика перестаёт пугать.</p></article>
+        <article class="why-card reveal"><span class="badge"><svg class="ico"><use href="#i-rise"/></svg></span><h3 data-i18n="b4_h">Уверенность</h3><p data-i18n="b4">Привыкает решать сложное сам и чаще говорит «я смогу».</p></article>
+        <article class="why-card reveal"><span class="badge"><svg class="ico"><use href="#i-eye"/></svg></span><h3 data-i18n="b5_h">Воображение</h3><p data-i18n="b5">Учится держать в голове картинку и работать с ней.</p></article>
+        <article class="why-card reveal"><span class="badge"><svg class="ico"><use href="#i-hourglass"/></svg></span><h3 data-i18n="b6_h">Усидчивость</h3><p data-i18n="b6">Короткие ежедневные тренировки приучают к режиму и самостоятельности.</p></article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ METHOD ═════════ -->
+  <section class="method" id="method">
+    <div class="wrap method-grid">
+      <div class="reveal">
+        <span class="eyebrow" data-i18n="m_eyebrow">Метод</span>
+        <h2 style="font-size:var(--fs-h2);margin-top:24px" data-i18n="m_h2">От косточек в руках к <em>образу в голове</em></h2>
+        <ol class="steps">
+          <li><span class="step-ico"><svg class="ico"><use href="#i-abacus"/></svg><small>I</small></span><div><h3 data-i18n="s1_h">Абакус в руках</h3><p data-i18n="s1">Ребёнок двигает косточки пальцами и понимает, как устроено число.</p></div></li>
+          <li><span class="step-ico"><svg class="ico"><use href="#i-imagine"/></svg><small>II</small></span><div><h3 data-i18n="s2_h">Абакус в воображении</h3><p data-i18n="s2">Постепенно счёты убираем. Ребёнок представляет абакус и двигает косточки мысленно.</p></div></li>
+          <li><span class="step-ico"><svg class="ico"><use href="#i-bolt"/></svg><small>III</small></span><div><h3 data-i18n="s3_h">Счёт в уме</h3><p data-i18n="s3">Образ работает сам: ребёнок складывает и вычитает длинные ряды чисел быстро и без ошибок.</p></div></li>
+        </ol>
+      </div>
+      <div class="try reveal">
+        <div class="try-top">
+          <p data-i18n="try_p">Попробуйте сами: нажимайте на косточки. Считаются те, что прижаты к перекладине.</p>
+          <span class="try-num" id="try-num" aria-live="polite">753</span>
+        </div>
+        <canvas class="soroban interactive" id="try-abacus" aria-label="Интерактивный абакус"></canvas>
+        <div class="try-legend">
+          <span><i></i><span data-i18n="leg1">над перекладиной — пять</span></span>
+          <span><i></i><span data-i18n="leg2">под перекладиной — по одному</span></span>
+        </div>
+        <button class="reset" type="button" id="try-reset"><svg class="ico"><use href="#i-reset"/></svg><span data-i18n="reset">Сбросить</span></button>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ PATH ═════════ -->
+  <section class="path" id="path">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="t"><span class="eyebrow" data-i18n="p_eyebrow">Программа</span><h2 data-i18n="p_h2">Пять косточек <em>на одной спице</em></h2></div>
+        <p class="lead" data-i18n="p_lead">Программа идёт по уровням. Каждый следующий опирается на предыдущий, поэтому ребёнок не перескакивает через темы и не теряет уверенность.</p>
+      </div>
+      <ol class="rod">
+        <li class="lvl reveal"><span class="bead"></span><span class="lv" data-i18n="lv1_l">Уровень I</span><h3 data-i18n="lv1_h">Прямой счёт</h3><p data-i18n="lv1">Знакомство с абакусом, сложение и вычитание без переходов.</p><span class="dur"><svg class="ico"><use href="#i-clock"/></svg><span data-i18n="dur">2–3 месяца</span></span></li>
+        <li class="lvl reveal"><span class="bead"></span><span class="lv" data-i18n="lv2_l">Уровень II</span><h3 data-i18n="lv2_h">Помощь пятёрки</h3><p data-i18n="lv2">Формулы «младших друзей», счёт через пять.</p><span class="dur"><svg class="ico"><use href="#i-clock"/></svg><span data-i18n="dur">2–3 месяца</span></span></li>
+        <li class="lvl reveal"><span class="bead"></span><span class="lv" data-i18n="lv3_l">Уровень III</span><h3 data-i18n="lv3_h">Помощь десятка</h3><p data-i18n="lv3">Формулы «старших друзей», переход через десяток.</p><span class="dur"><svg class="ico"><use href="#i-clock"/></svg><span data-i18n="dur">2–3 месяца</span></span></li>
+        <li class="lvl reveal"><span class="bead"></span><span class="lv" data-i18n="lv4_l">Уровень IV</span><h3 data-i18n="lv4_h">Смешанные формулы</h3><p data-i18n="lv4">Все переходы вместе, двузначные и трёхзначные числа.</p><span class="dur"><svg class="ico"><use href="#i-clock"/></svg><span data-i18n="dur">2–3 месяца</span></span></li>
+        <li class="lvl reveal"><span class="bead"></span><span class="lv" data-i18n="lv5_l">Уровень V</span><h3 data-i18n="lv5_h">Счёт на скорость</h3><p data-i18n="lv5">Многозначные числа, флеш-счёт и подготовка к олимпиадам.</p><span class="dur"><svg class="ico"><use href="#i-clock"/></svg><span data-i18n="dur5">от 3 месяцев</span></span></li>
+      </ol>
+    </div>
+  </section>
+
+  <!-- ═════════ FORMATS ═════════ -->
+  <section class="formats" id="formats">
+    <div class="wrap">
+      <div class="sec-head reveal">
+        <div class="t"><span class="eyebrow" data-i18n="f_eyebrow">Форматы и стоимость</span><h2 data-i18n="f_h2">Начните с <em>бесплатного</em> урока</h2></div>
+        <p class="lead" data-i18n="f_lead">На пробном занятии я определю уровень ребёнка и подскажу, какой формат подойдёт ему лучше.</p>
+      </div>
+      <div class="fmt-grid">
+        <article class="fmt feature reveal">
+          <div class="fmt-head"><span class="badge"><svg class="ico"><use href="#i-gift"/></svg></span><span class="fmt-tag" data-i18n="fm1_tag">С чего начать</span></div>
+          <h3 data-i18n="fm1_h">Пробный урок</h3>
+          <div class="sum"><b data-i18n="fm1_s">Бесплатно</b><span data-i18n="fm1_u">40 минут</span></div>
+          <ul class="incl">
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm1_1">Знакомство с абакусом</span></li>
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm1_2">Определяю стартовый уровень</span></li>
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm1_3">Рассказываю о программе и расписании</span></li>
+          </ul>
+          <a class="btn" href="#signup"><span data-i18n="fm_btn">Записаться</span><span class="dot"><svg class="ico"><use href="#i-arrow"/></svg></span></a>
+        </article>
+        <article class="fmt reveal">
+          <div class="fmt-head"><span class="badge"><svg class="ico"><use href="#i-person"/></svg></span><span class="fmt-tag" data-i18n="fm2_tag">Офлайн или онлайн</span></div>
+          <h3 data-i18n="fm2_h">Индивидуально</h3>
+          <div class="sum"><b data-i18n="fm2_s">1 200 сом</b><span data-i18n="fm2_u">за 60 минут</span></div>
+          <ul class="incl">
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm2_1">Программа под темп ребёнка</span></li>
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm2_2">Личный доступ к тренажёру</span></li>
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm2_3">Отчёт родителям каждый месяц</span></li>
+          </ul>
+          <a class="btn btn-ink" href="#signup"><span data-i18n="fm_btn2">Узнать расписание</span><span class="dot"><svg class="ico"><use href="#i-arrow"/></svg></span></a>
+        </article>
+        <article class="fmt reveal">
+          <div class="fmt-head"><span class="badge"><svg class="ico"><use href="#i-group"/></svg></span><span class="fmt-tag" data-i18n="fm3_tag">Офлайн, до 4 детей</span></div>
+          <h3 data-i18n="fm3_h">Мини-группа</h3>
+          <div class="sum"><b data-i18n="fm3_s">700 сом</b><span data-i18n="fm3_u">за 60 минут</span></div>
+          <ul class="incl">
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm3_1">Учимся вместе и соревнуемся по-доброму</span></li>
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm3_2">Личный доступ к тренажёру</span></li>
+            <li><svg class="ico"><use href="#i-check"/></svg><span data-i18n="fm3_3">Группы по уровню и возрасту</span></li>
+          </ul>
+          <a class="btn btn-ink" href="#signup"><span data-i18n="fm_btn2">Узнать расписание</span><span class="dot"><svg class="ico"><use href="#i-arrow"/></svg></span></a>
+        </article>
+      </div>
+      <p class="fmt-note reveal"><svg class="ico"><use href="#i-abacus"/></svg><span data-i18n="fm_note">Цены за одно занятие, абонемент на месяц выгоднее. Абакус для занятий дома выдаю на первом уроке.</span></p>
+    </div>
+  </section>
+
+  <!-- ═════════ TRAINER ═════════ -->
+  <section class="trainer dark" id="trainer">
+    <div class="wrap">
+      <div class="trainer-copy reveal">
+        <span class="eyebrow" data-i18n="tr_eyebrow">Онлайн-тренажёр</span>
+        <h2 data-i18n="tr_h2">Десять минут в день, <em>и навык закрепляется</em></h2>
+        <p class="lead" data-i18n="tr_lead">Между уроками ученики тренируются дома: числа появляются на экране одно за другим, а в конце нужно назвать ответ.</p>
+        <div class="tfeats">
+          <div class="tfeat"><svg class="ico"><use href="#i-sliders"/></svg><b data-i18n="tf1_h">Под уровень ученика</b><span data-i18n="tf1">Разрядность, переходы, количество чисел и скорость</span></div>
+          <div class="tfeat"><svg class="ico"><use href="#i-chart"/></svg><b data-i18n="tf2_h">Прогресс виден</b><span data-i18n="tf2">Я вижу, кто занимался и сколько примеров решено верно</span></div>
+          <div class="tfeat"><svg class="ico"><use href="#i-home"/></svg><b data-i18n="tf3_h">Домашнее задание</b><span data-i18n="tf3">Задания приходят прямо в тренажёр</span></div>
+          <div class="tfeat"><svg class="ico"><use href="#i-key"/></svg><b data-i18n="tf4_h">Личный код</b><span data-i18n="tf4">Полная версия открыта только моим ученикам</span></div>
+        </div>
+        <div class="lockline"><svg class="ico"><use href="#i-bead"/></svg><span data-i18n="tr_demo">Здесь же открытая демо-версия. Попробуйте посчитать вместе с ребёнком.</span></div>
+      </div>
+      <div class="phone reveal">
+        <div class="screen">
+          <span class="island"></span>
+          <div>
+            <div class="app-bar"><b data-i18n="app_t">Тренажёр</b><span data-i18n="app_demo">Демо</span></div>
+            <div class="app-progress" id="app-progress" aria-hidden="true"><i></i><i></i><i></i><i></i><i></i></div>
+          </div>
+          <div class="app-stage" aria-live="polite">
+            <div class="app-inner" id="d-idle">
+              <div class="chips"><span class="chip" data-i18n="chip1">1 разряд</span><span class="chip" data-i18n="chip2">5 чисел</span><span class="chip" data-i18n="chip3">1 сек</span></div>
+              <p data-i18n="demo_p">Числа появятся по одному. Сложите их в уме и введите ответ.</p>
+            </div>
+            <div class="app-big" id="d-big" hidden></div>
+            <form class="app-inner" id="d-ask" hidden>
+              <p data-i18n="demo_ask">Сколько получилось?</p>
+              <input class="app-input" id="d-answer" type="text" inputmode="numeric" autocomplete="off" aria-label="Ответ">
+            </form>
+            <div class="app-inner" id="d-done" hidden>
+              <span class="verdict" id="d-verdict"></span>
+              <span class="app-seq" id="d-seq"></span>
+            </div>
+          </div>
+          <div class="app-foot"><button class="app-btn" type="button" id="d-btn" data-i18n="demo_start">Начать</button></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ REVIEWS ═════════ -->
+  <section class="reviews" id="reviews">
+    <div class="wrap rev-grid">
+      <div class="rev-side reveal">
+        <span class="eyebrow" data-i18n="rv_eyebrow">Отзывы</span>
+        <h2 data-i18n="rv_h2">Слово <em>родителям</em></h2>
+        <p class="sample-note" data-i18n="rv_note">На макете образцы отзывов. Заменим на настоящие, со скриншотами из WhatsApp.</p>
+      </div>
+      <div class="reveal">
+        <div class="rev-card">
+          <span class="qmark" aria-hidden="true">“</span>
+          <div class="slides" id="slides">
+            <figure class="slide" aria-hidden="false">
+              <blockquote data-i18n="q1">Сыну семь лет. Через три месяца он стал решать примеры в уме быстрее меня, а главное, перестал бояться математики.</blockquote>
+              <figcaption class="who"><span class="avatar">А</span><span><b>Айгерим</b><span data-i18n="q1_w">мама Алихана, 7 лет</span></span><span class="stars"><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg></span></figcaption>
+            </figure>
+            <figure class="slide" aria-hidden="true">
+              <blockquote data-i18n="q2">Дочка раньше не могла усидеть и десяти минут. Сейчас сама садится за тренажёр каждый вечер.</blockquote>
+              <figcaption class="who"><span class="avatar">Н</span><span><b>Нурзада</b><span data-i18n="q2_w">мама Амины, 8 лет</span></span><span class="stars"><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg></span></figcaption>
+            </figure>
+            <figure class="slide" aria-hidden="true">
+              <blockquote data-i18n="q3">Мира подробно рассказывает о прогрессе и даёт понятные задания на дом. Видно, что ей не всё равно.</blockquote>
+              <figcaption class="who"><span class="avatar">Т</span><span><b>Тимур</b><span data-i18n="q3_w">папа Эмира, 10 лет</span></span><span class="stars"><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg><svg class="ico"><use href="#i-star"/></svg></span></figcaption>
+            </figure>
+          </div>
+        </div>
+        <div class="rev-ctl">
+          <button type="button" id="prev" aria-label="Предыдущий отзыв"><svg class="ico"><use href="#i-arrow-l"/></svg></button>
+          <button type="button" id="next" aria-label="Следующий отзыв"><svg class="ico"><use href="#i-arrow"/></svg></button>
+          <span class="dots" id="dots" aria-hidden="true"><i class="on"></i><i></i><i></i></span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ FAQ ═════════ -->
+  <section class="faq" id="faq">
+    <div class="wrap">
+      <div class="faq-side reveal">
+        <span class="eyebrow" data-i18n="fq_eyebrow">Вопросы</span>
+        <h2 data-i18n="fq_h2">Что обычно спрашивают <em>родители</em></h2>
+        <div class="ask"><span class="badge"><svg class="ico"><use href="#i-question"/></svg></span><div><b data-i18n="ask_b">Не нашли ответ?</b><span data-i18n="ask_s">Напишите в WhatsApp, отвечу лично.</span></div></div>
+      </div>
+      <div class="faq-list reveal">
+        <details open><summary><span data-i18n="fq1">С какого возраста можно начинать?</span><span class="pm"><svg class="ico"><use href="#i-plus"/></svg></span></summary><div class="faq-a"><p data-i18n="fa1">С 5 лет. Оптимально 6–10: ребёнок уже знает цифры и может заниматься 40–60 минут.</p></div></details>
+        <details><summary><span data-i18n="fq2">Когда будет виден результат?</span><span class="pm"><svg class="ico"><use href="#i-plus"/></svg></span></summary><div class="faq-a"><p data-i18n="fa2">Первые изменения родители обычно замечают через 1–2 месяца. Уверенный счёт в уме формируется за 6–12 месяцев регулярных занятий.</p></div></details>
+        <details><summary><span data-i18n="fq3">Нужно ли покупать абакус?</span><span class="pm"><svg class="ico"><use href="#i-plus"/></svg></span></summary><div class="faq-a"><p data-i18n="fa3">Нет, абакус для занятий дома выдаю на первом уроке.</p></div></details>
+        <details><summary><span data-i18n="fq4">Занятия офлайн или онлайн?</span><span class="pm"><svg class="ico"><use href="#i-plus"/></svg></span></summary><div class="faq-a"><p data-i18n="fa4">Оба формата. Офлайн-занятия проходят в Бишкеке, онлайн подходит детям из других городов.</p></div></details>
+        <details><summary><span data-i18n="fq5">Как получить доступ к тренажёру?</span><span class="pm"><svg class="ico"><use href="#i-plus"/></svg></span></summary><div class="faq-a"><p data-i18n="fa5">После записи на курс я выдам личный код. Он работает на устройствах ученика, пока идёт обучение.</p></div></details>
+      </div>
+    </div>
+  </section>
+
+  <!-- ═════════ SIGNUP ═════════ -->
+  <section class="signup dark" id="signup">
+    <div class="wrap">
+      <div class="signup-copy reveal">
+        <span class="eyebrow" data-i18n="su_eyebrow">Запись</span>
+        <h2 data-i18n="su_h2">Первый урок <em>в подарок</em></h2>
+        <p class="lead" data-i18n="su_lead">Сорок минут, чтобы познакомиться, попробовать посчитать на абакусе и понять, подходит ли метод вашему ребёнку.</p>
+        <div class="contacts">
+          <div class="contact"><span class="c-ico"><svg class="ico"><use href="#i-chat"/></svg></span><div><small>WhatsApp</small><b>+996 700 000 000</b></div></div>
+          <div class="contact"><span class="c-ico"><svg class="ico"><use href="#i-insta"/></svg></span><div><small>Instagram</small><b>@mira.mentalmath</b></div></div>
+          <div class="contact"><span class="c-ico"><svg class="ico"><use href="#i-pin"/></svg></span><div><small data-i18n="c_addr">Адрес</small><b data-i18n="c_addr_v">Бишкек, центр города</b></div></div>
+          <div class="contact"><span class="c-ico"><svg class="ico"><use href="#i-clock"/></svg></span><div><small data-i18n="c_time">Часы</small><b data-i18n="c_time_v">Пн–Сб, 10:00–19:00</b></div></div>
+        </div>
+      </div>
+      <div class="form-card reveal">
+        <form class="form" id="form" novalidate>
+          <h3 data-i18n="fc_h">Заявка на пробный урок</h3>
+          <p style="color:var(--muted);font-size:.95rem" data-i18n="fc_p">Напишу вам в WhatsApp в течение дня, и мы подберём удобное время.</p>
+          <div class="field"><input id="f-name" name="name" type="text" autocomplete="given-name" placeholder=" "><label for="f-name" data-i18n="f_name">Ваше имя</label></div>
+          <div class="row2">
+            <div class="field"><input id="f-phone" name="phone" type="tel" autocomplete="tel" placeholder="+996"><label for="f-phone" data-i18n="f_phone">WhatsApp</label></div>
+            <div class="field">
+              <select id="f-age" name="age">
+                <option value="4-5" data-i18n="age1">4–5 лет</option>
+                <option value="6-7" selected data-i18n="age2">6–7 лет</option>
+                <option value="8-10" data-i18n="age3">8–10 лет</option>
+                <option value="11-14" data-i18n="age4">11–14 лет</option>
+              </select>
+              <label for="f-age" data-i18n="f_age">Возраст ребёнка</label>
+              <svg class="ico chev"><use href="#i-chev"/></svg>
+            </div>
+          </div>
+          <div class="seg" role="radiogroup" aria-label="Формат">
+            <span class="seg-thumb" aria-hidden="true"></span>
+            <label><input type="radio" id="f-off" name="fmt" value="offline" checked><svg class="ico"><use href="#i-pin"/></svg><span data-i18n="f_off">Офлайн</span></label>
+            <label><input type="radio" id="f-on" name="fmt" value="online"><svg class="ico"><use href="#i-globe"/></svg><span data-i18n="f_on">Онлайн</span></label>
+          </div>
+          <label class="consent"><input type="checkbox" id="f-consent"><span data-i18n="f_consent">Согласен(на) на обработку персональных данных</span></label>
+          <div class="err" id="err" role="alert"></div>
+          <button class="btn" type="submit"><span data-i18n="f_submit">Отправить заявку</span><span class="dot"><svg class="ico"><use href="#i-arrow"/></svg></span></button>
+        </form>
+        <div class="done" id="done" hidden>
+          <span class="badge"><svg class="ico"><use href="#i-check"/></svg></span>
+          <h3 data-i18n="done_h">Спасибо!</h3>
+          <p data-i18n="done_p">Мира напишет вам в WhatsApp в течение дня.</p>
+          <small data-i18n="done_note">В концепте заявка никуда не отправляется. Отправку в Telegram подключим на следующем шаге.</small>
+        </div>
+      </div>
+    </div>
+
+    <footer class="foot">
+      <div class="wrap">
+        <div class="foot-top">
+          <div class="foot-brand"><span class="logo-name" style="font-size:1.6rem">Мира Сатылганова</span><p data-i18n="ft_p">Ментальная арифметика для детей 5–12 лет. Бишкек и онлайн.</p></div>
+          <div><h4 data-i18n="fh1">Разделы</h4><ul><li><a href="#about" data-i18n="nav1">Обо мне</a></li><li><a href="#method" data-i18n="nav3">Метод</a></li><li><a href="#path" data-i18n="nav4">Программа</a></li></ul></div>
+          <div><h4 data-i18n="fh2">Ученикам</h4><ul><li><a href="#trainer" data-i18n="login">Вход в тренажёр</a></li><li><a href="#faq" data-i18n="nav6">Вопросы</a></li></ul></div>
+          <div><h4 data-i18n="fh3">Связь</h4><ul><li style="user-select:all">+996 700 000 000</li><li style="user-select:all">@mira.mentalmath</li></ul></div>
+        </div>
+        <div class="foot-word" aria-hidden="true">Мира <em>Сатылганова</em></div>
+        <div class="foot-bottom"><span>© 2026</span><span data-i18n="ft_note">Концепт сайта. Материалы временные.</span></div>
+      </div>
+    </footer>
+  </section>
+</main>
+
+<script>
+(() => {
+  const $ = id => document.getElementById(id);
+  const reduce = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  document.documentElement.classList.add('js');
+
+  if (document.fonts && document.fonts.load) {
+    ['200 1em "Noto Serif Display"', 'italic 200 1em "Noto Serif Display"', '300 1em "Noto Serif Display"', '300 1em "Geologica"', '400 1em "Geologica"']
+      .forEach(f => document.fonts.load(f, 'өүңӨҮҢ').catch(() => {}));
+  }
+
+  /* film grain, generated once */
+  try {
+    const c = document.createElement('canvas'); c.width = c.height = 180;
+    const g = c.getContext('2d'), img = g.createImageData(180, 180);
+    for (let i = 0; i < img.data.length; i += 4) { const v = 140 + Math.random() * 115; img.data[i] = img.data[i + 1] = img.data[i + 2] = v; img.data[i + 3] = 255; }
+    g.putImageData(img, 0, 0);
+    $('grain').style.backgroundImage = `url(${c.toDataURL()})`;
+  } catch (e) {}
+
+  /* header: dark over the hero, paper after it */
+  const head = $('head'), hero = $('hero');
+  const onScroll = () => head.classList.toggle('solid', scrollY > hero.offsetTop + hero.offsetHeight - 90);
+  addEventListener('scroll', onScroll, { passive: true }); onScroll();
+
+  /* drawer: the burger morphs into a cross, the curtain opens under the header */
+  const drawer = $('drawer'), openBtn = $('menu-open');
+  let menuOpen = false;
+  function setMenu(o) {
+    menuOpen = o;
+    if (o) document.documentElement.style.setProperty('--head-bottom', Math.max(0, head.getBoundingClientRect().bottom) + 'px');
+    drawer.classList.toggle('open', o);
+    drawer.inert = !o; drawer.setAttribute('aria-hidden', String(!o));
+    document.body.classList.toggle('menu-open', o);
+    document.body.style.overflow = o ? 'hidden' : '';
+    openBtn.setAttribute('aria-expanded', String(o));
+    openBtn.setAttribute('aria-label', o ? 'Закрыть меню' : 'Меню');
+  }
+  openBtn.addEventListener('click', () => setMenu(!menuOpen));
+  addEventListener('keydown', e => { if (e.key === 'Escape' && menuOpen) setMenu(false); });
+  addEventListener('resize', () => { if (menuOpen && innerWidth > 1240) setMenu(false); });
+
+  /* smooth anchor scrolling on an eased curve; any user scroll input takes over */
+  let scrollRaf = 0;
+  const stopScroll = () => { cancelAnimationFrame(scrollRaf); scrollRaf = 0; };
+  ['wheel', 'touchstart', 'keydown'].forEach(ev => addEventListener(ev, stopScroll, { passive: true }));
+  function smoothTo(y) {
+    stopScroll();
+    const max = document.documentElement.scrollHeight - innerHeight;
+    y = Math.max(0, Math.min(max, y));
+    const from = scrollY, dy = y - from;
+    if (reduce || Math.abs(dy) < 2) { scrollTo(0, y); return; }
+    const dur = Math.min(1500, Math.max(650, Math.abs(dy) * .45)), t0 = performance.now();
+    const ease = t => t < .5 ? 4 * t * t * t : 1 - Math.pow(-2 * t + 2, 3) / 2;
+    const step = now => {
+      const t = Math.min(1, (now - t0) / dur);
+      scrollTo(0, from + dy * ease(t));
+      scrollRaf = t < 1 ? requestAnimationFrame(step) : 0;
+    };
+    scrollRaf = requestAnimationFrame(step);
+  }
+  document.addEventListener('click', e => {
+    const a = e.target.closest('a[href^="#"]');
+    if (!a) return;
+    const id = a.getAttribute('href');
+    const target = id === '#top' ? null : document.querySelector(id);
+    if (id !== '#top' && !target) return;
+    e.preventDefault();
+    const wasOpen = menuOpen;
+    if (wasOpen) setMenu(false);
+    requestAnimationFrame(() => {
+      const y = target ? target.getBoundingClientRect().top + scrollY - head.offsetHeight + 1 : 0;
+      setTimeout(() => smoothTo(y), wasOpen ? 120 : 0);
+    });
+  });
+
+  /* soft lift on scroll (content is already visible) */
+  if ('IntersectionObserver' in window && !reduce) {
+    const io = new IntersectionObserver(es => es.forEach(en => { if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); } }), { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(el => io.observe(el));
+  } else document.querySelectorAll('.reveal').forEach(el => el.classList.add('in'));
+
+  /* ───────── the soroban, drawn like an object ───────── */
+  // Bead positions in bead-heights from the inner top. Upper: 0.12 off / 1.02 on. Beam 2.1–2.36. Lower i: 2.42+i on / 3.42+i off.
+  function Soroban(canvas, rods, opts = {}) {
+    const ctx = canvas.getContext('2d');
+    const st = Array.from({ length: rods }, () => ({ five: false, ones: 0, up: 0.12, low: [3.42, 4.42, 5.42, 6.42] }));
+    let G = null, raf = 0;
+    const targetUp = s => s.five ? 1.02 : 0.12;
+    const targetLow = (s, i) => i < s.ones ? 2.42 + i : 3.42 + i;
+
+    function layout() {
+      const W = canvas.clientWidth; if (!W) return;
+      const f = Math.max(10, W * 0.034);
+      const colW = (W - 2 * f) / rods;
+      const bw = colW * 0.86, bh = bw * 0.46;
+      const ih = bh * 7.62;
+      const H = Math.round(ih + 2 * f);
+      canvas.style.height = H + 'px';
+      const dpr = Math.min(2, window.devicePixelRatio || 1);
+      canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      G = { W, H, f, colW, bw, bh, x0: f, y0: f, iw: W - 2 * f, ih };
+      draw();
+    }
+    function rr(x, y, w, h, r) { ctx.beginPath(); ctx.moveTo(x + r, y); ctx.arcTo(x + w, y, x + w, y + h, r); ctx.arcTo(x + w, y + h, x, y + h, r); ctx.arcTo(x, y + h, x, y, r); ctx.arcTo(x, y, x + w, y, r); ctx.closePath(); }
+    function bead(cx, top, active) {
+      const { bw, bh } = G, x = cx - bw / 2, k = bw * 0.3, e = bw * 0.035;
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,.55)'; ctx.shadowBlur = bh * 0.5; ctx.shadowOffsetY = bh * 0.18;
+      // bicone silhouette: sharp waist, slightly softened shoulders
+      ctx.beginPath();
+      ctx.moveTo(x, top + bh / 2);
+      ctx.lineTo(x + k - e, top + bh * 0.08);
+      ctx.quadraticCurveTo(x + k, top + bh * 0.02, x + k + e * 2, top + bh * 0.02);
+      ctx.lineTo(x + bw - k - e * 2, top + bh * 0.02);
+      ctx.quadraticCurveTo(x + bw - k, top + bh * 0.02, x + bw - k + e, top + bh * 0.08);
+      ctx.lineTo(x + bw, top + bh / 2);
+      ctx.lineTo(x + bw - k + e, top + bh * 0.92);
+      ctx.quadraticCurveTo(x + bw - k, top + bh * 0.98, x + bw - k - e * 2, top + bh * 0.98);
+      ctx.lineTo(x + k + e * 2, top + bh * 0.98);
+      ctx.quadraticCurveTo(x + k, top + bh * 0.98, x + k - e, top + bh * 0.92);
+      ctx.closePath();
+      const gr = ctx.createLinearGradient(0, top, 0, top + bh);
+      if (active) { gr.addColorStop(0, '#F0C38D'); gr.addColorStop(.32, '#C4843F'); gr.addColorStop(.68, '#7A4119'); gr.addColorStop(1, '#3B1C09'); }
+      else { gr.addColorStop(0, '#B98A5E'); gr.addColorStop(.32, '#8A5A31'); gr.addColorStop(.68, '#4E2A12'); gr.addColorStop(1, '#271307'); }
+      ctx.fillStyle = gr; ctx.fill();
+      ctx.restore();
+      ctx.save(); ctx.clip();
+      const hl = ctx.createRadialGradient(cx - bw * 0.12, top + bh * 0.28, 0, cx - bw * 0.12, top + bh * 0.28, bw * 0.38);
+      hl.addColorStop(0, active ? 'rgba(255,244,228,.55)' : 'rgba(255,244,228,.28)'); hl.addColorStop(1, 'rgba(255,244,228,0)');
+      ctx.fillStyle = hl; ctx.fillRect(x, top, bw, bh);
+      ctx.strokeStyle = 'rgba(0,0,0,.35)'; ctx.lineWidth = 1; ctx.beginPath(); ctx.moveTo(x + 2, top + bh / 2); ctx.lineTo(x + bw - 2, top + bh / 2); ctx.stroke();
+      ctx.restore();
+    }
+    function draw() {
+      if (!G) return;
+      const { W, H, f, colW, bh, x0, y0, iw, ih } = G;
+      ctx.clearRect(0, 0, W, H);
+      // frame
+      ctx.save();
+      ctx.shadowColor = 'rgba(0,0,0,.5)'; ctx.shadowBlur = 40; ctx.shadowOffsetY = 18;
+      rr(0, 0, W, H, f * 0.7);
+      const fr = ctx.createLinearGradient(0, 0, 0, H);
+      fr.addColorStop(0, '#4A2D18'); fr.addColorStop(.5, '#2E1B0E'); fr.addColorStop(1, '#1B0F07');
+      ctx.fillStyle = fr; ctx.fill();
+      ctx.restore();
+      // wood grain on the frame
+      ctx.save(); rr(0, 0, W, H, f * 0.7); ctx.clip();
+      ctx.globalAlpha = .08; ctx.strokeStyle = '#E9B67F'; ctx.lineWidth = 1;
+      for (let i = 0; i < 9; i++) { const yy = (i + .5) * H / 9; ctx.beginPath(); ctx.moveTo(0, yy); ctx.bezierCurveTo(W * .3, yy - 3, W * .6, yy + 4, W, yy - 1); ctx.stroke(); }
+      ctx.restore();
+      // inner bed
+      rr(x0, y0, iw, ih, 4);
+      const bed = ctx.createLinearGradient(0, y0, 0, y0 + ih);
+      bed.addColorStop(0, '#0B0806'); bed.addColorStop(1, '#16100B');
+      ctx.fillStyle = bed; ctx.fill();
+      ctx.strokeStyle = 'rgba(255,220,180,.10)'; ctx.lineWidth = 1; ctx.stroke();
+      // rods
+      for (let r = 0; r < rods; r++) {
+        const cx = x0 + colW * (r + .5);
+        const rg = ctx.createLinearGradient(cx - 2, 0, cx + 2, 0);
+        rg.addColorStop(0, '#5E554B'); rg.addColorStop(.5, '#CFC3B2'); rg.addColorStop(1, '#4A4239');
+        ctx.fillStyle = rg; ctx.fillRect(cx - Math.max(1, colW * .018), y0, Math.max(2, colW * .036), ih);
+      }
+      // beam
+      const by = y0 + bh * 2.1, bt = bh * 0.26;
+      const bg = ctx.createLinearGradient(0, by, 0, by + bt);
+      bg.addColorStop(0, '#6A4224'); bg.addColorStop(1, '#2A180B');
+      ctx.fillStyle = bg; ctx.fillRect(x0, by, iw, bt);
+      for (let r = rods - 1; r >= 0; r -= 3) {
+        ctx.fillStyle = '#EDE0C8'; ctx.beginPath(); ctx.arc(x0 + colW * (r + .5), by + bt / 2, Math.max(1.6, bt * .22), 0, Math.PI * 2); ctx.fill();
+      }
+      // beads
+      st.forEach((s, r) => {
+        const cx = x0 + colW * (r + .5);
+        bead(cx, y0 + s.up * bh, s.five);
+        for (let i = 3; i >= 0; i--) bead(cx, y0 + s.low[i] * bh, i < s.ones);
+      });
+    }
+    function tick() {
+      let moving = false;
+      st.forEach(s => {
+        const tu = targetUp(s);
+        s.up += (tu - s.up) * 0.2; if (Math.abs(tu - s.up) > 0.002) moving = true; else s.up = tu;
+        s.low = s.low.map((v, i) => { const t = targetLow(s, i); const n = v + (t - v) * 0.2; if (Math.abs(t - n) > 0.002) { moving = true; return n; } return t; });
+      });
+      draw();
+      raf = moving ? requestAnimationFrame(tick) : 0;
+    }
+    function kick() { if (reduce) { st.forEach(s => { s.up = targetUp(s); s.low = s.low.map((_, i) => targetLow(s, i)); }); draw(); return; } if (!raf) raf = requestAnimationFrame(tick); }
+    function set(n) {
+      const d = String(Math.max(0, Math.floor(n))).padStart(rods, '0').slice(-rods);
+      st.forEach((s, i) => { const v = +d[i]; s.five = v >= 5; s.ones = v % 5; });
+      kick();
+    }
+    const value = () => st.reduce((a, s) => a * 10 + (s.five ? 5 : 0) + s.ones, 0);
+    if (opts.interactive) {
+      canvas.addEventListener('pointerdown', e => {
+        if (!G) return;
+        const b = canvas.getBoundingClientRect(), x = e.clientX - b.left, y = e.clientY - b.top;
+        const r = Math.floor((x - G.x0) / G.colW); if (r < 0 || r >= rods) return;
+        const s = st[r], u = (y - G.y0) / G.bh;
+        if (u < 2.1) s.five = !s.five;
+        else { for (let i = 0; i < 4; i++) { const p = s.low[i]; if (u >= p - .1 && u <= p + 1.1) { s.ones = s.ones > i ? i : i + 1; break; } } }
+        kick(); opts.onChange && opts.onChange(value());
+      });
+    }
+    // start fully resolved, then animate from there
+    if ('ResizeObserver' in window) new ResizeObserver(layout).observe(canvas); else addEventListener('resize', layout);
+    layout();
+    return { set, value, snap(n) { set(n); st.forEach(s => { s.up = targetUp(s); s.low = s.low.map((_, i) => targetLow(s, i)); }); draw(); } };
+  }
+
+  const fmt = n => String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ' ');
+
+  /* hero: a flash sequence; the abacus keeps the running total */
+  const heroAb = Soroban($('hero-abacus'), 5);
+  const seq = [1284, 356, -128, 2048], total = seq.reduce((a, b) => a + b, 0);
+  const sgn = (n, i) => i === 0 ? fmt(n) : (n < 0 ? '− ' + fmt(-n) : '+ ' + fmt(n));
+  const term = $('flash-term'), seqEl = $('hero-seq'), totEl = $('hero-total');
+  if (reduce) {
+    heroAb.snap(total); term.textContent = '= ' + fmt(total); term.classList.add('total');
+    seqEl.textContent = seq.map(sgn).join(' '); totEl.textContent = '= ' + fmt(total);
+  } else {
+    heroAb.snap(seq[0]);
+    let step = 1, sum = seq[0];
+    const tick = () => {
+      if (step < seq.length) {
+        sum += seq[step];
+        term.classList.remove('total'); term.textContent = sgn(seq[step], step);
+        seqEl.textContent = seq.slice(0, step + 1).map(sgn).join(' ');
+        totEl.textContent = '= ' + fmt(sum);
+        heroAb.set(sum); step++; setTimeout(tick, 1800);
+      } else if (step === seq.length) {
+        term.classList.add('total'); term.textContent = '= ' + fmt(total); step++; setTimeout(tick, 3400);
+      } else {
+        step = 1; sum = seq[0];
+        term.classList.remove('total'); term.textContent = fmt(seq[0]);
+        seqEl.textContent = fmt(seq[0]); totEl.textContent = '= ' + fmt(seq[0]);
+        heroAb.set(seq[0]); setTimeout(tick, 1800);
+      }
+    };
+    setTimeout(tick, 1800);
+  }
+
+  /* method: interactive abacus */
+  const tryNum = $('try-num');
+  const tryAb = Soroban($('try-abacus'), 4, { interactive: true, onChange: v => { tryNum.textContent = fmt(v); } });
+  tryAb.snap(753);
+  $('try-reset').addEventListener('click', () => { tryAb.set(0); tryNum.textContent = '0'; });
+
+  /* demo trainer in the phone */
+  const idle = $('d-idle'), big = $('d-big'), ask = $('d-ask'), done = $('d-done'), btn = $('d-btn');
+  const bars = [...$('app-progress').children];
+  let nums = [], timers = [], mode = 'idle';
+  const pop = el => { if (!reduce) el.animate([{ opacity: 0, transform: 'translateY(10px) scale(.96)' }, { opacity: 1, transform: 'none' }], { duration: 420, easing: 'cubic-bezier(.16,1,.3,1)' }); };
+  const show = n => { [idle, big, ask, done].forEach(x => { x.hidden = x !== n; }); pop(n); };
+  const later = (f, ms) => timers.push(setTimeout(f, ms));
+  function makeNums() {
+    const out = [1 + Math.floor(Math.random() * 9)]; let s = out[0];
+    while (out.length < 5) { const n = 1 + Math.floor(Math.random() * 9); const m = Math.random() < .4 && s - n >= 0; out.push(m ? -n : n); s += m ? -n : n; }
+    return out;
+  }
+  function setBtn(key) { btn.dataset.i18n = key; btn.textContent = T(key); }
+  function run() {
+    timers.forEach(clearTimeout); timers = []; mode = 'run';
+    nums = makeNums(); bars.forEach(b => b.classList.remove('on'));
+    show(big); big.classList.add('count'); btn.disabled = true; btn.style.opacity = .4;
+    let t = 0;
+    [3, 2, 1].forEach(c => { later(() => { big.textContent = c; pop(big); }, t); t += 700; });
+    nums.forEach((n, i) => {
+      later(() => { big.classList.remove('count'); big.textContent = i === 0 ? n : (n < 0 ? '−' + (-n) : '+' + n); bars[i].classList.add('on'); pop(big); }, t);
+      t += 1000;
+      later(() => { big.textContent = ''; }, t - 160); // a blank beat so two equal numbers read as two
+    });
+    later(() => { mode = 'ask'; show(ask); btn.disabled = false; btn.style.opacity = ''; setBtn('demo_check'); const i = $('d-answer'); i.value = ''; i.focus({ preventScroll: true }); }, t);
+  }
+  function check() {
+    const raw = $('d-answer').value.replace(/[^\d-]/g, '');
+    if (!raw) { $('d-answer').focus(); return; }
+    const right = nums.reduce((a, b) => a + b, 0), ok = Number(raw) === right;
+    const v = $('d-verdict'); v.className = 'verdict ' + (ok ? 'good' : 'miss');
+    v.textContent = ok ? T('ok') : T('miss') + ' ' + right;
+    $('d-seq').textContent = nums.map((n, i) => i === 0 ? n : (n < 0 ? '− ' + (-n) : '+ ' + n)).join(' ') + ' = ' + right;
+    mode = 'done'; show(done); setBtn('demo_again');
+  }
+  btn.addEventListener('click', () => { if (mode === 'ask') check(); else if (mode !== 'run') run(); });
+  ask.addEventListener('submit', e => { e.preventDefault(); check(); });
+
+  /* reviews */
+  const slides = [...$('slides').children], dots = [...$('dots').children];
+  let cur = 0;
+  function go(i, dir) {
+    const n = (i + slides.length) % slides.length;
+    if (n === cur) return;
+    dir = dir || (n > cur ? 1 : -1);
+    const out = slides[cur], inn = slides[n];
+    out.style.setProperty('--x', (-dir * 56) + 'px');
+    out.setAttribute('aria-hidden', 'true');
+    inn.style.transition = 'none';
+    inn.style.setProperty('--x', (dir * 56) + 'px');
+    void inn.offsetWidth;
+    inn.style.transition = '';
+    inn.style.setProperty('--x', '0px');
+    inn.setAttribute('aria-hidden', 'false');
+    cur = n;
+    dots.forEach((d, k) => d.classList.toggle('on', k === cur));
+  }
+  $('prev').addEventListener('click', () => go(cur - 1, -1));
+  $('next').addEventListener('click', () => go(cur + 1, 1));
+  dots.forEach((d, k) => d.addEventListener('click', () => go(k)));
+  let sx = null, sy = 0;
+  const sl = $('slides');
+  sl.addEventListener('pointerdown', e => { sx = e.clientX; sy = e.clientY; });
+  sl.addEventListener('pointerup', e => {
+    if (sx === null) return;
+    const dx = e.clientX - sx, dy = e.clientY - sy; sx = null;
+    if (Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy)) go(cur + (dx < 0 ? 1 : -1), dx < 0 ? 1 : -1);
+  });
+  sl.addEventListener('pointercancel', () => { sx = null; });
+
+  /* faq: height animates both ways; a click mid-way reverses from where it is */
+  document.querySelectorAll('.faq-list details').forEach(d => {
+    const body = d.querySelector('.faq-a');
+    d.querySelector('summary').addEventListener('click', e => {
+      e.preventDefault();
+      const opening = !d.open || d.classList.contains('closing');
+      if (reduce) { d.open = opening; return; }
+      const start = body.getBoundingClientRect().height;
+      if (body._a) body._a.cancel();
+      if (opening) { d.classList.remove('closing'); d.open = true; }
+      else d.classList.add('closing');
+      const end = opening ? body.scrollHeight : 0;
+      const a = body.animate([{ height: start + 'px', opacity: opening ? .2 : 1 }, { height: end + 'px', opacity: opening ? 1 : 0 }],
+        { duration: 560, easing: 'cubic-bezier(.16,1,.3,1)' });
+      body._a = a;
+      a.onfinish = () => { body._a = null; if (!opening) { d.open = false; d.classList.remove('closing'); } };
+    });
+  });
+
+  /* signup */
+  $('form').addEventListener('submit', e => {
+    e.preventDefault();
+    const err = $('err');
+    const say = k => { err.textContent = T(k); if (!reduce) err.animate([{ opacity: 0, transform: 'translateY(-4px)' }, { opacity: 1, transform: 'none' }], { duration: 360, easing: 'ease-out' }); };
+    if ($('f-phone').value.replace(/\D/g, '').length < 9) { say('err_phone'); $('f-phone').focus(); return; }
+    if (!$('f-consent').checked) { say('err_consent'); $('f-consent').focus(); return; }
+    err.textContent = '';
+    const form = $('form'), doneEl = $('done'), card = form.parentElement;
+    if (reduce) { form.hidden = true; doneEl.hidden = false; return; }
+    const h0 = card.offsetHeight;
+    form.classList.add('leaving');
+    setTimeout(() => {
+      form.hidden = true; doneEl.hidden = false; doneEl.classList.add('entering');
+      const h1 = card.offsetHeight;
+      card.animate([{ height: h0 + 'px' }, { height: h1 + 'px' }], { duration: 700, easing: 'cubic-bezier(.16,1,.3,1)' });
+      requestAnimationFrame(() => requestAnimationFrame(() => doneEl.classList.remove('entering')));
+    }, 380);
+  });
+
+  /* i18n — Russian is read from the page, Kyrgyz lives here */
+  const KY = {
+    note_b: 'Концепт v3.2.', note: 'Сүрөттөр, сертификаттар, пикирлер, сандар жана байланыштар убактылуу.',
+    logo_sub: 'Менталдык арифметика',
+    nav1: 'Мен жөнүндө', nav2: 'Эмне үчүн', nav3: 'Метод', nav4: 'Программа', nav5: 'Тренажёр', nav6: 'Суроолор',
+    cta_short: 'Сыноо сабагы', cta_trial: 'Сыноо сабагына жазылуу', cta_demo: 'Тренажёрду байкап көрүү',
+    hero_eyebrow: 'Менталдык арифметика · Бишкек',
+    hero_h1: 'Сандар <em>элестетүүдө</em> жашаганда',
+    hero_lead: '5–12 жаштагы балдарды абакус менен, кийин абакуссуз эсептөөгө үйрөтөм. Бала топтолгон, көңүлдүү жана өзүнө ишенимдүү болот, математика сүйүктүү сабакка айланат.',
+    flash_b: 'Эсинен эсептөө', flash_m: 'окуучу санды көрөт, абакус сумманы көрсөтөт',
+    hf1: '5 жаштан 12 жашка чейинки балдар', hf2: 'Бишкекте офлайн жана онлайн', hf3: 'Биринчи сабак акысыз',
+    ptag: 'Бишкек · 2017-жылдан бери',
+    ab_eyebrow: 'Таанышуу', ab_h2: 'Саламатсызбы, мен <em>Мира</em>',
+    ab_p1: '2017-жылдан бери менталдык арифметиканы окутам. Ушул убакытта сабактарымдан эки жүздөн ашык бала өттү: сандардан корккондордон баштап олимпиаданын байге ээлерине чейин.',
+    ab_p2: 'Бала сабакка кубануу менен келиши жана натыйжаны өзү да, ата-энеси да көрүшү мен үчүн маанилүү. Ошондуктан ар бир сабакты баланын өзүнө, анын темпине жана мүнөзүнө ылайыктап түзөм.',
+    st1: 'жыл менталдык арифметиканы окутам', st2: 'окуучу билим алды', st3: 'санды окуучулар катары менен эсинен кошушат',
+    cr1: 'Сертификаттуу мугалим', cr2: 'Соробан ыкмасы', cr3: 'Олимпиада байгелүүлөрү',
+    w_eyebrow: 'Бул балага эмне үчүн керек', w_h2: 'Тез эсептөө — <em>көрүнгөн бөлүгү</em> гана',
+    w_lead: 'Менталдык арифметика бүт окуу таянган нерселерди машыктырат. Ата-энелер алгачкы айларда эле байкаган өзгөрүүлөр.',
+    b1_h: 'Көңүл буруу', b1: 'Тапшырмага көңүлүн узагыраак топтоп, азыраак алаксыйт.',
+    b2_h: 'Эс тутум', b2: 'Сандарды, эрежелерди жана тексттерди жеңилирээк эстеп калат: элестүү эс тутум күн сайын иштейт.',
+    b3_h: 'Эсептөө ылдамдыгы', b3: 'Курбуларынан тезирээк эсинен эсептейт, мектептеги математика коркутпай калат.',
+    b4_h: 'Өзүнө ишеним', b4: 'Татаал тапшырманы өзү чечүүгө көнүп, «колумдан келет» деп көбүрөөк айтат.',
+    b5_h: 'Элестетүү', b5: 'Башында сүрөттү кармап, аны менен иштөөнү үйрөнөт.',
+    b6_h: 'Чыдамкайлык', b6: 'Күн сайын кыска машыгуулар тартипке жана өз алдынчалыкка үйрөтөт.',
+    m_eyebrow: 'Метод', m_h2: 'Колдогу данектерден <em>баштагы элеске</em> чейин',
+    s1_h: 'Абакус колдо', s1: 'Бала данектерди манжалары менен жылдырып, сан кантип түзүлөрүн түшүнөт.',
+    s2_h: 'Абакус элестетүүдө', s2: 'Акырындык менен абакусту алып салабыз. Бала аны элестетип, данектерди ой жүзүндө жылдырат.',
+    s3_h: 'Эсинен эсептөө', s3: 'Элес өзү иштейт: бала узун сандар катарын тез жана катасыз кошуп-кемитет.',
+    try_p: 'Өзүңүз байкап көрүңүз: данектерди басыңыз. Тосмого жабышкандары эсептелет.',
+    leg1: 'тосмонун үстүндө — беш', leg2: 'тосмонун астында — бирден', reset: 'Тазалоо',
+    p_eyebrow: 'Программа', p_h2: 'Бир чыбыктагы <em>беш данек</em>',
+    p_lead: 'Программа деңгээлдер боюнча жүрөт. Ар бир кийинки деңгээл мурункуга таянат, ошондуктан бала темалардан секирбейт жана ишенимин жоготпойт.',
+    lv1_l: 'I деңгээл', lv1_h: 'Түз эсептөө', lv1: 'Абакус менен таанышуу, өтүүсүз кошуу жана кемитүү.',
+    lv2_l: 'II деңгээл', lv2_h: 'Бештин жардамы', lv2: '«Кичүү достор» формулалары, беш аркылуу эсептөө.',
+    lv3_l: 'III деңгээл', lv3_h: 'Ондун жардамы', lv3: '«Улуу достор» формулалары, он аркылуу өтүү.',
+    lv4_l: 'IV деңгээл', lv4_h: 'Аралаш формулалар', lv4: 'Бардык өтүүлөр бирге, эки жана үч орундуу сандар.',
+    lv5_l: 'V деңгээл', lv5_h: 'Ылдамдыкка эсептөө', lv5: 'Көп орундуу сандар, флеш-эсептөө жана олимпиадаларга даярдык.',
+    dur: '2–3 ай', dur5: '3 айдан',
+    f_eyebrow: 'Форматтар жана баасы', f_h2: '<em>Акысыз</em> сабактан баштаңыз',
+    f_lead: 'Сыноо сабагында баланын деңгээлин аныктап, ага кайсы формат ылайыктуу экенин айтып берем.',
+    fm1_tag: 'Эмнеден баштоо', fm1_h: 'Сыноо сабагы', fm1_s: 'Акысыз', fm1_u: '40 мүнөт',
+    fm1_1: 'Абакус менен таанышуу', fm1_2: 'Баштапкы деңгээлди аныктайм', fm1_3: 'Программа жана жадыбал тууралуу айтып берем',
+    fm_btn: 'Жазылуу', fm_btn2: 'Жадыбалды билүү',
+    fm2_tag: 'Офлайн же онлайн', fm2_h: 'Жекече', fm2_s: '1 200 сом', fm2_u: '60 мүнөт үчүн',
+    fm2_1: 'Программа баланын темпине ылайык', fm2_2: 'Тренажёрго жеке кирүү', fm2_3: 'Ата-энелерге ай сайын отчёт',
+    fm3_tag: 'Офлайн, 4 балага чейин', fm3_h: 'Мини-топ', fm3_s: '700 сом', fm3_u: '60 мүнөт үчүн',
+    fm3_1: 'Бирге үйрөнөбүз жана достук мелдешебиз', fm3_2: 'Тренажёрго жеке кирүү', fm3_3: 'Топтор деңгээл жана жаш боюнча',
+    fm_note: 'Баасы бир сабак үчүн, айлык абонемент арзаныраак. Үйдө машыгуу үчүн абакусту биринчи сабакта берем.',
+    tr_eyebrow: 'Онлайн-тренажёр', tr_h2: 'Күнүнө он мүнөт, <em>жана көндүм бекемделет</em>',
+    tr_lead: 'Сабактардын ортосунда окуучулар үйдө машыгат: сандар экранда биринин артынан бири чыгат, акырында жоопту айтуу керек.',
+    tf1_h: 'Окуучунун деңгээлине жараша', tf1: 'Разряд, өтүүлөр, сандардын саны жана ылдамдык',
+    tf2_h: 'Прогресс көрүнүп турат', tf2: 'Ким машыкканын жана канча мисал туура чыгарылганын көрөм',
+    tf3_h: 'Үй тапшырмасы', tf3: 'Тапшырмалар түз эле тренажёрго келет',
+    tf4_h: 'Жеке код', tf4: 'Толук версия менин окуучуларыма гана ачык',
+    tr_demo: 'Бул жерде ачык демо-версия бар. Балаңыз менен бирге эсептеп көрүңүз.',
+    app_t: 'Тренажёр', app_demo: 'Демо', chip1: '1 разряд', chip2: '5 сан', chip3: '1 сек',
+    demo_p: 'Сандар бирден чыгат. Аларды эсиңизден кошуп, жоопту жазыңыз.',
+    demo_start: 'Баштоо', demo_ask: 'Канча болду?', demo_check: 'Текшерүү', demo_again: 'Дагы бир жолу',
+    ok: 'Туура!', miss: 'Туура жооп:',
+    rv_eyebrow: 'Пикирлер', rv_h2: 'Ата-энелердин <em>сөзү</em>', rv_note: 'Макетте пикирлердин үлгүлөрү. WhatsAppтан скриншоттору менен чыныгыларына алмаштырабыз.',
+    q1: 'Уулум жети жашта. Үч айдан кийин мисалдарды менден тезирээк эсинен чыгара баштады, эң негизгиси, математикадан коркпой калды.', q1_w: 'Алихандын апасы, 7 жаш',
+    q2: 'Кызым мурун он мүнөт да отура алчу эмес. Азыр ар кечинде тренажёрго өзү отурат.', q2_w: 'Аминанын апасы, 8 жаш',
+    q3: 'Мира прогресс тууралуу кеңири айтып, үйгө түшүнүктүү тапшырмаларды берет. Ага баары бир эмес экени көрүнүп турат.', q3_w: 'Эмирдин атасы, 10 жаш',
+    fq_eyebrow: 'Суроолор', fq_h2: 'Ата-энелер адатта <em>эмнени сурашат</em>',
+    ask_b: 'Жооп таппадыңызбы?', ask_s: 'WhatsAppка жазыңыз, өзүм жооп берем.',
+    fq1: 'Канча жаштан баштаса болот?', fa1: '5 жаштан. Эң ылайыктуусу 6–10 жаш: бала сандарды билет жана 40–60 мүнөт машыга алат.',
+    fq2: 'Натыйжа качан көрүнөт?', fa2: 'Алгачкы өзгөрүүлөрдү ата-энелер адатта 1–2 айда байкашат. Эсинен ишенимдүү эсептөө 6–12 ай үзгүлтүксүз сабактан кийин калыптанат.',
+    fq3: 'Абакус сатып алуу керекпи?', fa3: 'Жок, үйдө машыгуу үчүн абакусту биринчи сабакта берем.',
+    fq4: 'Сабактар офлайнбы же онлайнбы?', fa4: 'Эки формат тең бар. Офлайн сабактар Бишкекте өтөт, онлайн башка шаардагы балдарга ыңгайлуу.',
+    fq5: 'Тренажёрго кантип кирсе болот?', fa5: 'Курска жазылгандан кийин жеке код берем. Ал окуу уланып жатканда окуучунун түзмөктөрүндө иштейт.',
+    su_eyebrow: 'Жазылуу', su_h2: 'Биринчи сабак <em>белекке</em>',
+    su_lead: 'Кырк мүнөт: таанышабыз, абакус менен эсептеп көрөбүз жана бул ыкма балаңызга ылайыктуубу, түшүнөсүз.',
+    c_addr: 'Дарек', c_addr_v: 'Бишкек, шаардын борбору', c_time: 'Убакыт', c_time_v: 'Дш–Иш, 10:00–19:00',
+    fc_h: 'Сыноо сабагына өтүнмө', fc_p: 'Бир күндүн ичинде WhatsApp аркылуу жазам, ыңгайлуу убакытты бирге тандайбыз.',
+    f_name: 'Атыңыз', f_phone: 'WhatsApp', f_age: 'Баланын жашы',
+    age1: '4–5 жаш', age2: '6–7 жаш', age3: '8–10 жаш', age4: '11–14 жаш',
+    f_off: 'Офлайн', f_on: 'Онлайн', f_consent: 'Жеке маалыматтарымды иштетүүгө макулмун', f_submit: 'Өтүнмө жөнөтүү',
+    err_phone: 'Сиз менен байланышуу үчүн WhatsApp номериңизди жазыңыз.', err_consent: 'Маалыматтарды иштетүүгө макулдугуңузду белгилеңиз.',
+    done_h: 'Рахмат!', done_p: 'Мира бир күндүн ичинде WhatsApp аркылуу жазат.',
+    done_note: 'Концептте өтүнмө эч жакка жөнөтүлбөйт. Telegramга жөнөтүүнү кийинки кадамда кошобуз.',
+    ft_p: '5–12 жаштагы балдар үчүн менталдык арифметика. Бишкек жана онлайн.',
+    fh1: 'Бөлүмдөр', fh2: 'Окуучуларга', fh3: 'Байланыш', login: 'Тренажёрго кирүү', ft_note: 'Сайттын концепти. Материалдар убактылуу.'
+  };
+  const RU = { ok: 'Верно!', miss: 'Правильный ответ:', demo_check: 'Проверить', demo_again: 'Ещё раз', err_phone: 'Укажите номер WhatsApp, чтобы я могла с вами связаться.', err_consent: 'Отметьте согласие на обработку данных.' };
+  document.querySelectorAll('[data-i18n]').forEach(n => { if (!(n.dataset.i18n in RU)) RU[n.dataset.i18n] = n.innerHTML; });
+  let lang = 'ru';
+  function T(k) { return (lang === 'ky' ? KY[k] : undefined) ?? RU[k] ?? ''; }
+  function switchLang(l) {
+    if ((l === 'ky' ? 'ky' : 'ru') === lang) return;
+    const root = document.documentElement;
+    document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === l)));
+    if (reduce) { setLang(l); return; }
+    root.classList.add('lang-anim', 'lang-swap');
+    setTimeout(() => {
+      setLang(l);
+      requestAnimationFrame(() => { root.classList.remove('lang-swap'); setTimeout(() => root.classList.remove('lang-anim'), 320); });
+    }, 280);
+  }
+  function setLang(l) {
+    lang = l === 'ky' ? 'ky' : 'ru';
+    document.documentElement.lang = lang;
+    document.querySelectorAll('[data-i18n]').forEach(n => { n.innerHTML = T(n.dataset.i18n); });
+    document.querySelectorAll('.lang button').forEach(b => b.setAttribute('aria-pressed', String(b.dataset.lang === lang)));
+    $('err').textContent = '';
+    try { localStorage.setItem('mira-lang', lang); } catch (e) {}
+  }
+  document.querySelectorAll('.lang button').forEach(b => b.addEventListener('click', () => switchLang(b.dataset.lang)));
+  let saved = null; try { saved = localStorage.getItem('mira-lang'); } catch (e) {}
+  if (saved === 'ky') setLang('ky');
+})();
+</script>
+
+</html>
